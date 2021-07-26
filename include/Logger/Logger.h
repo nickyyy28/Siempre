@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <stdint.h>
 #include <thread>
@@ -9,6 +10,12 @@
 #include <fstream>
 
 namespace siempre {
+
+class LogLevel;
+class Logger;
+class LogEvent;
+class LogFormatter;
+class LogAppender;
 
 //日志级别
 class LogLevel{
@@ -43,20 +50,6 @@ public:
     ~LogEvent();
 };
 
-//日志输出地
-class LogAppender {
-public:
-    typedef std::shared_ptr<LogAppender> ptr;
-
-private:
-    LogLevel::Level m_level;
-
-public:
-    LogAppender();
-    virtual void Log(LogLevel::Level level,LogEvent::ptr event) = 0;
-    virtual ~LogAppender();
-};
-
 //日志格式化器
 class LogFormatter {
 public:
@@ -68,6 +61,22 @@ public:
     LogFormatter();
     ~LogFormatter();
     std::string format(LogEvent::ptr event);
+};
+
+//日志输出地
+class LogAppender {
+public:
+    typedef std::shared_ptr<LogAppender> ptr;
+
+protected:
+    LogLevel::Level m_level;
+    LogFormatter::ptr m_formatter;
+
+public:
+    LogAppender();
+    void setFormatter(LogFormatter::ptr formatter) { this->m_formatter = formatter; };
+    virtual void Log(LogLevel::Level level,LogEvent::ptr event) = 0;
+    virtual ~LogAppender();
 };
 
 //日志器
@@ -109,11 +118,11 @@ private:
 class FileLogAppender : public LogAppender{
 public:
     typedef std::shared_ptr<FileLogAppender> ptr;
-    FileLogAppender();
+    FileLogAppender(const std::string &filename);
     ~FileLogAppender();
     void Log(LogLevel::Level level,LogEvent::ptr event) override ;
 private:
-    std::string m_filename;
+    char* m_filename = nullptr;
     std::ofstream m_ofs;
 };
 
