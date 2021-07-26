@@ -1,0 +1,6 @@
+/home/nick/projects/siempre-server-framework/build/CMakeFiles/rebuild_cache.dir
+/home/nick/projects/siempre-server-framework/build/CMakeFiles/edit_cache.dir
+/home/nick/projects/siempre-server-framework/build/src/CMakeFiles/rebuild_cache.dir
+/home/nick/projects/siempre-server-framework/build/src/CMakeFiles/edit_cache.dir
+/home/nick/projects/siempre-server-framework/build/src/CMakeFiles/Logger_shared.dir
+/home/nick/projects/siempre-server-framework/build/src/CMakeFiles/Logger_static.dir

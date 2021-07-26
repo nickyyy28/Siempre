@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/Logger/Logger.h
+string
+-
+stdint.h
+-
+thread
+-
+mutex
+-
+atomic
+-
+list
+-
+
+/home/nick/projects/siempre-server-framework/src/Logger/Logger.cc
+Logger/Logger.h
+/home/nick/projects/siempre-server-framework/src/Logger/Logger/Logger.h
+
