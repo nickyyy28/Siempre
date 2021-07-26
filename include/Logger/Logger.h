@@ -2,11 +2,13 @@
 
 #include <iostream>
 #include <string>
+#include <strstream>
 #include <stdint.h>
 #include <thread>
 #include <mutex>
 #include <atomic>
 #include <list>
+#include <vector>
 #include <fstream>
 #include <memory>
 
@@ -57,10 +59,22 @@ public:
     typedef std::shared_ptr<LogFormatter> ptr;
 
 private:
+    class FormatItem{
+    public:
+        typedef std::shared_ptr<FormatItem> ptr;
+        FormatItem();
+        virtual ~FormatItem(){};    
+        virtual std::string format(std::strstream& ss, LogEvent::ptr event) = 0;
+    };
+
+private:
+    std::string m_pattern;
+    std::vector<FormatItem::ptr> m_items;
 
 public:
-    LogFormatter();
+    LogFormatter(const std::string& pattern = "HH-mm-ss");
     ~LogFormatter();
+    void init();
     std::string format(LogEvent::ptr event);
 };
 
@@ -122,7 +136,7 @@ public:
     FileLogAppender(const std::string &filename);
     ~FileLogAppender();
     void Log(LogLevel::Level level,LogEvent::ptr event) override ;
-    void reopen();
+    bool reopen();
 private:
     char* m_filename = nullptr;
     std::ofstream m_ofs;

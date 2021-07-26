@@ -27,9 +27,9 @@ LogAppender::~LogAppender()
 
 }
 
-LogFormatter::LogFormatter()
+LogFormatter::LogFormatter(const std::string& pattern)
 {
-
+    this->m_pattern = pattern;
 }
 
 LogFormatter::~LogFormatter()
@@ -37,10 +37,28 @@ LogFormatter::~LogFormatter()
 
 }
 
+void LogFormatter::init()
+{
+    std::vector<std::pair<std::string, int>> vec;
+    size_t last_pos = 0;
+
+    for(size_t i = 0; i < m_pattern.size(); ++i){
+        if (m_pattern[i] == '%')
+        {
+            
+        }
+        
+    }
+}
+
 std::string LogFormatter::format(LogEvent::ptr event)
 {
-	std::string str("test.....\n");
-	return str;
+	std::strstream ss;
+    for(auto& i : this->m_items){
+        i->format(ss, event);
+    }
+
+	return ss.str();
 }
 
 Logger::Logger(const std::string &name)
@@ -126,7 +144,7 @@ FileLogAppender::~FileLogAppender()
     
 }
 
-void FileLogAppender::reopen()
+bool FileLogAppender::reopen()
 {
     if (this->m_ofs.is_open())
     {
@@ -135,7 +153,7 @@ void FileLogAppender::reopen()
     }
 
     this->m_ofs.open(this->m_filename, std::fstream::app);
-    
+    return !!this->m_ofs;
 }
 
 StdoutLogAppender::StdoutLogAppender()
