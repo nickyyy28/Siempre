@@ -7,9 +7,9 @@ LogEvent::LogEvent()
 
 }
 
-LogEvent::LogEvent(const char * filename)
+LogEvent::LogEvent(const char * name)
 {
-    this->m_filename = filename;
+    this->m_name = name;
 }
 
 LogEvent::~LogEvent()
@@ -39,7 +39,8 @@ LogFormatter::~LogFormatter()
 
 std::string LogFormatter::format(LogEvent::ptr event)
 {
-
+	std::string str("test.....\n");
+	return str;
 }
 
 Logger::Logger(const std::string &name)
@@ -110,7 +111,7 @@ void Logger::fatal(const LogEvent::ptr event)
 FileLogAppender::FileLogAppender(const std::string& filename)
 {
     this->m_filename = (char *)filename.c_str();
-    this->m_ofs.open(this->m_filename);
+    this->m_ofs.open(this->m_filename, std::fstream::app);
     if(!this->m_ofs.is_open()){
         throw "Open File Fial";
     }
@@ -125,6 +126,28 @@ FileLogAppender::~FileLogAppender()
     
 }
 
+void FileLogAppender::reopen()
+{
+    if (this->m_ofs.is_open())
+    {
+        this->m_ofs.flush();
+        this->m_ofs.close();
+    }
+
+    this->m_ofs.open(this->m_filename, std::fstream::app);
+    
+}
+
+StdoutLogAppender::StdoutLogAppender()
+{
+
+}
+
+StdoutLogAppender::~StdoutLogAppender()
+{
+
+}
+
 void StdoutLogAppender::Log(LogLevel::Level level,LogEvent::ptr event)
 {
     if (level >= this->m_level)
@@ -136,7 +159,10 @@ void StdoutLogAppender::Log(LogLevel::Level level,LogEvent::ptr event)
 
 void FileLogAppender::Log(LogLevel::Level level,LogEvent::ptr event)
 {
-
+    if (level >= this->m_level){
+        this->m_ofs << this->m_formatter.get()->format(event);
+        this->m_ofs.flush();
+    }
 }
 
 }

@@ -8,6 +8,7 @@
 #include <atomic>
 #include <list>
 #include <fstream>
+#include <memory>
 
 namespace siempre {
 
@@ -36,7 +37,7 @@ public:
     typedef std::shared_ptr<LogEvent> ptr;
 
 private:
-    const char* m_filename = nullptr;   //文件名
+    const char* m_name = nullptr;   //文件名
     int32_t m_line = 0;                 //行号
     uint64_t m_elapse = 0;              //程序启动到现在的时间(ms)
     uint32_t m_thread_id = 0;           //线程id
@@ -45,7 +46,7 @@ private:
     std::string m_content;              //
 
 public:
-    LogEvent(const char * filename);
+    LogEvent(const char * name);
     LogEvent();
     ~LogEvent();
 };
@@ -121,6 +122,7 @@ public:
     FileLogAppender(const std::string &filename);
     ~FileLogAppender();
     void Log(LogLevel::Level level,LogEvent::ptr event) override ;
+    void reopen();
 private:
     char* m_filename = nullptr;
     std::ofstream m_ofs;

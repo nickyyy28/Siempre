@@ -23,6 +23,8 @@ list
 -
 fstream
 -
+memory
+-
 
 /home/nick/projects/siempre-server-framework/src/Logger/Logger.cc
 Logger/Logger.h
