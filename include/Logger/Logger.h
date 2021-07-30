@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <strstream>
+#include <ostream>
 #include <stdint.h>
 #include <thread>
 #include <mutex>
@@ -48,6 +49,14 @@ private:
     std::string m_content;              //
 
 public:
+    const char* getFile() const { return m_name; }
+    int32_t getLine() const { return m_line; }
+    uint64_t getElapse() const { return m_elapse; }
+    uint32_t getThreadId() const { return m_thread_id; }
+    uint32_t getFiberId() const { return m_fiber_id; }
+    uint64_t getTime() const { return m_time; }
+    std::string getContent() const { return m_content; }
+
     LogEvent(const char * name);
     LogEvent();
     ~LogEvent();
@@ -58,13 +67,13 @@ class LogFormatter {
 public:
     typedef std::shared_ptr<LogFormatter> ptr;
 
-private:
+public:
     class FormatItem{
     public:
         typedef std::shared_ptr<FormatItem> ptr;
         FormatItem();
         virtual ~FormatItem(){};    
-        virtual std::string format(std::strstream& ss, LogEvent::ptr event) = 0;
+        virtual void format(std::ostream& os, LogEvent::ptr event) = 0;
     };
 
 private:
@@ -76,6 +85,8 @@ public:
     ~LogFormatter();
     void init();
     std::string format(LogEvent::ptr event);
+    const std::string getPattern() const { return this->m_pattern; };
+
 };
 
 //日志输出地
