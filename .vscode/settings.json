@@ -58,6 +58,11 @@
         "thread": "cpp",
         "cfenv": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "csignal": "cpp",
+        "hash_map": "cpp",
+        "random": "cpp",
+        "typeindex": "cpp",
+        "variant": "cpp"
     }
 }

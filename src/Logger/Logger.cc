@@ -1,16 +1,7 @@
 #include "Logger/Logger.h"
+#include "config/console_color.h"
 
 namespace siempre{
-
-class ThreadIdFormatItem : public LogFormatter::FormatItem{
-
-public:
-    ThreadIdFormatItem();
-    ~ThreadIdFormatItem();
-    void format(std::ostream& os, LogEvent::ptr event) override {
-        // os<< 
-    }
-}; 
 
 LogEvent::LogEvent()
 {
@@ -145,10 +136,44 @@ std::string LogFormatter::format(LogEvent::ptr event)
 {
 	std::strstream ss;
     for(auto& i : this->m_items){
+        // std::cout << "执行了LogFormatter::format" << std::endl;
         i->format(ss, event);
     }
 
 	return ss.str();
+}
+
+void LogFormatter::addFormatItem(FormatItem::ptr item)
+{
+    this->m_items.push_back(item);
+}
+void LogFormatter::delFormatItem(FormatItem::ptr item)
+{
+    for (auto it = this->m_items.begin() ; it != this->m_items.end() ; it++)
+    {
+        if (*it == item)
+        {
+            this->m_items.erase(it);
+            break;
+        }
+        
+    }
+}
+
+ThreadIdFormatItem::ThreadIdFormatItem()
+{
+
+}
+
+ThreadIdFormatItem::~ThreadIdFormatItem()
+{
+
+}
+
+void ThreadIdFormatItem::format(std::ostream& os, LogEvent::ptr event)
+ {
+    // std::cout << "执行了ThreadIdFormatItem::format" << std::endl;
+    os << event.get()->getFile();
 }
 
 Logger::Logger(const std::string &name)
@@ -166,6 +191,7 @@ void Logger::Log(LogLevel::Level level, LogEvent::ptr event)
     if (level >= this->m_level)
     {
         for(auto &i : this->m_appenders){
+            // std::cout << "执行了Logger::Log" << std::endl;
             i->Log(level, event);
         }
     }
@@ -193,6 +219,7 @@ void Logger::delAppender(LogAppender::ptr appender)
 
 void Logger::debug(const LogEvent::ptr event)
 {
+    // std::cout << "执行了Logger::debug" << std::endl;
     Log(LogLevel::DEBUG, event);
 }
 
@@ -260,7 +287,28 @@ void StdoutLogAppender::Log(LogLevel::Level level,LogEvent::ptr event)
 {
     if (level >= this->m_level)
     {
-        std::cout << (this->m_formatter).get()->format(event);
+        // std::cout << "执行了StdoutLogAppender::Log" << std::endl;
+        switch (level)
+        {
+        case LogLevel::DEBUG:
+            std::cout << L_BLUE << "[DEBUG]: " << (this->m_formatter).get()->format(event) << BLUE << std::endl;
+            break;
+        case LogLevel::INFO:
+            std::cout << L_GREEN << "[INFO ]: " << (this->m_formatter).get()->format(event) << GREEN << std::endl;
+            break;
+        case LogLevel::WRAN:
+            std::cout << L_YELLOW << "[WARN ]: " << (this->m_formatter).get()->format(event) << YELLOW << std::endl;
+            break;
+        case LogLevel::ERROR:
+            std::cout << L_RED << "[ERROR]: " << (this->m_formatter).get()->format(event) << RED << std::endl;
+            break;
+        case LogLevel::FATAL:
+            std::cout << BL_RED << L_BLACK << "[FATAL]: " << (this->m_formatter).get()->format(event) << BLACK << B_RED << std::endl;
+            break;
+        default:
+            std::cout << (this->m_formatter).get()->format(event) << std::endl;
+            break;
+        }
     }
     
 }

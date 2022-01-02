@@ -71,7 +71,7 @@ public:
     class FormatItem{
     public:
         typedef std::shared_ptr<FormatItem> ptr;
-        FormatItem();
+        FormatItem() = default;
         virtual ~FormatItem(){};    
         virtual void format(std::ostream& os, LogEvent::ptr event) = 0;
     };
@@ -83,11 +83,22 @@ private:
 public:
     LogFormatter(const std::string& pattern = "HH-mm-ss");
     ~LogFormatter();
+    void addFormatItem(FormatItem::ptr item);
+    void delFormatItem(FormatItem::ptr item);
     void init();
     std::string format(LogEvent::ptr event);
     const std::string getPattern() const { return this->m_pattern; };
 
 };
+
+
+class ThreadIdFormatItem : public LogFormatter::FormatItem{
+
+public:
+    ThreadIdFormatItem();
+    ~ThreadIdFormatItem();
+    void format(std::ostream& os, LogEvent::ptr event) override;
+}; 
 
 //日志输出地
 class LogAppender {
@@ -100,6 +111,7 @@ protected:
 
 public:
     LogAppender();
+    void setLevel(LogLevel::Level level) { this->m_level = level; };
     void setFormatter(LogFormatter::ptr formatter) { this->m_formatter = formatter; };
     virtual void Log(LogLevel::Level level,LogEvent::ptr event) = 0;
     virtual ~LogAppender();
