@@ -3,22 +3,22 @@
 
 int main(void)
 {
-    std::shared_ptr<siempre::Logger> logger(new siempre::Logger("root"));
+    std::shared_ptr<siem::Logger> logger(new siem::Logger("root"));
     
-    siempre::StdoutLogAppender::ptr appender(new siempre::StdoutLogAppender());
+    siem::StdoutLogAppender::ptr appender(new siem::StdoutLogAppender());
     
-    siempre::LogFormatter::ptr formatter(new siempre::LogFormatter("%p%T%n"));
+    siem::LogFormatter::ptr formatter(new siem::LogFormatter("%p%T%n"));
     
-    //siempre::LogEvent::ptr event(new siempre::LogEvent(std::string("testEvent"), logger, __FILE__, __LINE__, 0, 2, std::string("master"), 0, time(0), siempre::LogLevel::DEBUG));
+    //siem::LogEvent::ptr event(new siempre::LogEvent(std::string("testEvent"), logger, __FILE__, __LINE__, 0, 2, std::string("master"), 0, time(0), siempre::LogLevel::DEBUG));
 
-    siempre::LogEvent::ptr event(new siempre::LogEvent(std::string("testEvent"), logger, __FILE__, __LINE__, 0, 1, "main", 1, 0, siempre::LogLevel::DEBUG));
+    siem::LogEvent::ptr event(new siem::LogEvent(std::string("testEvent"), logger, __FILE__, __LINE__, 0, 1, "main", 1, 0, siem::LogLevel::DEBUG));
 
-    siempre::ThreadIdFormatItem::ptr item(new siempre::ThreadIdFormatItem());
+    siem::ThreadIdFormatItem::ptr item(new siem::ThreadIdFormatItem());
 
     logger.get()->addAppender(appender);
-    logger.get()->setLevel(siempre::LogLevel::DEBUG);
+    logger.get()->setLevel(siem::LogLevel::DEBUG);
 
-    appender.get()->setLevel(siempre::LogLevel::DEBUG);
+    appender.get()->setLevel(siem::LogLevel::DEBUG);
     appender.get()->setFormatter(formatter);
 
     formatter.get()->addFormatItem(item);

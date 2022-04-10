@@ -5,6 +5,7 @@ set(
     ./Logger/Logger.cc
 )
 
+add_definitions(-fPIC)
 add_library(Logger_shared SHARED ${LOGGER_LIST})
 add_library(Logger_static STATIC ${LOGGER_LIST})
 

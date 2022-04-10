@@ -1,7 +1,15 @@
 #include "Logger/Logger.h"
 #include "config/console_color.h"
 
-namespace siempre{
+namespace siem{
+
+unsigned long long getThisThreadID()
+{
+    std::ostringstream oss;
+    oss << std::this_thread::get_id();
+
+    return std::stoull(std::string(oss.str()));
+}
 
 std::string LogLevel::getStringByLevel(Level level)
 {
@@ -12,7 +20,7 @@ std::string LogLevel::getStringByLevel(Level level)
     {
         XX(DEBUG);
         XX(INFO);
-        XX(WRAN);
+        XX(WARN);
         XX(ERROR);
         XX(FATAL);
         default:
@@ -50,6 +58,22 @@ void LogEvent::setMessage(std::string& msg)
 LogEvent::~LogEvent()
 {
 
+}
+
+void LogEvent::format(const char* fmt, ...) {
+    va_list al;
+    va_start(al, fmt);
+    format(fmt, al);
+    va_end(al);
+}
+
+void LogEvent::format(const char* fmt, va_list al) {
+    char* buf = nullptr;
+    int len = vasprintf(&buf, fmt, al);
+    if(len != -1) {
+        m_sstream << std::string(buf, len);
+        free(buf);
+    }
 }
 
 LogAppender::LogAppender()
@@ -187,33 +211,11 @@ void LogFormatter::init()
         vec.push_back(std::make_tuple(nstr, "", 0));
     }
 
-    /*if(m_pattern.empty()){
-        return;
-    }
-
-    int size = m_pattern.size();
-    for(int i = 0 ; i < size ; ++i){
-        if()
-
-
-    }*/
-
-    // %T : Tab[\t]            TabFormatItem
-    // %t : 线程id             ThreadIdFormatItem
-    // %N : 线程名称           ThreadNameFormatItem
-    // %F : 协程id             FiberIdFormatItem
-    // %p : 日志级别           LevelFormatItem       
-    // %c : 日志名称           NameFormatItem
-    // %f : 文件名             FilenameFormatItem
-    // %l : 行号               LineFormatItem
-    // %m : 日志内容           MessageFormatItem
-    // %n : 换行符[\r\n]       NewLineFormatItem
-
 }
 
 std::string LogFormatter::format(std::shared_ptr<Logger> logger, LogLevel::Level level, LogEvent::ptr event)
 {
-	std::strstream ss;
+	std::stringstream ss;
     for(auto& i : this->m_items){
         // std::cout << "执行了LogFormatter::format" << std::endl;
         i->format(ss, logger, level,event);
@@ -251,7 +253,8 @@ void TabFormatItem::format(std::ostream& os, std::shared_ptr<Logger> logger, Log
 
 void ThreadNameFormatItem::format(std::ostream& os, std::shared_ptr<Logger> logger, LogLevel::Level level, LogEvent::ptr event)
 {
-    os << "<thread>: " << event.get()->getThreadName();
+    //printf("len : %d\n", event->getThreadName().size());
+    os << "<thread>: " << event.get()->getThreadName().c_str();
 }
 
 void FiberIDFormatItem::format(std::ostream& os, std::shared_ptr<Logger> logger, LogLevel::Level level, LogEvent::ptr event)
@@ -348,7 +351,7 @@ void Logger::info(const LogEvent::ptr event)
 
 void Logger::warn(const LogEvent::ptr event)
 {
-    Log(LogLevel::WRAN, event);
+    Log(LogLevel::WARN, event);
 }
 
 void Logger::error(const LogEvent::ptr event)
@@ -413,7 +416,7 @@ void StdoutLogAppender::Log(std::shared_ptr<Logger> logger, LogLevel::Level leve
         case LogLevel::INFO:
             std::cout << L_GREEN << (this->m_formatter).get()->format(logger, level, event) << GREEN << std::endl;
             break;
-        case LogLevel::WRAN:
+        case LogLevel::WARN:
             std::cout << L_YELLOW << (this->m_formatter).get()->format(logger, level, event) << YELLOW << std::endl;
             break;
         case LogLevel::ERROR:
@@ -427,7 +430,9 @@ void StdoutLogAppender::Log(std::shared_ptr<Logger> logger, LogLevel::Level leve
             break;
         }
     }
-    
+
+    std::cout.flush();
+
 }
 
 void FileLogAppender::Log(std::shared_ptr<Logger> logger, LogLevel::Level level,LogEvent::ptr event)
@@ -436,6 +441,62 @@ void FileLogAppender::Log(std::shared_ptr<Logger> logger, LogLevel::Level level,
         this->m_ofs << this->m_formatter.get()->format(logger, level, event);
         this->m_ofs.flush();
     }
+}
+
+LoggerManager::LoggerManager()
+{
+    m_root.reset(new Logger("root"));
+    m_root->addAppender(LogAppender::ptr(new StdoutLogAppender));
+
+    for ( auto appender : m_root->getAppenders()) {
+        appender->setFormatter(LogFormatter::ptr(new LogFormatter()));
+    }
+
+    m_loggerMap[m_root->m_name] = m_root;
+
+}
+
+LoggerManager::~LoggerManager()
+{
+
+}
+
+Logger::ptr LoggerManager::getLogger(const std::string& loggerName)
+{
+    auto it = m_loggerMap.find(loggerName);
+    if (it != m_loggerMap.end()) {
+        return it->second;
+    } else {
+        Logger::ptr logger(new Logger(loggerName));
+        m_loggerMap[loggerName] = logger;
+        return logger;
+    }
+}
+
+Logger::ptr LoggerManager::getRoot()
+{
+    return m_root;
+}
+
+void LoggerManager::setRootFormat(const std::string& format)
+{
+    for ( auto appender : m_root->getAppenders()) {
+        appender->setFormatter(LogFormatter::ptr(new LogFormatter(format)));
+    }
+}
+
+LogEventWrapper::LogEventWrapper(LogEvent::ptr e) : event(e)
+{
+}
+
+LogEventWrapper::~LogEventWrapper()
+{
+    event->getLogger()->Log(event->getLevel(), event);
+}
+
+std::stringstream& LogEventWrapper::getSS()
+{
+    return event->getSStream();
 }
 
 }
