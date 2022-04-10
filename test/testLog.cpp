@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Logger/Logger.h"
 #include <unistd.h>
+#include <sys/stat.h>
 
 int main(void)
 {
@@ -16,13 +17,16 @@ int main(void)
     // %l : 行号               LineFormatItem
     // %m : 日志内容           MessageFormatItem
     // %n : 换行符[\r\n]       NewLineFormatItem
+
+    siem::LoggerMgr::getInstance()->addRootFileAppender("/home/book/testlog.log");
+
     siem::LoggerMgr::getInstance()->setRootFormat("[%d:%r] %p%f%l%n%m");
 
     //LOG_DEBUG(siem::LoggerMgr::getInstance()->getRoot()) << "hello world";
 
     int cnt = 0;
 
-    while(1) {
+    while(cnt < 10) {
         sleep(1);
 
         INFO() << "msg " << cnt;

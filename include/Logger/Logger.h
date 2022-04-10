@@ -761,6 +761,13 @@ public:
      */
     void setRootFormat(const std::string& format = "%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T%F%T%p%T%c%T%f:%l%T%m%n");
 
+    /**
+     * @brief 添加文件输出路径
+     * 
+     * @param filePath 
+     */
+    void addRootFileAppender(const std::string& filePath = "");
+
 private:
     Logger::ptr m_root;
     std::map<std::string, Logger::ptr> m_loggerMap;

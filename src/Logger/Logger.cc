@@ -379,8 +379,38 @@ FileLogAppender::~FileLogAppender()
     {
         this->m_ofs.close();
     }
-    
 }
+
+void FileLogAppender::Log(std::shared_ptr<Logger> logger, LogLevel::Level level,LogEvent::ptr event)
+{
+    if (level >= this->m_level){
+        this->m_ofs << this->m_formatter.get()->format(logger, level, event) << std::endl;
+        this->m_ofs.flush();
+    }
+}
+/*
+void FileLogAppender::Log(std::shared_ptr<Logger> logger, LogLevel::Level level,LogEvent::ptr event)
+{
+    if (level >= this->m_level)
+    {
+        switch (level)
+        {
+#define XX(_case)   \
+    case LogLevel::_case: \
+    m_ofs << (this->m_formatter).get()->format(logger, level, event) << std::endl;
+
+        XX(DEBUG)
+        XX(INFO)
+        XX(WARN)
+        XX(ERROR)
+        XX(FATAL)
+        default:
+            std::cout << (this->m_formatter).get()->format(logger, level, event) << std::endl;
+            break;
+        }
+#undef XX
+    }
+}*/
 
 bool FileLogAppender::reopen()
 {
@@ -435,14 +465,6 @@ void StdoutLogAppender::Log(std::shared_ptr<Logger> logger, LogLevel::Level leve
 
 }
 
-void FileLogAppender::Log(std::shared_ptr<Logger> logger, LogLevel::Level level,LogEvent::ptr event)
-{
-    if (level >= this->m_level){
-        this->m_ofs << this->m_formatter.get()->format(logger, level, event);
-        this->m_ofs.flush();
-    }
-}
-
 LoggerManager::LoggerManager()
 {
     m_root.reset(new Logger("root"));
@@ -483,6 +505,15 @@ void LoggerManager::setRootFormat(const std::string& format)
     for ( auto appender : m_root->getAppenders()) {
         appender->setFormatter(LogFormatter::ptr(new LogFormatter(format)));
     }
+}
+
+void LoggerManager::addRootFileAppender(const std::string& filePath)
+{
+    if (filePath.empty()) {
+        return;
+    }
+
+    m_root->addAppender(LogAppender::ptr(new FileLogAppender(filePath)));
 }
 
 LogEventWrapper::LogEventWrapper(LogEvent::ptr e) : event(e)
