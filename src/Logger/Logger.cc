@@ -1,7 +1,9 @@
 #include "Logger/Logger.h"
-#include "config/console_color.h"
+#include "Logger/console_color.h"
 
 namespace siem{
+
+static LoggerManager* Mgr = LoggerMgr::getInstance();
 
 unsigned long long getThisThreadID()
 {
@@ -441,19 +443,19 @@ void StdoutLogAppender::Log(std::shared_ptr<Logger> logger, LogLevel::Level leve
         switch (level)
         {
         case LogLevel::DEBUG:
-            std::cout << L_BLUE << (this->m_formatter).get()->format(logger, level, event) << BLUE << std::endl;
+            std::cout << L_BLUE << (this->m_formatter).get()->format(logger, level, event) << NONE << std::endl;
             break;
         case LogLevel::INFO:
-            std::cout << L_GREEN << (this->m_formatter).get()->format(logger, level, event) << GREEN << std::endl;
+            std::cout << L_GREEN << (this->m_formatter).get()->format(logger, level, event) << NONE << std::endl;
             break;
         case LogLevel::WARN:
-            std::cout << L_YELLOW << (this->m_formatter).get()->format(logger, level, event) << YELLOW << std::endl;
+            std::cout << L_YELLOW << (this->m_formatter).get()->format(logger, level, event) << NONE << std::endl;
             break;
         case LogLevel::ERROR:
-            std::cout << L_RED << (this->m_formatter).get()->format(logger, level, event) << RED << std::endl;
+            std::cout << L_RED << (this->m_formatter).get()->format(logger, level, event) << NONE << std::endl;
             break;
         case LogLevel::FATAL:
-            std::cout << BL_RED << (this->m_formatter).get()->format(logger, level, event) << BLACK << B_RED << std::endl;
+            std::cout << BL_RED << (this->m_formatter).get()->format(logger, level, event) << NONE << std::endl;
             break;
         default:
             std::cout << (this->m_formatter).get()->format(logger, level, event) << std::endl;

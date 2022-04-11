@@ -23,4 +23,6 @@
 #define BL_RED "\e[1;41m"
 #define B_RED "\e[0;41m"
 
+#define B_NONE "\e[1;30m"
+
 #endif //CONSOLE_COLOR_H
