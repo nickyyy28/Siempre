@@ -1,8 +1,25 @@
-
-port: 8081
-value: 20
-int_vec:
+system:
+  port: 8081
+  value: 20
+  int_vec:
     - 10
     - 20
-int_list: [30, 30, 50]
-int_set: [10, 20, 20, 30]
+  int_list:
+    - 30
+    - 30
+    - 50
+  int_set:
+    - 10
+    - 20
+    - 20
+    - 30
+  int_map:
+    age: 18
+    score: 100
+  persons:
+    - name: "张辉阳"
+      age: 88
+      sex: true
+    - name: "谢旺"
+      age: 28
+      sex: true

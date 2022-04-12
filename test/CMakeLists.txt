@@ -11,6 +11,12 @@ link_directories(${PROJECT_SOURCE_DIR}/3rd-party/lib)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)
 
+set(
+    3RD_PARTY
+    yaml-cpp
+    cityhash
+)
+
 add_executable(testLogger testLogger.cpp)
 add_executable(testSingleTon testSingleTon.cpp)
 add_executable(testLog testLog.cpp ${PROJECT_SOURCE_DIR}/src/Logger/Logger.cc)
@@ -18,9 +24,13 @@ add_executable(testYaml testyaml.cpp)
 add_executable(testYamlConfig testYamlConfig.cpp)
 add_executable(testConfig testConfig.cpp)
 add_executable(testFromYaml testFromYaml.cpp)
+add_executable(testClassConfig testClassConfig.cpp)
+add_executable(testConfigChange testConfigChange.cpp)
 
-target_link_libraries(testFromYaml ${LIB_LOGGER} ${LIB_CONFIGURATOR} yaml-cpp)
-target_link_libraries(testYamlConfig ${LIB_LOGGER} ${LIB_CONFIGURATOR} yaml-cpp)
+target_link_libraries(testConfigChange ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
+target_link_libraries(testClassConfig ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
+target_link_libraries(testFromYaml ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
+target_link_libraries(testYamlConfig ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
 target_link_libraries(testYaml yaml-cpp)
 target_link_libraries(testConfig ${LIB_LOGGER} ${LIB_CONFIGURATOR} yaml-cpp)
 target_link_libraries(testLog ${LIB_LOGGER})

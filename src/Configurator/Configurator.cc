@@ -17,10 +17,10 @@ void Config::loadFromYaml(const YAML::Node& root)
     MemberList list;
     listAllMember("", root, list);
 
+    DEBUG() << "list size: " << list.size();
+
     for (auto i : list) {
         std::string key = i.first;
-
-        INFO() << "key: " << key << " value: " << i.second.Scalar();
 
         if (key.empty()) {
             continue;
@@ -33,12 +33,9 @@ void Config::loadFromYaml(const YAML::Node& root)
             //如果是普通数据类型
             if (i.second.IsScalar()) {
                 var->fromString(i.second.Scalar());
-                INFO() << "普通数据";
             } else {
-                INFO() << "复杂数据";
                 std::stringstream ss;
-                WARN() << "数据" << i.second.Scalar();
-                ss << i.second.Scalar();
+                ss << i.second;
                 var->fromString(ss.str());
             }
         }
