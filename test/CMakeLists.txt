@@ -3,20 +3,25 @@ find_package(libLogger)
 
 set(EXECUTABLE_OUTPUT_PATH &{PROJECT_SOURCE_DIR}/bin)
 
-find_library(LIB_LOGGER Logger HINTS ${PROJECT_SOURCE_DIR}/lib)
-find_library(LIB_CONFIGURATOR Configurator HINTS ${PROJECT_SOURCE_DIR}/lib)
-find_library(LIB_THREAD Thread HINTS ${PROJECT_SOURCE_DIR}/lib)
-
-link_directories(${PROJECT_SOURCE_DIR}/3rd-party/lib)
-
-include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)
+find_library(LIB_SIEM siem HINTS ${PROJECT_SOURCE_DIR}/lib)
 
 set(
     3RD_PARTY
     yaml-cpp
     cityhash
 )
+
+set(
+    SIEM_LIBRAARIES
+    ${LIB_SIEM}
+    ${3RD_PARTY}
+    -pthread
+)
+
+link_directories(${PROJECT_SOURCE_DIR}/3rd-party/lib)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)
 
 add_executable(testLogger testLogger.cpp)
 add_executable(testSingleTon testSingleTon.cpp)
@@ -31,17 +36,17 @@ add_executable(testLogConfig testLogConfig.cpp)
 add_executable(testLoadLogFromYaml testLoadLogFromYaml.cpp)
 add_executable(testThread testThread.cpp)
 
-target_link_libraries(testThread ${LIB_LOGGER} ${LIB_THREAD})
-target_link_libraries(testLoadLogFromYaml ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
-target_link_libraries(testLogConfig ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
-target_link_libraries(testConfigChange ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
-target_link_libraries(testClassConfig ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
-target_link_libraries(testFromYaml ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
-target_link_libraries(testYamlConfig ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
-target_link_libraries(testYaml yaml-cpp)
-target_link_libraries(testConfig ${LIB_LOGGER} ${LIB_CONFIGURATOR} yaml-cpp)
-target_link_libraries(testLog ${LIB_LOGGER})
-target_link_libraries(testLogger ${LIB_LOGGER})
+target_link_libraries(testThread ${SIEM_LIBRAARIES})
+target_link_libraries(testLoadLogFromYaml ${SIEM_LIBRAARIES})
+target_link_libraries(testLogConfig ${SIEM_LIBRAARIES})
+target_link_libraries(testConfigChange ${SIEM_LIBRAARIES})
+target_link_libraries(testClassConfig ${SIEM_LIBRAARIES})
+target_link_libraries(testFromYaml ${SIEM_LIBRAARIES})
+target_link_libraries(testYamlConfig ${SIEM_LIBRAARIES})
+target_link_libraries(testYaml ${SIEM_LIBRAARIES})
+target_link_libraries(testConfig ${SIEM_LIBRAARIES})
+target_link_libraries(testLog ${SIEM_LIBRAARIES})
+target_link_libraries(testLogger ${SIEM_LIBRAARIES})
 
 
 set (EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)

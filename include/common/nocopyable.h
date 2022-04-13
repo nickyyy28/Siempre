@@ -7,11 +7,11 @@ class NoCopyAble
 {
 public:
     NoCopyAble() = default;
-    NoCopyAble(const NoCopyAble&) = delete;
-    
-    NoCopyAble& operator=(const NoCopyAble&) = delete;
-
     ~NoCopyAble() = default;
+private:
+    NoCopyAble(const NoCopyAble&) = delete;
+    NoCopyAble(const NoCopyAble&&) = delete;
+    NoCopyAble& operator=(const NoCopyAble&) = delete;
 };
 
 }

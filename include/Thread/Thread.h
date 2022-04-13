@@ -6,9 +6,10 @@
 #include <functional>
 #include <list>
 
-#include <Logger/Logger.h>
-#include <common/nocopyable.h>
-#include <common/singleton.h>
+#include "Logger/Logger.h"
+#include "common/nocopyable.h"
+#include "common/singleton.h"
+#include "Mutex.h"
 
 namespace siem{
 
@@ -83,6 +84,8 @@ private:
     pthread_t m_thread;
     std::function<void()> m_cb;
     std::string m_name;
+
+    Semaphore m_semaphore;
 };
 
 }

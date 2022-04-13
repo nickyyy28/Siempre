@@ -22,6 +22,7 @@
 
 #include "common/singleton.h"
 #include "utils/utils.h"
+#include "Thread/Thread.h"
 
 /**
  * @brief 使用流式方式将日志级别level的日志写入到logger
@@ -29,7 +30,7 @@
 #define LOG_LEVEL(logger, level) \
     if(logger->getLevel() <= level) \
         siem::LogEventWrapper(siem::LogEvent::ptr(new siem::LogEvent(logger->getLoggerName(), logger, \
-            __FILE__, __LINE__, 0, siem::getThisThreadID(), "log", 0,    \
+            __FILE__, __LINE__, 0, siem::Thread::getThis()->getID(), siem::Thread::getThisName(), 0,    \
             time(0), level))).getSS()
 
 /**
@@ -78,7 +79,7 @@
 #define LOG_FMT_LEVEL(logger, level, fmt, ...) \
     if(logger->getLevel() <= level) \
         siem::LogEventWrapper(siem::LogEvent::ptr(new siem::LogEvent(logger->getLoggerName(), logger, \
-            __FILE__, __LINE__, 0, siem::getThisThreadID(), "therad log", 0, \
+            __FILE__, __LINE__, 0, siem::Thread::getThis()->getID(), siem::Thread::getThisName(), 0, \
             time(0), level))).getEvent()->format(fmt, __VA_ARGS__)
 
 /**

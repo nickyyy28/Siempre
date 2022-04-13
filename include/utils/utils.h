@@ -21,10 +21,7 @@ const char* TypeToName() {
     return s_name;
 }
 
-pid_t getThreadID()
-{
-    return syscall(SYS_gettid);
-}
+pid_t getThreadID(void);
 
 }
 

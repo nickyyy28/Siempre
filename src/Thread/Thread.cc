@@ -31,6 +31,15 @@ void* Thread::run(void* arg)
     thread->m_id = getThreadID();
 
     pthread_setname_np(pthread_self(), thread->getName().substr(0, 15).c_str());
+
+    Thread::callBack cb;
+    cb.swap(thread->m_cb);
+
+    thread->m_semaphore.notify();
+
+    cb();
+
+    return 0;
 }
 
 Thread::Thread(callBack cb, const std::string& name)
@@ -46,6 +55,8 @@ Thread::Thread(callBack cb, const std::string& name)
     if (ret) {
         ERROR() << "pthread create thread fail";
     }
+
+    m_semaphore.wait();
 };
 
 Thread::~Thread()
@@ -81,6 +92,8 @@ void Thread::detach()
     if (ret) {
         ERROR() << "pthread_detach failed";
     }
+
+    m_thread = 0;
 }
 
 }
