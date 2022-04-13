@@ -17,8 +17,6 @@ void Config::loadFromYaml(const YAML::Node& root)
     MemberList list;
     listAllMember("", root, list);
 
-    DEBUG() << "list size: " << list.size();
-
     for (auto i : list) {
         std::string key = i.first;
 

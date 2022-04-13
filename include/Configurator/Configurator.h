@@ -429,7 +429,7 @@ public:
             //m_value = boost::lexical_cast<T>(str);
             setValue(FromStr()(str));
         } catch (std::exception& e) {
-            ERROR() << "ConfigVar::toString Exception :[ " << e.what() << " ] convert string to" << typeid(T).name();
+            ERROR() << "ConfigVar::toString Exception :[ " << e.what() << " ] convert string to" << TypeToName<T>();
             return false;
         }
 
@@ -443,13 +443,13 @@ public:
      */
     void setValue(const T& val)
     {
-        if (val == m_value) {
+        /*if (val == m_value) {
             return;
         } else {
             for(auto& i : m_cbs) {
                 i.second(m_value, val);
             }
-        }
+        }*/
         m_value = val;
     }
 
@@ -589,6 +589,284 @@ public:
 
 private:
     static ConfigVarMap m_datas;
+};
+
+/**
+ * @brief 提供std::string到LogLevel::Level的全特化
+ * 
+ * @tparam  
+ */
+template<>
+class TypeCast<std::string, LogLevel::Level>{
+public:
+    LogLevel::Level operator()(const std::string& str)
+    {
+        return LogLevel::getLevelByString(str);
+    }
+};
+
+/**
+ * @brief 提供LogLevel::Level到std::string的全特化
+ * 
+ * @tparam  
+ */
+template<>
+class TypeCast<LogLevel::Level, std::string>{
+public:
+    std::string operator()(const LogLevel::Level& level)
+    {
+        return LogLevel::getStringByLevel(level);
+    }
+};
+
+/**
+ * @brief 提供std::string到LogFormatter::ptr的全特化
+ * 
+ * @tparam  
+ */
+template<>
+class TypeCast<std::string, LogFormatter::ptr>{
+public:
+    LogFormatter::ptr operator()(const std::string& str)
+    {
+        LogFormatter::ptr p(new LogFormatter(str));
+
+        return p;
+    }
+};
+
+/**
+ * @brief 提供LogFormatter::ptr到std::string的全特化
+ * 
+ * @tparam  
+ */
+template<>
+class TypeCast<LogFormatter::ptr, std::string>{
+public:
+    std::string operator()(const LogFormatter::ptr& p)
+    {
+        return p->getPattern();
+    }
+};
+
+/**
+ * @brief 提供std::string到StdoutLogAppender::ptr的全特化
+ * 
+ * @tparam  
+ */
+template<>
+class TypeCast<std::string, StdoutLogAppender::ptr>{
+public:
+    StdoutLogAppender::ptr operator()(const std::string& str)
+    {
+        YAML::Node node = YAML::Load(str);
+        
+        StdoutLogAppender::ptr p(new StdoutLogAppender());
+
+        LogFormatter::ptr fp = TypeCast<std::string, LogFormatter::ptr>()(node["formatter"].Scalar());
+
+        LogLevel::Level level = TypeCast<std::string, LogLevel::Level>()(node["level"].Scalar());
+
+        p->setFormatter(fp);
+        p->setLevel(level);
+
+        return p;
+    }
+};
+
+/**
+ * @brief 提供StdoutLogAppender::ptr到std::string的全特化
+ * 
+ * @tparam  
+ */
+template<>
+class TypeCast<StdoutLogAppender::ptr, std::string>{
+public:
+    std::string operator()(const StdoutLogAppender::ptr& app)
+    {
+        YAML::Node node(YAML::NodeType::Sequence);
+        std::stringstream ss;
+
+        node["level"] = TypeCast<LogLevel::Level, std::string>()(app->getLevel());
+        node["formatter"] = TypeCast<LogFormatter::ptr, std::string>()(app->getFormatter());
+
+        ss << node;
+        return ss.str();
+    }
+};
+
+/**
+ * @brief 提供std::string到FileLogAppender::ptr的全特化
+ * 
+ * @tparam 
+ */
+template<>
+class TypeCast<std::string, FileLogAppender::ptr>{
+public:
+    FileLogAppender::ptr operator()(const std::string& str)
+    {
+        YAML::Node node = YAML::Load(str);
+
+        std::stringstream ss;
+
+        ss << node["filename"];
+
+        FileLogAppender::ptr p(new FileLogAppender(ss.str()));
+
+        LogFormatter::ptr fp = TypeCast<std::string, LogFormatter::ptr>()(node["formatter"].Scalar());
+
+        LogLevel::Level level = TypeCast<std::string, LogLevel::Level>()(node["level"].Scalar());
+
+        p->setFormatter(fp);
+        p->setLevel(level);
+
+        return p;
+    }
+};
+
+/**
+ * @brief 提供FileLogAppender::ptr到std::string的全特化
+ * 
+ * @tparam  
+ */
+template<>
+class TypeCast<FileLogAppender::ptr, std::string>{
+public:
+    std::string operator()(const FileLogAppender::ptr& app)
+    {
+        YAML::Node node(YAML::NodeType::Sequence);
+        std::stringstream ss;
+
+        node["filename"] = YAML::Load(std::string(app->getFilename()));
+        node["level"] = TypeCast<LogLevel::Level, std::string>()(app->getLevel());
+        node["formatter"] = TypeCast<LogFormatter::ptr, std::string>()(app->getFormatter());
+
+        ss << node;
+        return ss.str();
+    }
+};
+
+/**
+ * @brief 提供std::string到LogAppenderWrapper的全特化
+ * 
+ * @tparam  
+ */
+template<>
+class TypeCast<std::string, LogAppenderWrapper>{
+public:
+    LogAppenderWrapper operator()(const std::string& str)
+    {
+        YAML::Node node = YAML::Load(str);
+
+        LogAppenderWrapper wrapper;
+
+        wrapper.setType(node["type"].Scalar());
+
+        std::stringstream ss;
+
+        ss << node["appender"];
+
+        if (node["type"].Scalar() == "Stdout") {
+            LogAppender::ptr p = TypeCast<std::string, StdoutLogAppender::ptr>()(ss.str());
+            wrapper.setAppender(p);
+        } else if (node["type"].Scalar() == "File") {
+            LogAppender::ptr p = TypeCast<std::string, FileLogAppender::ptr>()(ss.str());
+            wrapper.setAppender(p);
+        }
+
+        return wrapper;
+    }
+};
+
+/**
+ * @brief 提供LogAppenderWrapper到std::string的全特化
+ * 
+ * @tparam  
+ */
+template<>
+class TypeCast<LogAppenderWrapper, std::string>{
+public:
+    std::string operator()(const LogAppenderWrapper& appwrap)
+    {
+        YAML::Node node(YAML::NodeType::Sequence);
+        std::stringstream ss;
+
+        node["type"] = appwrap.getType();
+        if (appwrap.getType() == "Stdout") {
+            auto it = std::dynamic_pointer_cast<StdoutLogAppender>(appwrap.getAppender());
+            node["appender"] = YAML::Load(TypeCast<StdoutLogAppender::ptr, std::string>()(it));
+        } else if (appwrap.getType() == "File") {
+            auto it = std::dynamic_pointer_cast<FileLogAppender>(appwrap.getAppender());
+            node["appender"] = YAML::Load(TypeCast<FileLogAppender::ptr, std::string>()(it));
+        }
+        ss << node;
+        return ss.str();
+    }
+};
+
+/**
+ * @brief 提供std::string到Logger::ptr的全特化
+ * 
+ * @tparam  
+ */
+template<>
+class TypeCast<std::string, Logger::ptr>{
+public:
+    Logger::ptr operator()(const std::string& str)
+    {
+        YAML::Node node = YAML::Load(str);
+        Logger::ptr p = LoggerMgr::getInstance()->getLogger(node["name"].as<std::string>());
+        std::stringstream ss;
+
+        ss << node["appenders"];
+
+        std::list<LogAppenderWrapper> list = TypeCast<std::string, std::list<LogAppenderWrapper>>()(
+            ss.str()
+        );
+
+        for (auto& v : list) {
+            p->addAppender(v.getAppender());
+        }
+
+        LogLevel::Level level = TypeCast<std::string, LogLevel::Level>()(node["level"].Scalar());
+
+        p->setLevel(level);
+
+        return p;
+    }
+};
+
+/**
+ * @brief 提供Logger::ptr到std::string的全特化
+ * 
+ * @tparam  
+ */
+template<>
+class TypeCast<Logger::ptr, std::string>{
+public:
+    std::string operator()(const Logger::ptr& log)
+    {
+        YAML::Node node(YAML::NodeType::Sequence);
+        std::stringstream ss;
+
+        node["name"] = YAML::Load(log->getLoggerName());
+        std::list<LogAppenderWrapper> appenders;
+
+        for (LogAppender::ptr v : log->getAppenders()) {
+            if (std::dynamic_pointer_cast<StdoutLogAppender>(v)) {
+                appenders.push_back(LogAppenderWrapper(v, "Stdout"));
+            } else if (std::dynamic_pointer_cast<FileLogAppender>(v)) {
+                appenders.push_back(LogAppenderWrapper(v, "File"));
+            }
+        }
+
+        node["appenders"] = YAML::Load(TypeCast<std::list<LogAppenderWrapper>, std::string>()(appenders));
+
+        node["level"] = YAML::Load(TypeCast<LogLevel::Level, std::string>()(log->getLevel()));
+
+        ss << node;
+        return ss.str();
+    }
 };
 
 }

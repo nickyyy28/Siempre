@@ -1,6 +1,8 @@
 #include "Logger/Logger.h"
 #include "Logger/console_color.h"
 
+#include "Configurator/Configurator.h"
+
 namespace siem{
 
 static LoggerManager* Mgr = LoggerMgr::getInstance();
@@ -29,6 +31,22 @@ std::string LogLevel::getStringByLevel(Level level)
             return "UNKOWN";
     }
 #undef XX
+}
+
+LogLevel::Level LogLevel::getLevelByString(const std::string& str)
+{
+#define XX(_type_)  \
+    if (#_type_ == str) { \
+        return LogLevel::_type_; \
+    }
+
+    XX(DEBUG)
+    XX(INFO)
+    XX(WARN)
+    XX(ERROR)
+    XX(FATAL)
+#undef XX
+    return LogLevel::UNKNOW;
 }
 
 LogEvent::LogEvent()
@@ -301,7 +319,7 @@ void ElapseFormatItem::format(std::ostream& os, std::shared_ptr<Logger> logger, 
 
 Logger::Logger(const std::string &name)
 {
-
+    m_name = name;
 }
 
 Logger::~Logger()
@@ -324,6 +342,13 @@ void Logger::Log(LogLevel::Level level, LogEvent::ptr event)
 void Logger::addAppender(LogAppender::ptr appender)
 {
     this->m_appenders.push_back(appender);
+}
+
+void Logger::addAppender(const std::list<LogAppender::ptr>& list)
+{
+    for (auto& v : list) {
+        addAppender(v);
+    }
 }
 
 void Logger::delAppender(LogAppender::ptr appender)
@@ -368,7 +393,7 @@ void Logger::fatal(const LogEvent::ptr event)
 
 FileLogAppender::FileLogAppender(const std::string& filename)
 {
-    this->m_filename = (char *)filename.c_str();
+    this->m_filename = filename;
     this->m_ofs.open(this->m_filename, std::fstream::app);
     if(!this->m_ofs.is_open()){
         throw "Open File Fial";
@@ -499,6 +524,7 @@ Logger::ptr LoggerManager::getLogger(const std::string& loggerName)
 
 Logger::ptr LoggerManager::getRoot()
 {
+    // return getLogger("root");
     return m_root;
 }
 

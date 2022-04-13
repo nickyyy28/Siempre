@@ -23,3 +23,25 @@ system:
     - name: "谢旺"
       age: 28
       sex: true
+  log:
+    name: sys_log
+    appenders:
+      - type: Stdout
+        appender:
+          level: DEBUG
+          formatter: "%d %m"
+      - type: Stdout
+        appender:
+          level: INFO
+          formatter: "%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T%F%T%p%T%c%T%f:%l%T%m%n"
+      - type: File
+        appender:
+          level: ERROR
+          formatter: "%n%d%T"
+          filename: /home/book/test.log
+    level: DEBUG
+  wrap:
+    type: Stdout
+    appender:
+      level: INFO
+      formatter: "%d%T%m"

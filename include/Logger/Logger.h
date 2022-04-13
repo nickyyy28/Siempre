@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __LOGGER_H
+#define __LOGGER_H
 
 #include <iostream>
 #include <string>
@@ -21,6 +22,7 @@
 #include <cstdlib>
 
 #include "common/singleton.h"
+#include "utils/utils.h"
 
 /**
  * @brief 使用流式方式将日志级别level的日志写入到logger
@@ -110,7 +112,7 @@
     siem::LoggerMgr::getInstance()->getRoot()
 
 #define GET_LOG_BY_NAME(name)   \
-    siem::LoggerMgr::getInstance()->getLogger(name)
+    siem::LoggerMgr::getInstance()->getLogger(#name)
 
 namespace siem {
 
@@ -121,8 +123,11 @@ class Logger;
 class LogEvent;
 class LogFormatter;
 class LogAppender;
+class StdoutLogAppender;
+class FileLogAppender;
 class LoggerManager;
 class LogEventWrapper;
+class LogAppenderWrapper;
 
 /**
  * @brief 日志级别
@@ -131,6 +136,7 @@ class LogEventWrapper;
 class LogLevel{
 public:
     enum Level{
+        UNKNOW = -1,
         DEBUG = 1,
         INFO,
         WARN,
@@ -139,6 +145,8 @@ public:
     };
 
     static std::string getStringByLevel(Level level);
+
+    static LogLevel::Level getLevelByString(const std::string& str);
 
 };
 
@@ -552,7 +560,7 @@ public:
     typedef std::shared_ptr<LogAppender> ptr;
 
 protected:
-    LogLevel::Level m_level;
+    LogLevel::Level m_level = LogLevel::DEBUG;
     LogFormatter::ptr m_formatter;
 
 public:
@@ -576,6 +584,20 @@ public:
     }
 
     /**
+     * @brief 获取格式化器
+     * 
+     * @return LogFormatter::ptr 
+     */
+    LogFormatter::ptr getFormatter(void) const { return m_formatter; }
+
+    /**
+     * @brief 获取日志等级
+     * 
+     * @return LogLevel::Level 
+     */
+    LogLevel::Level getLevel(void) const { return m_level; }
+
+    /**
      * @brief 输出日志
      * 
      * @param logger    日志器
@@ -584,6 +606,8 @@ public:
      */
     virtual void Log(std::shared_ptr<Logger> logger, LogLevel::Level level,LogEvent::ptr event) = 0;
     virtual ~LogAppender();
+
+    virtual std::string getTypeName(void) { return TypeToName<LogAppender>(); };
 };
 
 /**
@@ -612,7 +636,7 @@ private:
      * @brief 日志器等级
      * 
      */
-    LogLevel::Level m_level;
+    LogLevel::Level m_level = LogLevel::DEBUG;
 
 public:
 
@@ -638,6 +662,13 @@ public:
      * @param appender 日志输出地
      */
     void addAppender(LogAppender::ptr appender);
+
+    /**
+     * @brief 添加日志输出地
+     * 
+     * @param list 
+     */
+    void addAppender(const std::list<LogAppender::ptr>& list);
 
     /**
      * @brief 删除日志输出地
@@ -712,6 +743,8 @@ public:
     StdoutLogAppender();
     ~StdoutLogAppender();
     void Log(std::shared_ptr<Logger> logger, LogLevel::Level level,LogEvent::ptr event) override ;
+
+    std::string getTypeName(void) override { return TypeToName<StdoutLogAppender>(); }
 private:
 };
 
@@ -722,9 +755,11 @@ public:
     FileLogAppender(const std::string &filename);
     ~FileLogAppender();
     void Log(std::shared_ptr<Logger> logger, LogLevel::Level level,LogEvent::ptr event) override ;
+    const std::string& getFilename(void) const { return m_filename; }
+    std::string getTypeName(void) override { return TypeToName<FileLogAppender>(); }
     bool reopen();
 private:
-    char* m_filename = nullptr;
+    std::string m_filename = "";
     std::ofstream m_ofs;
 };
 
@@ -794,6 +829,60 @@ private:
     LogEvent::ptr event;
 };
 
+/**
+ * @brief 日志事件地输出包装类
+ * 
+ */
+class LogAppenderWrapper{
+public:
+    LogAppenderWrapper(LogAppender::ptr p, const std::string& type = "Stdout") 
+        : m_type(type)
+        , appender(p) {
+        }
+
+    LogAppenderWrapper() {}
+
+    ~LogAppenderWrapper() {}
+
+    /**
+     * @brief 设置日志输出地
+     * 
+     * @param p 
+     */
+    void setAppender(LogAppender::ptr p) { appender = p; }
+
+    /**
+     * @brief 设置输出地类型
+     * 
+     * @param type 
+     */
+    void setType(const std::string& type) { m_type = type; }
+
+    /**
+     * @brief 获取日志输出地
+     * 
+     * @return LogAppender::ptr 
+     */
+    LogAppender::ptr getAppender(void) const { return appender; }
+
+    /**
+     * @brief 获取日志输出地类型
+     * 
+     * @return const std::string& 
+     */
+    const std::string& getType(void) const { return m_type; }
+
+private:
+    std::string m_type;
+    LogAppender::ptr appender;
+};
+
+/**
+ * @brief 日志管理器, 单例模式
+ * 
+ */
 using LoggerMgr = SingleTon<LoggerManager>;
 
 }
+
+#endif
