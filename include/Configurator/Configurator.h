@@ -21,7 +21,6 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <sstream>
-#include <strstream>
 #include <iostream>
 #include <string>
 #include <type_traits>

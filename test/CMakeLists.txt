@@ -5,6 +5,7 @@ set(EXECUTABLE_OUTPUT_PATH &{PROJECT_SOURCE_DIR}/bin)
 
 find_library(LIB_LOGGER Logger HINTS ${PROJECT_SOURCE_DIR}/lib)
 find_library(LIB_CONFIGURATOR Configurator HINTS ${PROJECT_SOURCE_DIR}/lib)
+find_library(LIB_THREAD Thread HINTS ${PROJECT_SOURCE_DIR}/lib)
 
 link_directories(${PROJECT_SOURCE_DIR}/3rd-party/lib)
 
@@ -28,7 +29,9 @@ add_executable(testClassConfig testClassConfig.cpp)
 add_executable(testConfigChange testConfigChange.cpp)
 add_executable(testLogConfig testLogConfig.cpp)
 add_executable(testLoadLogFromYaml testLoadLogFromYaml.cpp)
+add_executable(testThread testThread.cpp)
 
+target_link_libraries(testThread ${LIB_LOGGER} ${LIB_THREAD})
 target_link_libraries(testLoadLogFromYaml ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
 target_link_libraries(testLogConfig ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
 target_link_libraries(testConfigChange ${LIB_LOGGER} ${LIB_CONFIGURATOR} ${3RD_PARTY})
