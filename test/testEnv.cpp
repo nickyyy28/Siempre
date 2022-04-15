@@ -1,0 +1,24 @@
+#include <siem>
+
+using namespace siem;
+
+int main(int argc, char** argv)
+{
+    siem::LoggerMgr::getInstance()->setRootFormat("[%p%T%d] <thread: %t>\nFile: %f, Line: %l\nMessage: %m");
+    siem::Thread::setThisName("main");
+
+    SingleTonPtr<Env>::getInstancePtr()->addHelp("h", "help");
+    SingleTonPtr<Env>::getInstancePtr()->addHelp("path", "the config yaml file path");
+
+    SingleTonPtr<Env>::getInstancePtr()->init(argc, argv);
+
+    // std::cout << "thread name" << Thread::getThisName() << std::endl;
+
+    if (GET_ENV()->has("p")) {
+        std::cout << "p: " << GET_ENV()->get("p") << std::endl;
+    }
+
+    // GET_ENV()->printArgs();
+
+    return 0;
+}

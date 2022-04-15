@@ -40,6 +40,12 @@ void Config::loadFromYaml(const YAML::Node& root)
     }
 }
 
+void Config::loadFromYaml(const std::string& path)
+{
+    YAML::Node node = YAML::LoadFile(path);
+    loadFromYaml(node);
+}
+
 static void listAllMember(const std::string& prefix, const YAML::Node& node, MemberList& output)
 {
     if (prefix.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._0123456789") != std::string::npos) {

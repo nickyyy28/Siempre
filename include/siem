@@ -1,0 +1,10 @@
+#ifndef __SIEM_CORE
+#define __SIEM_CORE
+
+#include "Logger/Logger.h"
+#include "Thread/Thread.h"
+#include "Configurator/Configurator.h"
+#include "Configurator/Env.h"
+#include "Fiber/Fiber.h"
+
+#endif

@@ -1,5 +1,4 @@
-#include <Configurator/Configurator.h>
-#include <Logger/Logger.h>
+#include <siem>
 
 siem::ConfigVar<int>::ptr port = siem::Config::lookup<int>("system.port", 80, "the system port");
 siem::ConfigVar<std::vector<int>>::ptr vec = siem::Config::lookup<std::vector<int>>("system.int_vec", 

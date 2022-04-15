@@ -23,6 +23,7 @@
 #include "common/singleton.h"
 #include "utils/utils.h"
 #include "Thread/Thread.h"
+#include "Thread/Mutex.h"
 
 /**
  * @brief 使用流式方式将日志级别level的日志写入到logger
@@ -30,7 +31,7 @@
 #define LOG_LEVEL(logger, level) \
     if(logger->getLevel() <= level) \
         siem::LogEventWrapper(siem::LogEvent::ptr(new siem::LogEvent(logger->getLoggerName(), logger, \
-            __FILE__, __LINE__, 0, siem::Thread::getThis()->getID(), siem::Thread::getThisName(), 0,    \
+            __FILE__, __LINE__, 0, siem::getThreadID(), siem::Thread::getThisName(), siem::getFiberID(), \
             time(0), level))).getSS()
 
 /**
@@ -79,7 +80,7 @@
 #define LOG_FMT_LEVEL(logger, level, fmt, ...) \
     if(logger->getLevel() <= level) \
         siem::LogEventWrapper(siem::LogEvent::ptr(new siem::LogEvent(logger->getLoggerName(), logger, \
-            __FILE__, __LINE__, 0, siem::Thread::getThis()->getID(), siem::Thread::getThisName(), 0, \
+            __FILE__, __LINE__, 0, siem::getThreadID(), siem::Thread::getThisName(), siem::getFiberID(), \
             time(0), level))).getEvent()->format(fmt, __VA_ARGS__)
 
 /**
@@ -344,6 +345,7 @@ public:
     };
 
 private:
+    Mutex m_mutex;
     std::string m_pattern;
     std::vector<FormatItem::ptr> m_items;
     bool m_error;
@@ -562,7 +564,7 @@ public:
 protected:
     LogLevel::Level m_level = LogLevel::DEBUG;
     LogFormatter::ptr m_formatter;
-
+    Mutex m_mutex;
 public:
     LogAppender();
 
@@ -579,6 +581,7 @@ public:
      * @param formatter     日志格式化器
      */
     void setFormatter(LogFormatter::ptr formatter) {
+        Mutex::Lock fmtLock(m_mutex);
         this->m_formatter.reset();
         this->m_formatter = formatter;
     }
@@ -596,6 +599,13 @@ public:
      * @return LogLevel::Level 
      */
     LogLevel::Level getLevel(void) const { return m_level; }
+
+    /**
+     * @brief 获取互斥量
+     * 
+     * @return Mutex& 
+     */
+    Mutex& getMutex(void) { return m_mutex; }
 
     /**
      * @brief 输出日志
@@ -637,6 +647,12 @@ private:
      * 
      */
     LogLevel::Level m_level = LogLevel::DEBUG;
+
+    /**
+     * @brief 日志锁
+     * 
+     */
+    Mutex m_mutex;
 
 public:
 
@@ -698,7 +714,19 @@ public:
      */
     const std::string& getLoggerName(void) const { return m_name; }
 
+    /**
+     * @brief 获取日志输出地
+     * 
+     * @return const std::list<LogAppender::ptr>& 
+     */
     const std::list<LogAppender::ptr>& getAppenders() const { return m_appenders; }
+
+    /**
+     * @brief 设置appenders的format格式
+     * 
+     * @param fmt 
+     */
+    void setFormatter(const std::string& fmt);
 
     /**
      * @brief 输出debug信息

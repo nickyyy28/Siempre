@@ -1,5 +1,4 @@
-#include "Configurator/Configurator.h"
-#include <yaml-cpp/yaml.h>
+#include <siem>
 
 #include <iostream>
 

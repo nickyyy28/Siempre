@@ -3,10 +3,12 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 set(
     SIEM_LIST
     ./Configurator/Configurator.cc
+    ./Configurator/Env.cc
     ./Thread/Thread.cc
     ./Logger/Logger.cc
     ./utils/utils.cc
     ./Thread/Mutex.cc
+    ./Fiber/Fiber.cc
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)

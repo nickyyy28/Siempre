@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Logger/Logger.h"
+#include <siem>
 #include <unistd.h>
 #include <sys/stat.h>
 
@@ -21,6 +21,8 @@ int main(void)
     siem::LoggerMgr::getInstance()->addRootFileAppender("/home/book/testlog.log");
 
     siem::LoggerMgr::getInstance()->setRootFormat("[%d:%r] %p%f%l%n%m");
+
+
 
     //LOG_DEBUG(siem::LoggerMgr::getInstance()->getRoot()) << "hello world";
 

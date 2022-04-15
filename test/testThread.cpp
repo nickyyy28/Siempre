@@ -1,6 +1,7 @@
-#include <Thread/Thread.h>
-#include <Logger/Logger.h>
+#include <siem>
 #include <unistd.h>
+
+int count = 0;
 
 int main(void)
 {
@@ -8,30 +9,47 @@ int main(void)
 
     siem::Thread::setThisName("main");
 
-    siem::Thread thread1([&](){
-        int i = 10;
+    siem::RWMutex rw;
+
+    /*siem::Thread thread1([&](){
+        int i = 1000000;
         while (i--)
         {
-            INFO() << "in aaa thread";
-            std::cout << "hello world" << std::endl;
-            usleep(1000000);
+            siem::RWMutex::WriteLock lock(rw);
+            count ++;
         }
         
-    }, "aaa");
+    }, "write thread1");
 
     siem::Thread thread2([&](){
-        int i = 10;
+        int i = 1000000;
         while (i--)
         {
-            INFO() << "in bbb thread";
-            std::cout << "wow!" << std::endl;
-            usleep(1000000);
+            siem::RWMutex::WriteLock lock(rw);
+            count++;
         }
         
-    }, "bbb");
+    }, "write thread2");*/
 
-    thread1.join();
-    thread2.join();
+    std::list<siem::Thread::ptr> list;
+    for (int i = 0 ; i < 5 ; i ++) {
+        list.push_back(std::make_shared<siem::Thread>([&](){
+            int i = 1000000;
+            while (i--)
+            {
+                siem::RWMutex::WriteLock lock(rw);
+                count++;
+            }
+        }, "therad: " + std::to_string(i)));
+    }
+
+    for (auto& th : list) {
+        th->detach();
+    }
+
+    sleep(5);
+
+    std::cout << "count = " << count;
 
     return 0;
 }

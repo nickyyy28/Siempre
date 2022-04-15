@@ -30,6 +30,7 @@
 
 #include "common/singleton.h"
 #include "Logger/Logger.h"
+#include "Fiber/Fiber.h"
 #include "utils/utils.h"
 
 #include "city/city.h"
@@ -416,7 +417,7 @@ public:
             //return boost::lexical_cast<std::string>(m_value);
             return ToStr()(m_value);
         } catch(std::exception& e) {
-            ERROR() << "ConfigVar::toString Exception" << e.what() << " convert " << typeid(T).name() << " to string ";
+            ERROR() << "ConfigVar::toString Exception" << e.what() << " convert " << siem::TypeToName<T>() << " to string ";
             return "";
         }
 
@@ -582,9 +583,16 @@ public:
     /**
      * @brief 从YAML节点中加载配置
      * 
-     * @param root 
+     * @param root YAML结点
      */
-    void loadFromYaml(const YAML::Node& root);
+    static void loadFromYaml(const YAML::Node& root);
+
+    /**
+     * @brief 
+     * 
+     * @param path yaml文件路径
+     */
+    static void loadFromYaml(const std::string& path);
 
 private:
     static ConfigVarMap m_datas;

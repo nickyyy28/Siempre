@@ -1,5 +1,4 @@
-#include <Configurator/Configurator.h>
-#include <Logger/Logger.h>
+#include <siem>
 
 int main(void)
 {

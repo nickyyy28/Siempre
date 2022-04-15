@@ -3,7 +3,7 @@
 namespace siem{
 
 static thread_local Thread* local_thread = nullptr;
-static thread_local std::string local_name = "";
+static thread_local std::string local_name = "UNKOWN";
 
 Thread* Thread::getThis(void)
 {
