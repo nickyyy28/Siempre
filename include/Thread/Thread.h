@@ -22,7 +22,7 @@ public:
     typedef std::shared_ptr<Thread> ptr;
     typedef std::function<void()> callBack;
 
-    Thread(callBack cb, const std::string& name);
+    Thread(callBack cb, const std::string& name = "UNKNOW");
     ~Thread();
 
     /**

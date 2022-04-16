@@ -6,5 +6,6 @@
 #include "Configurator/Configurator.h"
 #include "Configurator/Env.h"
 #include "Fiber/Fiber.h"
+#include "Fiber/Scheduler.h"
 
 #endif

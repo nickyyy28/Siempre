@@ -1,5 +1,6 @@
 #include "Fiber/Fiber.h"
 #include "Logger/Logger.h"
+#include "Fiber/Scheduler.h"
 
 namespace siem{
 
@@ -126,6 +127,10 @@ void Fiber::MainFunc(void)
         cur->m_state = EXCEPTION;
         ERROR() << "Fiber Exception";
     }
+
+    Fiber* raw_ptr = cur.get();
+    cur.reset();
+    raw_ptr->swapOut();
 }
 
 uint64_t Fiber::getCurFiberID(void)
@@ -135,6 +140,31 @@ uint64_t Fiber::getCurFiberID(void)
     }
 
     return 0;
+}
+
+Fiber::State Fiber::getState(void) const
+{
+    return m_state;
+}
+
+void Fiber::setState(State state)
+{
+    m_state = state;
+}
+
+void Fiber::call() {
+    setThis(this);
+    m_state = EXEC;
+    if(swapcontext(&t_thread_fiber->m_context, &m_context)) {
+        SIEM_ASSERT_STR(false, "swapcontext");
+    }
+}
+
+void Fiber::back() {
+    setThis(t_thread_fiber.get());
+    if(swapcontext(&m_context, &t_thread_fiber->m_context)) {
+        SIEM_ASSERT_STR(false, "swapcontext");
+    }
 }
 
 void Fiber::reset(callBack cb)
@@ -166,16 +196,16 @@ void Fiber::swapIn(void)
 
     m_state = EXEC;
 
-    if (swapcontext(&t_thread_fiber->m_context, &m_context)) {
+    if (swapcontext(&Scheduler::getMainFiber()->m_context, &m_context)) {
         SIEM_ASSERT_STR(false,swap context);
     }
 }
 
 void Fiber::swapOut(void)
 {
-    setThis(t_thread_fiber.get());
+    setThis(Scheduler::getMainFiber());
 
-    if (swapcontext(&m_context, &t_thread_fiber->m_context)) {
+    if (swapcontext(&m_context, &Scheduler::getMainFiber()->m_context)) {
         SIEM_ASSERT_STR(false,swap context);
     }
 }

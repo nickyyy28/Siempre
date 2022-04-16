@@ -17,6 +17,8 @@
 namespace siem
 {
 
+class Fiber;
+
 class FiberStackAlllocator{
 public:
     static void* Alloc(size_t size);
@@ -28,10 +30,10 @@ private:
     Fiber(void);
 
 public:
-    typedef std::function<void()> callBack;
+    typedef std::function<void(void)> callBack;
     typedef std::shared_ptr<Fiber> ptr;
 
-    Fiber(callBack cb, size_t stack_size);
+    Fiber(callBack cb, size_t stack_size = 0);
     ~Fiber();
 
     /**
@@ -61,13 +63,41 @@ public:
     uint64_t getID(void) const;
 
     enum State{
-        EXCEPTION = 0,
-        INIT,
-        HOLD,
-        EXEC,
-        TERM,
-        READY
+        EXCEPTION = 0,  /* 异常 */
+        INIT,           /* 初始 */
+        HOLD,           /* 持有 */
+        EXEC,           /* 运行 */
+        TERM,           /* 结束 */
+        READY           /* 准备 */
     };
+
+    /**
+     * @brief 获取协程状态
+     * 
+     * @return State 
+     */
+    State getState(void) const;
+
+    /**
+     * @brief 设置状态
+     * 
+     * @param state 
+     */
+    void setState(State state);
+
+    /**
+     * @brief 将当前线程切换到执行状态
+     * @pre 执行的为当前线程的主协程
+     */
+    void call();
+
+    /**
+     * @brief 将当前线程切换到后台
+     * @pre 执行的为该协程
+     * @post 返回到线程的主协程
+     */
+    void back();
+
 private:
 
     /**

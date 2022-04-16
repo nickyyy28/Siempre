@@ -1,6 +1,3 @@
-
-find_package(libLogger)
-
 set(EXECUTABLE_OUTPUT_PATH &{PROJECT_SOURCE_DIR}/bin)
 
 find_library(LIB_SIEM siem HINTS ${PROJECT_SOURCE_DIR}/lib)
@@ -18,11 +15,14 @@ set(
     -pthread
 )
 
+add_definitions("-Wall -g")
+
 link_directories(${PROJECT_SOURCE_DIR}/3rd-party/lib)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)
 
+add_executable(testScheduler testScheduler.cpp)
 add_executable(testEnv testEnv.cpp)
 add_executable(testLogger testLogger.cpp)
 add_executable(testSingleTon testSingleTon.cpp)
@@ -42,6 +42,7 @@ add_executable(testBackTrace testBackTrace.cpp)
 add_executable(testAssert testAssert.cpp)
 add_executable(testFiber testFiber.cpp)
 
+target_link_libraries(testScheduler ${SIEM_LIBRAARIES})
 target_link_libraries(testFiber ${SIEM_LIBRAARIES})
 target_link_libraries(testAssert ${SIEM_LIBRAARIES})
 target_link_libraries(testBackTrace ${SIEM_LIBRAARIES})
