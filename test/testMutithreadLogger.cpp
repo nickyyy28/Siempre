@@ -2,34 +2,22 @@
 
 int main(void)
 {
-    siem::LoggerMgr::getInstance()->setRootFormat("[%d:%r]%N%t %p%f%l%n%m");
+    std::vector<siem::Thread::ptr> ths;
+    for (size_t i = 0 ; i < 10 ; ++i) {
+        ths.push_back(siem::Thread::ptr(new siem::Thread([=](){
+            int cnt = 500;
+            while (cnt--)
+            {
+                LOG_INFO(GET_LOG_BY_NAME(system)) << "logger in thread " << std::to_string(i) << " cnt: " << cnt;
+            }
+        }, "thread_" + std::to_string(i))));
+    }
 
-    siem::Thread thread1([&](){
-        int i = 20;
-        while (i--)
-        {
-            INFO() << "thread1, count: " << i;
+    for (auto& th : ths) {
+        th->join();
+    }
 
-            std::cout << "test1" << std::endl;
 
-            // sleep(1);
-        }
-    }, "thread1");
-
-    siem::Thread thread2([&](){
-        int i = 20;
-        while (i--)
-        {
-            INFO() << "thread2, count: " << i;
-
-            std::cout << "test2" << std::endl;
-
-            // sleep(1);
-        }
-    }, "thread2");
-
-    thread1.join();
-    thread2.join();
 
     return 0;
 }

@@ -109,6 +109,9 @@ public:
 
     }
 
+    void switchTo(int thread = -1);
+    std::ostream& dump(std::ostream& os);
+
 private:
 
     /**

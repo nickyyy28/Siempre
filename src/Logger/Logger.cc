@@ -3,6 +3,8 @@
 
 #include "Configurator/Configurator.h"
 
+#define SYSFMT  "%d%T%c%T%p%T thread: %t%T fiber: %F%T%T%T%m"
+
 namespace siem{
 
 static LoggerManager* Mgr = LoggerMgr::getInstance();
@@ -236,6 +238,7 @@ void LogFormatter::init()
 
 std::string LogFormatter::format(std::shared_ptr<Logger> logger, LogLevel::Level level, LogEvent::ptr event)
 {
+    Mutex::Lock lock(m_mutex);
 	std::stringstream ss;
     for(auto& i : this->m_items){
         // std::cout << "执行了LogFormatter::format" << std::endl;
@@ -449,6 +452,8 @@ StdoutLogAppender::~StdoutLogAppender()
 
 void StdoutLogAppender::Log(std::shared_ptr<Logger> logger, LogLevel::Level level,LogEvent::ptr event)
 {
+    Mutex::Lock lock(m_mutex);
+
     if (level >= this->m_level)
     {
         switch (level)
@@ -485,7 +490,7 @@ LoggerManager::LoggerManager()
     m_root->addAppender(LogAppender::ptr(new StdoutLogAppender));
 
     for ( auto appender : m_root->getAppenders()) {
-        appender->setFormatter(LogFormatter::ptr(new LogFormatter("[%p%T%d] <thread: %t>\nFile: %f, Line: %l\nMessage: %m")));
+        appender->setFormatter(LogFormatter::ptr(new LogFormatter(SYSFMT)));
     }
 
     m_loggerMap[m_root->m_name] = m_root;
@@ -499,6 +504,7 @@ LoggerManager::~LoggerManager()
 
 Logger::ptr LoggerManager::getLogger(const std::string& loggerName)
 {
+    Mutex::Lock lock(m_mutex);
     auto it = m_loggerMap.find(loggerName);
     if (it != m_loggerMap.end()) {
         return it->second;
@@ -506,7 +512,7 @@ Logger::ptr LoggerManager::getLogger(const std::string& loggerName)
         Logger::ptr logger(new Logger(loggerName));
         logger->addAppender(LogAppender::ptr(new StdoutLogAppender()));
         m_loggerMap[loggerName] = logger;
-        logger->setFormatter("[%p %d] <thread: %t>\nFile: %f, Line: %l\n<%c>: %m");
+        logger->setFormatter(SYSFMT);
         return logger;
     }
 }
@@ -538,6 +544,7 @@ LogEventWrapper::LogEventWrapper(LogEvent::ptr e) : event(e)
 
 LogEventWrapper::~LogEventWrapper()
 {
+    Mutex::Lock lock(m_mutex);
     event->getLogger()->Log(event->getLevel(), event);
 }
 

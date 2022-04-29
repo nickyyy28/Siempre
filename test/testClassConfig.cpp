@@ -67,8 +67,6 @@ int main(void)
 
     cfg.loadFromYaml(root);
 
-    //
-
     std::cout << person->toString() << std::endl;
 
     for(auto& v : person->getValue()) {

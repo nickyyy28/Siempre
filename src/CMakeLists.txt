@@ -10,6 +10,7 @@ set(
     ./Thread/Mutex.cc
     ./Fiber/Fiber.cc
     ./Fiber/Scheduler.cc
+    ./io/IOManager.cc
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)

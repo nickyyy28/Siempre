@@ -13,7 +13,7 @@ int main(void)
 
     FATAL() << "error";
 
-    int a = 10;
+    [[maybe_unused]] int a = 10;
 
     //siem::ConfigVar<int> ptr(new siem::ConfigVar<int>("num", "this is a number", a));
 

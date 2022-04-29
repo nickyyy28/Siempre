@@ -41,7 +41,7 @@ pid_t getThreadID(void);
  * 
  * @param vec   保存栈的vector
  * @param size  调用栈深度
- * @param skip
+ * @param skip  跳过层数
  */
 void BackTrace(std::vector<std::string>& vec, size_t size, int skip);
 

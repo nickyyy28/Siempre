@@ -18,7 +18,7 @@ Scheduler::Scheduler(size_t threads, bool use_caller, const std::string& name)
 
         SIEM_ASSERT_STR(getThis() == nullptr, Scheduler Exist);
         t_scheduler = this;
-        m_rootFiber.reset(new Fiber(std::bind(&Scheduler::run, this)));
+        m_rootFiber.reset(new Fiber(std::bind(&Scheduler::run, this), 0, true));
         Thread::setThisName(m_name);
 
         t_fiber = m_rootFiber.get();
@@ -159,9 +159,12 @@ void Scheduler::start(void)
     SIEM_ASSERT(m_threads.empty());
     m_threads.resize(m_threadCount);
     for (size_t i = 0 ; i < m_threadCount ; i++) {
-        m_threads[i].reset(new Thread(std::bind(&Scheduler::run, this), m_name + "_" + std::to_string(i)));
+        m_threads[i].reset(new Thread(std::bind(&Scheduler::run, this),
+            m_name + "_" + std::to_string(i)));
         m_threadIds.push_back(m_threads[i]->getID());
     }
+
+    lock.unlock();
 }
 
 void Scheduler::stop(void)
@@ -238,6 +241,34 @@ bool Scheduler::stopping(void)
     Mutex::Lock lock(m_mutex);
     return m_autoStop && m_stopping
         && m_fibers.empty() && m_activeThreadCount == 0;
+}
+
+void Scheduler::switchTo(int thread)
+{
+    SIEM_ASSERT(Scheduler::getThis() != nullptr);
+    if(Scheduler::getThis() == this) {
+        if(thread == -1 || thread == siem::getThreadID()) {
+            return;
+        }
+    }
+    schedule(Fiber::getThis(), thread);
+    Fiber::yieldToHold();
+}
+
+std::ostream& Scheduler::dump(std::ostream& os) {
+    os << "[Scheduler name=" << m_name
+       << " size=" << m_threadCount
+       << " active_count=" << m_activeThreadCount
+       << " idle_count=" << m_idleThreadCount
+       << " stopping=" << m_stopping
+       << " ]" << std::endl << "    ";
+    for(size_t i = 0; i < m_threadIds.size(); ++i) {
+        if(i) {
+            os << ", ";
+        }
+        os << m_threadIds[i];
+    }
+    return os;
 }
 
 }

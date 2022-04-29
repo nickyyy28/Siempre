@@ -36,7 +36,7 @@ Fiber::Fiber(void)
     ++s_fiber_numbers;
 }
 
-Fiber::Fiber(callBack cb, size_t stack_size)
+Fiber::Fiber(callBack cb, size_t stack_size, bool is_usecaller)
     : m_cb(cb)
     , m_stackSize(stack_size ? stack_size : s_stackSize->getValue())
     , m_id(++s_fiber_id) {
@@ -51,7 +51,11 @@ Fiber::Fiber(callBack cb, size_t stack_size)
     m_context.uc_stack.ss_sp = m_stack;
     m_context.uc_stack.ss_size = m_stackSize;
 
-    makecontext(&m_context, &Fiber::MainFunc, 0);
+    if(!is_usecaller) {
+        makecontext(&m_context, &Fiber::MainFunc, 0);
+    } else {
+        makecontext(&m_context, &Fiber::CallerMainFunc, 0);
+    }
 
 }
 
@@ -59,7 +63,7 @@ Fiber::~Fiber()
 {
     --s_fiber_numbers;
     if (m_stack) {
-        SIEM_ASSERT(m_state == TERM || m_state == INIT);
+        SIEM_ASSERT(m_state == TERM || m_state == INIT || m_state == EXCEPTION);
         StackAllocator::Dealloc(m_stack, m_stackSize);
     } else {
         SIEM_ASSERT(!m_cb);
@@ -85,9 +89,8 @@ Fiber::ptr Fiber::getThis(void)
 
     Fiber::ptr main_fiber(new Fiber());
     t_thread_fiber = main_fiber;
-    t_fiber = main_fiber.get();
     SIEM_ASSERT(t_fiber == t_thread_fiber.get());
-    t_thread_fiber = main_fiber;
+    t_fiber = main_fiber.get();
     return main_fiber;
 }
 
@@ -131,6 +134,8 @@ void Fiber::MainFunc(void)
     Fiber* raw_ptr = cur.get();
     cur.reset();
     raw_ptr->swapOut();
+
+    SIEM_ASSERT_STR(false, "never reach fiber_id=" + std::to_string(raw_ptr->getID()));
 }
 
 uint64_t Fiber::getCurFiberID(void)
@@ -213,6 +218,34 @@ void Fiber::swapOut(void)
 uint64_t Fiber::getID(void) const
 {
     return m_id;
+}
+
+void Fiber::CallerMainFunc()
+{
+    Fiber::ptr cur = getThis();
+    SIEM_ASSERT(cur);
+    try {
+        cur->m_cb();
+        cur->m_cb = nullptr;
+        cur->m_state = TERM;
+    } catch (std::exception& ex) {
+        cur->m_state = EXCEPTION;
+        LOG_ERROR(GET_LOG_BY_NAME(system)) << "Fiber Except: " << ex.what()
+            << " fiber_id=" << cur->getID()
+            << std::endl
+            << siem::BackTraceToString(100, 2);
+    } catch (...) {
+        cur->m_state = EXCEPTION;
+        LOG_ERROR(GET_LOG_BY_NAME(system)) << "Fiber Except"
+            << " fiber_id=" << cur->getID()
+            << std::endl
+            << siem::BackTraceToString(100, 2);
+    }
+
+    auto raw_ptr = cur.get();
+    cur.reset();
+    raw_ptr->back();
+    SIEM_ASSERT_STR(false, "never reach fiber_id=" + std::to_string(raw_ptr->getID()));
 }
 
 }

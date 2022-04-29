@@ -9,7 +9,6 @@ Env::Env()
 
 Env::~Env()
 {
-
 }
 
 void Env::init(int argc, char** argv)

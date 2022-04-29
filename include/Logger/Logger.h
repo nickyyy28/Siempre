@@ -834,6 +834,7 @@ public:
 private:
     Logger::ptr m_root;
     std::map<std::string, Logger::ptr> m_loggerMap;
+    Mutex m_mutex;
 };
 
 /**
@@ -853,6 +854,7 @@ public:
     std::stringstream& getSS();
 
 private:
+    Mutex m_mutex;
     Logger::ptr logger;
     LogEvent::ptr event;
 };

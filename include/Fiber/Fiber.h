@@ -33,7 +33,7 @@ public:
     typedef std::function<void(void)> callBack;
     typedef std::shared_ptr<Fiber> ptr;
 
-    Fiber(callBack cb, size_t stack_size = 0);
+    Fiber(callBack cb, size_t stack_size = 0, bool is_usecaller = false);
     ~Fiber();
 
     /**
@@ -176,6 +176,12 @@ public:
      * 
      */
     static void MainFunc(void);
+
+    /**
+     * @brief 协程执行函数
+     * @post 执行完成返回到线程调度协程
+     */
+    static void CallerMainFunc();
 
     /**
      * @brief 获取当前协程id
