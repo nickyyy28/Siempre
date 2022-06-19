@@ -6,7 +6,7 @@
 #include "common/macro.h"
 #include "common/nocopyable.h"
 #include "Configurator/Configurator.h"
-#include "common/singleton.h"
+#include "common/singleton.h
 
 #include <memory>
 #include <functional>
@@ -19,7 +19,7 @@ namespace siem
 
 class Fiber;
 
-class FiberStackAlllocator{
+class FiberStackAllocator{
 public:
     static void* Alloc(size_t size);
     static void Dealloc(void* vp, size_t size);

@@ -8,5 +8,6 @@
 #include "Fiber/Fiber.h"
 #include "Fiber/Scheduler.h"
 #include "io/IOManager.h"
+#include "fs/fs.h"
 
 #endif

@@ -11,6 +11,7 @@ set(
     ./Fiber/Fiber.cc
     ./Fiber/Scheduler.cc
     ./io/IOManager.cc
+    ./fs/fs.cc
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)

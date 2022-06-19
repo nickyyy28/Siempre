@@ -1,18 +1,24 @@
 #ifndef __NOCOPYABLE_H
 #define __NOCOPYABLE_H
 
-namespace siem{
+namespace siem {
 
-class NoCopyAble
-{
-public:
-    NoCopyAble() = default;
-    ~NoCopyAble() = default;
-private:
-    NoCopyAble(const NoCopyAble&) = delete;
-    NoCopyAble(const NoCopyAble&&) = delete;
-    NoCopyAble& operator=(const NoCopyAble&) = delete;
-};
+    /**
+     * @brief a base class of apply to make
+     */
+    class NoCopyAble {
+    public:
+        NoCopyAble() = default;
+
+        ~NoCopyAble() = default;
+
+    private:
+        NoCopyAble(const NoCopyAble &) = delete;
+
+        NoCopyAble(const NoCopyAble &&) = delete;
+
+        NoCopyAble &operator=(const NoCopyAble &) = delete;
+    };
 
 }
 

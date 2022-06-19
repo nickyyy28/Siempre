@@ -1,6 +1,7 @@
 #include "Fiber/Fiber.h"
 #include "Logger/Logger.h"
 #include "Fiber/Scheduler.h"
+#include "common/macro.h"
 
 namespace siem{
 
@@ -12,14 +13,14 @@ static thread_local Fiber::ptr t_thread_fiber = nullptr;
 
 static ConfigVar<uint32_t>::ptr s_stackSize = Config::lookup<uint32_t>("system.stackSize", 1024 * 1024, "Fiber Stack Size");
 
-using StackAllocator = FiberStackAlllocator;
+using StackAllocator = FiberStackAllocator;
 
-void* FiberStackAlllocator::Alloc(size_t size)
+void* FiberStackAllocator::Alloc(size_t size)
 {
     return malloc(size);
 }
 
-void FiberStackAlllocator::Dealloc(void* vp, size_t size)
+void FiberStackAllocator::Dealloc(void* vp, size_t size)
 {
     free(vp);
 }

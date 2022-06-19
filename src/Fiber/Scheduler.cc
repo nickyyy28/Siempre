@@ -50,7 +50,9 @@ Fiber* Scheduler::getMainFiber(void)
 
 void Scheduler::run(void)
 {
-    LOG_DEBUG(GET_LOG_ROOT()) << m_name << " run";
+    {
+        LOG_DEBUG(GET_LOG_ROOT()) << m_name << " run";
+    }
     setThis();
     if(siem::getThreadID() != m_rootThread) {
         t_fiber = Fiber::getThis().get();
@@ -132,7 +134,9 @@ void Scheduler::run(void)
                 continue;
             }
             if(idle_fiber->getState() == Fiber::TERM) {
-                LOG_INFO(GET_LOG_ROOT()) << "idle fiber term";
+                {
+                    LOG_INFO(GET_LOG_ROOT()) << "idle fiber term";
+                }
                 break;
             }
 
@@ -172,7 +176,9 @@ void Scheduler::stop(void)
     m_autoStop = true;
     if (m_threadCount == 0 && m_rootFiber 
         && (m_rootFiber->getState() == Fiber::TERM || m_rootFiber->getState() == Fiber::INIT)) {
-        INFO() << "this scheduler stop";
+        {
+            INFO() << "this scheduler stop";
+        }
         m_stopping = true;
         if (stopping()) {
             return;
@@ -230,7 +236,9 @@ void Scheduler::tickle(void)
 
 void Scheduler::idle(void)
 {
-    LOG_INFO(GET_LOG_BY_NAME(system)) << "idle";
+    {
+        LOG_INFO(GET_LOG_BY_NAME(system)) << "idle";
+    }
     while(!stopping()) {
         Fiber::yieldToHold();
     }

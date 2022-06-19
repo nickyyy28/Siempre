@@ -14,6 +14,8 @@ int main(int argc, char** argv)
 
     // std::cout << "thread name" << Thread::getThisName() << std::endl;
 
+    //siem::Thread::ptr p(new siem::Thread())
+
     if (GET_ENV()->has("p")) {
         std::cout << "p: " << GET_ENV()->get("p") << std::endl;
     }

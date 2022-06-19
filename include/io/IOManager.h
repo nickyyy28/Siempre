@@ -70,8 +70,10 @@ public:
 
 protected:
     bool stopping(void) override;
+    bool stopping(uint64_t timeout);
     void tickle(void) override;
     void idle(void) override;
+    // void onTimerInsertedAtFront(void) override;
 
     void contextResize(size_t size);
 private:
@@ -84,6 +86,8 @@ private:
         };
 
         EventContext& getContext(Event e);
+        void resetContext(EventContext& e);
+        void triggerEvent(Event e);
 
         int fd;                     // 事件关联的句柄
         struct EventContext read;          // 读事件
