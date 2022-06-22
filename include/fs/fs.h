@@ -36,7 +36,7 @@ namespace siem {
         };
 
         class FileUtil {
-
+        public:
             /**
              * @brief confirm a file or directory is exist
              * @param path
@@ -46,7 +46,7 @@ namespace siem {
 
             static bool isDir(const std::string &path);
 
-            static bool isFile(const std::string &filename);
+            __attribute__((unused)) static bool isFile(const std::string &filename);
 
             static PermissionGroup getPermissionGroup(const std::string& path);
         };

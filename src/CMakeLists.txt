@@ -12,6 +12,8 @@ set(
     ./Fiber/Scheduler.cc
     ./io/IOManager.cc
     ./fs/fs.cc
+    ./Thread/ThreadPool.cc
+    ./base/SString.cc
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)

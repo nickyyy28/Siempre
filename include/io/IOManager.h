@@ -14,9 +14,9 @@ public:
     typedef RWMutex RWMutexType;
 
     enum Event {
-        None = 0x0,
-        READ,
-        WRITE
+        None = 0x0,     //无事件
+        READ = 0x1,     //读事件
+        WRITE = 0x4     //写事件
     };
 
     IOManager(int thread = 1, bool use_caller = true, const std::string& name = "");

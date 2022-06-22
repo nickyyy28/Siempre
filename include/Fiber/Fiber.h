@@ -6,7 +6,7 @@
 #include "common/macro.h"
 #include "common/nocopyable.h"
 #include "Configurator/Configurator.h"
-#include "common/singleton.h
+#include "common/singleton.h"
 
 #include <memory>
 #include <functional>
@@ -23,6 +23,7 @@ class FiberStackAllocator{
 public:
     static void* Alloc(size_t size);
     static void Dealloc(void* vp, size_t size);
+
 };
 
 class Fiber : public NoCopyAble, public std::enable_shared_from_this<Fiber>{

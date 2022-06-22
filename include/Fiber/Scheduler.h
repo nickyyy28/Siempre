@@ -188,11 +188,11 @@ protected:
     virtual void idle();
 private:
     //// 互斥锁
-    Mutex m_mutex;
+    siem::Mutex m_mutex;
     //// 调度器名称
     std::string m_name;
     //// 线程池
-    std::vector<Thread::ptr> m_threads;
+    std::vector<siem::Thread::ptr> m_threads;
     //// 协程池
     std::list<ThreadAndFiber> m_fibers;
     //// use_caller为true时有效, 调度协程

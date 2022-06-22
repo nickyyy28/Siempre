@@ -5,20 +5,44 @@
     <option name="openedFilesInfos">
       <list>
         <OpenedFileInfo>
-          <option name="caretOffset" value="51" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/test/testEnv.cpp" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="1336" />
+          <option name="caretOffset" value="1360" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/src/fs/fs.cc" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="1025" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/include/fs/fs.h" />
+          <option name="caretOffset" value="547" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/test/testConfig.cpp" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/include/siem" />
+          <option name="caretOffset" value="254" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/test/testConfigChange.cpp" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="1621" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/test/testFromYaml.cpp" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="9167" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/include/Configurator/Configurator.h" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="1161" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/Configurator/Configurator.cc" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="26819" />
+          <option name="fileUrl" value="file:///usr/include/stdlib.h" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="3123" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/include/Logger/Logger.h" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="101" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/Logger/Logger.cc" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="51" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/test/bbb.yaml" />
         </OpenedFileInfo>
       </list>
     </option>

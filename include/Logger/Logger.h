@@ -56,7 +56,9 @@
 
 /**
  * @brief 使用流式方式将日志级别fatal的日志写入到logger
- */
+ *//**
+* @brief 使用流式方式将日志级别fatal的日志写入到logger
+*/
 #define LOG_FATAL(logger) LOG_LEVEL(logger, siem::LogLevel::FATAL)
 
 #define DEBUG() \
@@ -361,7 +363,7 @@ namespace siem {
         };
 
     private:
-        Mutex m_mutex;
+        siem::Mutex m_mutex;
         std::string m_pattern;
         std::vector<FormatItem::ptr> m_items;
         bool m_error;

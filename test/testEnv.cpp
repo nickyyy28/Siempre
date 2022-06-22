@@ -1,9 +1,12 @@
+#include "Configurator/Env.h"
+#include "common/singleton.h"
 #include <siem>
 
 using namespace siem;
 
 int main(int argc, char** argv)
 {
+    GET_LOG_BY_NAME(root);
     siem::LoggerMgr::getInstance()->setRootFormat("[%p%T%d] <thread: %t>\nFile: %f, Line: %l\nMessage: %m");
     siem::Thread::setThisName("main");
 

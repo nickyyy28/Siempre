@@ -41,7 +41,10 @@ add_executable(testMacro testMacro.cpp)
 add_executable(testBackTrace testBackTrace.cpp)
 add_executable(testAssert testAssert.cpp)
 add_executable(testFiber testFiber.cpp)
+add_executable(testThreadPool testThreadPool.cpp)
+add_executable(testSString ./testSString.cpp)
 
+target_link_libraries(testSString ${SIEM_LIBRAARIES})
 target_link_libraries(testScheduler ${SIEM_LIBRAARIES})
 target_link_libraries(testFiber ${SIEM_LIBRAARIES})
 target_link_libraries(testAssert ${SIEM_LIBRAARIES})
@@ -60,6 +63,7 @@ target_link_libraries(testYaml ${SIEM_LIBRAARIES})
 target_link_libraries(testConfig ${SIEM_LIBRAARIES})
 target_link_libraries(testLog ${SIEM_LIBRAARIES})
 target_link_libraries(testLogger ${SIEM_LIBRAARIES})
+target_link_libraries(testThreadPool ${SIEM_LIBRAARIES})
 
 
 set (EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)

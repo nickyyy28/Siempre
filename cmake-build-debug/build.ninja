@@ -81,7 +81,7 @@ build cmake_object_order_depends_target_siem_shared: phony || src/CMakeFiles/sie
 build src/CMakeFiles/siem_shared.dir/Configurator/Configurator.cc.o: CXX_COMPILER__siem_shared_Debug /home/book/Siempre/src/Configurator/Configurator.cc || cmake_object_order_depends_target_siem_shared
   DEFINES = -Dsiem_shared_EXPORTS
   DEP_FILE = src/CMakeFiles/siem_shared.dir/Configurator/Configurator.cc.o.d
-  FLAGS = -g -fPIC   -std=c++14 -fPIC
+  FLAGS = -g -fPIC   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_shared.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_shared.dir/Configurator
@@ -89,7 +89,7 @@ build src/CMakeFiles/siem_shared.dir/Configurator/Configurator.cc.o: CXX_COMPILE
 build src/CMakeFiles/siem_shared.dir/Configurator/Env.cc.o: CXX_COMPILER__siem_shared_Debug /home/book/Siempre/src/Configurator/Env.cc || cmake_object_order_depends_target_siem_shared
   DEFINES = -Dsiem_shared_EXPORTS
   DEP_FILE = src/CMakeFiles/siem_shared.dir/Configurator/Env.cc.o.d
-  FLAGS = -g -fPIC   -std=c++14 -fPIC
+  FLAGS = -g -fPIC   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_shared.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_shared.dir/Configurator
@@ -97,7 +97,7 @@ build src/CMakeFiles/siem_shared.dir/Configurator/Env.cc.o: CXX_COMPILER__siem_s
 build src/CMakeFiles/siem_shared.dir/Thread/Thread.cc.o: CXX_COMPILER__siem_shared_Debug /home/book/Siempre/src/Thread/Thread.cc || cmake_object_order_depends_target_siem_shared
   DEFINES = -Dsiem_shared_EXPORTS
   DEP_FILE = src/CMakeFiles/siem_shared.dir/Thread/Thread.cc.o.d
-  FLAGS = -g -fPIC   -std=c++14 -fPIC
+  FLAGS = -g -fPIC   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_shared.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_shared.dir/Thread
@@ -105,7 +105,7 @@ build src/CMakeFiles/siem_shared.dir/Thread/Thread.cc.o: CXX_COMPILER__siem_shar
 build src/CMakeFiles/siem_shared.dir/Logger/Logger.cc.o: CXX_COMPILER__siem_shared_Debug /home/book/Siempre/src/Logger/Logger.cc || cmake_object_order_depends_target_siem_shared
   DEFINES = -Dsiem_shared_EXPORTS
   DEP_FILE = src/CMakeFiles/siem_shared.dir/Logger/Logger.cc.o.d
-  FLAGS = -g -fPIC   -std=c++14 -fPIC
+  FLAGS = -g -fPIC   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_shared.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_shared.dir/Logger
@@ -113,7 +113,7 @@ build src/CMakeFiles/siem_shared.dir/Logger/Logger.cc.o: CXX_COMPILER__siem_shar
 build src/CMakeFiles/siem_shared.dir/utils/utils.cc.o: CXX_COMPILER__siem_shared_Debug /home/book/Siempre/src/utils/utils.cc || cmake_object_order_depends_target_siem_shared
   DEFINES = -Dsiem_shared_EXPORTS
   DEP_FILE = src/CMakeFiles/siem_shared.dir/utils/utils.cc.o.d
-  FLAGS = -g -fPIC   -std=c++14 -fPIC
+  FLAGS = -g -fPIC   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_shared.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_shared.dir/utils
@@ -121,7 +121,7 @@ build src/CMakeFiles/siem_shared.dir/utils/utils.cc.o: CXX_COMPILER__siem_shared
 build src/CMakeFiles/siem_shared.dir/Thread/Mutex.cc.o: CXX_COMPILER__siem_shared_Debug /home/book/Siempre/src/Thread/Mutex.cc || cmake_object_order_depends_target_siem_shared
   DEFINES = -Dsiem_shared_EXPORTS
   DEP_FILE = src/CMakeFiles/siem_shared.dir/Thread/Mutex.cc.o.d
-  FLAGS = -g -fPIC   -std=c++14 -fPIC
+  FLAGS = -g -fPIC   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_shared.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_shared.dir/Thread
@@ -129,7 +129,7 @@ build src/CMakeFiles/siem_shared.dir/Thread/Mutex.cc.o: CXX_COMPILER__siem_share
 build src/CMakeFiles/siem_shared.dir/Fiber/Fiber.cc.o: CXX_COMPILER__siem_shared_Debug /home/book/Siempre/src/Fiber/Fiber.cc || cmake_object_order_depends_target_siem_shared
   DEFINES = -Dsiem_shared_EXPORTS
   DEP_FILE = src/CMakeFiles/siem_shared.dir/Fiber/Fiber.cc.o.d
-  FLAGS = -g -fPIC   -std=c++14 -fPIC
+  FLAGS = -g -fPIC   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_shared.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_shared.dir/Fiber
@@ -137,7 +137,7 @@ build src/CMakeFiles/siem_shared.dir/Fiber/Fiber.cc.o: CXX_COMPILER__siem_shared
 build src/CMakeFiles/siem_shared.dir/Fiber/Scheduler.cc.o: CXX_COMPILER__siem_shared_Debug /home/book/Siempre/src/Fiber/Scheduler.cc || cmake_object_order_depends_target_siem_shared
   DEFINES = -Dsiem_shared_EXPORTS
   DEP_FILE = src/CMakeFiles/siem_shared.dir/Fiber/Scheduler.cc.o.d
-  FLAGS = -g -fPIC   -std=c++14 -fPIC
+  FLAGS = -g -fPIC   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_shared.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_shared.dir/Fiber
@@ -145,7 +145,7 @@ build src/CMakeFiles/siem_shared.dir/Fiber/Scheduler.cc.o: CXX_COMPILER__siem_sh
 build src/CMakeFiles/siem_shared.dir/io/IOManager.cc.o: CXX_COMPILER__siem_shared_Debug /home/book/Siempre/src/io/IOManager.cc || cmake_object_order_depends_target_siem_shared
   DEFINES = -Dsiem_shared_EXPORTS
   DEP_FILE = src/CMakeFiles/siem_shared.dir/io/IOManager.cc.o.d
-  FLAGS = -g -fPIC   -std=c++14 -fPIC
+  FLAGS = -g -fPIC   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_shared.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_shared.dir/io
@@ -153,7 +153,7 @@ build src/CMakeFiles/siem_shared.dir/io/IOManager.cc.o: CXX_COMPILER__siem_share
 build src/CMakeFiles/siem_shared.dir/fs/fs.cc.o: CXX_COMPILER__siem_shared_Debug /home/book/Siempre/src/fs/fs.cc || cmake_object_order_depends_target_siem_shared
   DEFINES = -Dsiem_shared_EXPORTS
   DEP_FILE = src/CMakeFiles/siem_shared.dir/fs/fs.cc.o.d
-  FLAGS = -g -fPIC   -std=c++14 -fPIC
+  FLAGS = -g -fPIC   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_shared.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_shared.dir/fs
@@ -188,70 +188,70 @@ build cmake_object_order_depends_target_siem_static: phony || src/CMakeFiles/sie
 
 build src/CMakeFiles/siem_static.dir/Configurator/Configurator.cc.o: CXX_COMPILER__siem_static_Debug /home/book/Siempre/src/Configurator/Configurator.cc || cmake_object_order_depends_target_siem_static
   DEP_FILE = src/CMakeFiles/siem_static.dir/Configurator/Configurator.cc.o.d
-  FLAGS = -g   -std=c++14 -fPIC
+  FLAGS = -g   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_static.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_static.dir/Configurator
 
 build src/CMakeFiles/siem_static.dir/Configurator/Env.cc.o: CXX_COMPILER__siem_static_Debug /home/book/Siempre/src/Configurator/Env.cc || cmake_object_order_depends_target_siem_static
   DEP_FILE = src/CMakeFiles/siem_static.dir/Configurator/Env.cc.o.d
-  FLAGS = -g   -std=c++14 -fPIC
+  FLAGS = -g   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_static.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_static.dir/Configurator
 
 build src/CMakeFiles/siem_static.dir/Thread/Thread.cc.o: CXX_COMPILER__siem_static_Debug /home/book/Siempre/src/Thread/Thread.cc || cmake_object_order_depends_target_siem_static
   DEP_FILE = src/CMakeFiles/siem_static.dir/Thread/Thread.cc.o.d
-  FLAGS = -g   -std=c++14 -fPIC
+  FLAGS = -g   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_static.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_static.dir/Thread
 
 build src/CMakeFiles/siem_static.dir/Logger/Logger.cc.o: CXX_COMPILER__siem_static_Debug /home/book/Siempre/src/Logger/Logger.cc || cmake_object_order_depends_target_siem_static
   DEP_FILE = src/CMakeFiles/siem_static.dir/Logger/Logger.cc.o.d
-  FLAGS = -g   -std=c++14 -fPIC
+  FLAGS = -g   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_static.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_static.dir/Logger
 
 build src/CMakeFiles/siem_static.dir/utils/utils.cc.o: CXX_COMPILER__siem_static_Debug /home/book/Siempre/src/utils/utils.cc || cmake_object_order_depends_target_siem_static
   DEP_FILE = src/CMakeFiles/siem_static.dir/utils/utils.cc.o.d
-  FLAGS = -g   -std=c++14 -fPIC
+  FLAGS = -g   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_static.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_static.dir/utils
 
 build src/CMakeFiles/siem_static.dir/Thread/Mutex.cc.o: CXX_COMPILER__siem_static_Debug /home/book/Siempre/src/Thread/Mutex.cc || cmake_object_order_depends_target_siem_static
   DEP_FILE = src/CMakeFiles/siem_static.dir/Thread/Mutex.cc.o.d
-  FLAGS = -g   -std=c++14 -fPIC
+  FLAGS = -g   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_static.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_static.dir/Thread
 
 build src/CMakeFiles/siem_static.dir/Fiber/Fiber.cc.o: CXX_COMPILER__siem_static_Debug /home/book/Siempre/src/Fiber/Fiber.cc || cmake_object_order_depends_target_siem_static
   DEP_FILE = src/CMakeFiles/siem_static.dir/Fiber/Fiber.cc.o.d
-  FLAGS = -g   -std=c++14 -fPIC
+  FLAGS = -g   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_static.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_static.dir/Fiber
 
 build src/CMakeFiles/siem_static.dir/Fiber/Scheduler.cc.o: CXX_COMPILER__siem_static_Debug /home/book/Siempre/src/Fiber/Scheduler.cc || cmake_object_order_depends_target_siem_static
   DEP_FILE = src/CMakeFiles/siem_static.dir/Fiber/Scheduler.cc.o.d
-  FLAGS = -g   -std=c++14 -fPIC
+  FLAGS = -g   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_static.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_static.dir/Fiber
 
 build src/CMakeFiles/siem_static.dir/io/IOManager.cc.o: CXX_COMPILER__siem_static_Debug /home/book/Siempre/src/io/IOManager.cc || cmake_object_order_depends_target_siem_static
   DEP_FILE = src/CMakeFiles/siem_static.dir/io/IOManager.cc.o.d
-  FLAGS = -g   -std=c++14 -fPIC
+  FLAGS = -g   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_static.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_static.dir/io
 
 build src/CMakeFiles/siem_static.dir/fs/fs.cc.o: CXX_COMPILER__siem_static_Debug /home/book/Siempre/src/fs/fs.cc || cmake_object_order_depends_target_siem_static
   DEP_FILE = src/CMakeFiles/siem_static.dir/fs/fs.cc.o.d
-  FLAGS = -g   -std=c++14 -fPIC
+  FLAGS = -g   -std=c++17 -fPIC
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = src/CMakeFiles/siem_static.dir
   OBJECT_FILE_DIR = src/CMakeFiles/siem_static.dir/fs
@@ -312,7 +312,7 @@ build cmake_object_order_depends_target_testScheduler: phony || test/CMakeFiles/
 
 build test/CMakeFiles/testScheduler.dir/testScheduler.cpp.o: CXX_COMPILER__testScheduler_Debug /home/book/Siempre/test/testScheduler.cpp || cmake_object_order_depends_target_testScheduler
   DEP_FILE = test/CMakeFiles/testScheduler.dir/testScheduler.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testScheduler.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testScheduler.dir
@@ -347,7 +347,7 @@ build cmake_object_order_depends_target_testEnv: phony || test/CMakeFiles/testEn
 
 build test/CMakeFiles/testEnv.dir/testEnv.cpp.o: CXX_COMPILER__testEnv_Debug /home/book/Siempre/test/testEnv.cpp || cmake_object_order_depends_target_testEnv
   DEP_FILE = test/CMakeFiles/testEnv.dir/testEnv.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testEnv.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testEnv.dir
@@ -382,7 +382,7 @@ build cmake_object_order_depends_target_testLogger: phony || test/CMakeFiles/tes
 
 build test/CMakeFiles/testLogger.dir/testLogger.cpp.o: CXX_COMPILER__testLogger_Debug /home/book/Siempre/test/testLogger.cpp || cmake_object_order_depends_target_testLogger
   DEP_FILE = test/CMakeFiles/testLogger.dir/testLogger.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testLogger.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testLogger.dir
@@ -417,7 +417,7 @@ build cmake_object_order_depends_target_testSingleTon: phony || test/CMakeFiles/
 
 build test/CMakeFiles/testSingleTon.dir/testSingleTon.cpp.o: CXX_COMPILER__testSingleTon_Debug /home/book/Siempre/test/testSingleTon.cpp || cmake_object_order_depends_target_testSingleTon
   DEP_FILE = test/CMakeFiles/testSingleTon.dir/testSingleTon.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testSingleTon.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testSingleTon.dir
@@ -451,14 +451,14 @@ build cmake_object_order_depends_target_testLog: phony || test/CMakeFiles/testLo
 
 build test/CMakeFiles/testLog.dir/testLog.cpp.o: CXX_COMPILER__testLog_Debug /home/book/Siempre/test/testLog.cpp || cmake_object_order_depends_target_testLog
   DEP_FILE = test/CMakeFiles/testLog.dir/testLog.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testLog.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testLog.dir
 
 build test/CMakeFiles/testLog.dir/__/src/Logger/Logger.cc.o: CXX_COMPILER__testLog_Debug /home/book/Siempre/src/Logger/Logger.cc || cmake_object_order_depends_target_testLog
   DEP_FILE = test/CMakeFiles/testLog.dir/__/src/Logger/Logger.cc.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testLog.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testLog.dir/__/src/Logger
@@ -493,7 +493,7 @@ build cmake_object_order_depends_target_testYaml: phony || test/CMakeFiles/testY
 
 build test/CMakeFiles/testYaml.dir/testyaml.cpp.o: CXX_COMPILER__testYaml_Debug /home/book/Siempre/test/testyaml.cpp || cmake_object_order_depends_target_testYaml
   DEP_FILE = test/CMakeFiles/testYaml.dir/testyaml.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testYaml.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testYaml.dir
@@ -528,7 +528,7 @@ build cmake_object_order_depends_target_testYamlConfig: phony || test/CMakeFiles
 
 build test/CMakeFiles/testYamlConfig.dir/testYamlConfig.cpp.o: CXX_COMPILER__testYamlConfig_Debug /home/book/Siempre/test/testYamlConfig.cpp || cmake_object_order_depends_target_testYamlConfig
   DEP_FILE = test/CMakeFiles/testYamlConfig.dir/testYamlConfig.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testYamlConfig.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testYamlConfig.dir
@@ -563,7 +563,7 @@ build cmake_object_order_depends_target_testConfig: phony || test/CMakeFiles/tes
 
 build test/CMakeFiles/testConfig.dir/testConfig.cpp.o: CXX_COMPILER__testConfig_Debug /home/book/Siempre/test/testConfig.cpp || cmake_object_order_depends_target_testConfig
   DEP_FILE = test/CMakeFiles/testConfig.dir/testConfig.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testConfig.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testConfig.dir
@@ -598,7 +598,7 @@ build cmake_object_order_depends_target_testFromYaml: phony || test/CMakeFiles/t
 
 build test/CMakeFiles/testFromYaml.dir/testFromYaml.cpp.o: CXX_COMPILER__testFromYaml_Debug /home/book/Siempre/test/testFromYaml.cpp || cmake_object_order_depends_target_testFromYaml
   DEP_FILE = test/CMakeFiles/testFromYaml.dir/testFromYaml.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testFromYaml.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testFromYaml.dir
@@ -633,7 +633,7 @@ build cmake_object_order_depends_target_testClassConfig: phony || test/CMakeFile
 
 build test/CMakeFiles/testClassConfig.dir/testClassConfig.cpp.o: CXX_COMPILER__testClassConfig_Debug /home/book/Siempre/test/testClassConfig.cpp || cmake_object_order_depends_target_testClassConfig
   DEP_FILE = test/CMakeFiles/testClassConfig.dir/testClassConfig.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testClassConfig.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testClassConfig.dir
@@ -668,7 +668,7 @@ build cmake_object_order_depends_target_testConfigChange: phony || test/CMakeFil
 
 build test/CMakeFiles/testConfigChange.dir/testConfigChange.cpp.o: CXX_COMPILER__testConfigChange_Debug /home/book/Siempre/test/testConfigChange.cpp || cmake_object_order_depends_target_testConfigChange
   DEP_FILE = test/CMakeFiles/testConfigChange.dir/testConfigChange.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testConfigChange.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testConfigChange.dir
@@ -703,7 +703,7 @@ build cmake_object_order_depends_target_testLogConfig: phony || test/CMakeFiles/
 
 build test/CMakeFiles/testLogConfig.dir/testLogConfig.cpp.o: CXX_COMPILER__testLogConfig_Debug /home/book/Siempre/test/testLogConfig.cpp || cmake_object_order_depends_target_testLogConfig
   DEP_FILE = test/CMakeFiles/testLogConfig.dir/testLogConfig.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testLogConfig.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testLogConfig.dir
@@ -738,7 +738,7 @@ build cmake_object_order_depends_target_testLoadLogFromYaml: phony || test/CMake
 
 build test/CMakeFiles/testLoadLogFromYaml.dir/testLoadLogFromYaml.cpp.o: CXX_COMPILER__testLoadLogFromYaml_Debug /home/book/Siempre/test/testLoadLogFromYaml.cpp || cmake_object_order_depends_target_testLoadLogFromYaml
   DEP_FILE = test/CMakeFiles/testLoadLogFromYaml.dir/testLoadLogFromYaml.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testLoadLogFromYaml.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testLoadLogFromYaml.dir
@@ -773,7 +773,7 @@ build cmake_object_order_depends_target_testThread: phony || test/CMakeFiles/tes
 
 build test/CMakeFiles/testThread.dir/testThread.cpp.o: CXX_COMPILER__testThread_Debug /home/book/Siempre/test/testThread.cpp || cmake_object_order_depends_target_testThread
   DEP_FILE = test/CMakeFiles/testThread.dir/testThread.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testThread.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testThread.dir
@@ -808,7 +808,7 @@ build cmake_object_order_depends_target_testMutithreadLogger: phony || test/CMak
 
 build test/CMakeFiles/testMutithreadLogger.dir/testMutithreadLogger.cpp.o: CXX_COMPILER__testMutithreadLogger_Debug /home/book/Siempre/test/testMutithreadLogger.cpp || cmake_object_order_depends_target_testMutithreadLogger
   DEP_FILE = test/CMakeFiles/testMutithreadLogger.dir/testMutithreadLogger.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testMutithreadLogger.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testMutithreadLogger.dir
@@ -843,7 +843,7 @@ build cmake_object_order_depends_target_testMacro: phony || test/CMakeFiles/test
 
 build test/CMakeFiles/testMacro.dir/testMacro.cpp.o: CXX_COMPILER__testMacro_Debug /home/book/Siempre/test/testMacro.cpp || cmake_object_order_depends_target_testMacro
   DEP_FILE = test/CMakeFiles/testMacro.dir/testMacro.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testMacro.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testMacro.dir
@@ -878,7 +878,7 @@ build cmake_object_order_depends_target_testBackTrace: phony || test/CMakeFiles/
 
 build test/CMakeFiles/testBackTrace.dir/testBackTrace.cpp.o: CXX_COMPILER__testBackTrace_Debug /home/book/Siempre/test/testBackTrace.cpp || cmake_object_order_depends_target_testBackTrace
   DEP_FILE = test/CMakeFiles/testBackTrace.dir/testBackTrace.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testBackTrace.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testBackTrace.dir
@@ -913,7 +913,7 @@ build cmake_object_order_depends_target_testAssert: phony || test/CMakeFiles/tes
 
 build test/CMakeFiles/testAssert.dir/testAssert.cpp.o: CXX_COMPILER__testAssert_Debug /home/book/Siempre/test/testAssert.cpp || cmake_object_order_depends_target_testAssert
   DEP_FILE = test/CMakeFiles/testAssert.dir/testAssert.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testAssert.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testAssert.dir
@@ -948,7 +948,7 @@ build cmake_object_order_depends_target_testFiber: phony || test/CMakeFiles/test
 
 build test/CMakeFiles/testFiber.dir/testFiber.cpp.o: CXX_COMPILER__testFiber_Debug /home/book/Siempre/test/testFiber.cpp || cmake_object_order_depends_target_testFiber
   DEP_FILE = test/CMakeFiles/testFiber.dir/testFiber.cpp.o.d
-  FLAGS = -g   -std=c++14 -Wall -g
+  FLAGS = -g   -std=c++17 -Wall -g
   INCLUDES = -I/home/book/Siempre/include -I/home/book/Siempre/3rd-party/include
   OBJECT_DIR = test/CMakeFiles/testFiber.dir
   OBJECT_FILE_DIR = test/CMakeFiles/testFiber.dir

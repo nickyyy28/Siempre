@@ -9,6 +9,13 @@ siem::ConfigVar<std::set<int>>::ptr set = siem::Config::lookup<std::set<int>>("s
     std::set<int>{0});
 siem::ConfigVar<std::map<std::string, int>>::ptr map = siem::Config::lookup<std::map<std::string, int>>("system.int_map",
     std::map<std::string, int>{});
+siem::ConfigVar<std::vector<std::vector<int>>>::ptr dvec = siem::Config::lookup<std::vector<std::vector<int>>>(
+        "system.dvec",
+        std::vector<std::vector<int>>{
+            {0, 1, 2},
+            {5, 12, 9281}
+        }
+        );
 
 
 int main(void)
@@ -19,9 +26,11 @@ int main(void)
 
     siem::Config cfg;
 
-    cfg.loadFromYaml(root);
+    siem::Config::loadFromYaml(root);
 
     std::cout << port->getName() << port->toString() << port->getDescription() << std::endl;
+
+    auto val = vec->getValue();
 
     std::cout << vec->getName() << vec->toString() << std::endl;
 
@@ -30,6 +39,8 @@ int main(void)
     std::cout << set->getName() << set->toString() << std::endl;
 
     std::cout << map->getName() << map->toString() << std::endl;
+
+    std::cout << "dvec: " << dvec->toString() << std::endl;
 
     siem::Config::lookup<int>("int1", 80);
 

@@ -33,7 +33,7 @@ namespace fs{
         return false;
     }
 
-    bool FileUtil::isFile(const std::string &file) {
+    __attribute__((unused)) bool FileUtil::isFile(const std::string &file) {
         return false;
     }
 

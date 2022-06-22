@@ -1,0 +1,272 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "src",
+					"jsonFile" : "directory-src-Debug-b6cf2213fc5053b67c22.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				},
+				{
+					"build" : "test",
+					"jsonFile" : "directory-test-Debug-451c0598f41488bb20b9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "test",
+					"targetIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "Siempre",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "siem_shared::@145eef247bfb46b6828c",
+					"jsonFile" : "target-siem_shared-Debug-a428cafeb7367243ab74.json",
+					"name" : "siem_shared",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "siem_static::@145eef247bfb46b6828c",
+					"jsonFile" : "target-siem_static-Debug-fe0e40a91d325ddfc5be.json",
+					"name" : "siem_static",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testAssert::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testAssert-Debug-c4942f03732e9e6ca9fb.json",
+					"name" : "testAssert",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testBackTrace::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testBackTrace-Debug-84aab84fc41abf3ff82f.json",
+					"name" : "testBackTrace",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testClassConfig::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testClassConfig-Debug-34f5186192cf029d1e55.json",
+					"name" : "testClassConfig",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testConfig::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testConfig-Debug-1c7a0d6edad23a886f19.json",
+					"name" : "testConfig",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testConfigChange::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testConfigChange-Debug-82b6bd4cc767b54ea93f.json",
+					"name" : "testConfigChange",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testEnv::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testEnv-Debug-8adbf9ce472b9e1d5e92.json",
+					"name" : "testEnv",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testFiber::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testFiber-Debug-6923967fa7b6e982ac72.json",
+					"name" : "testFiber",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testFromYaml::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testFromYaml-Debug-bf9480488d12e5ad5902.json",
+					"name" : "testFromYaml",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testLoadLogFromYaml::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testLoadLogFromYaml-Debug-ddf7cc7f51d4af747842.json",
+					"name" : "testLoadLogFromYaml",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testLog::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testLog-Debug-b6b6e337383cb2e3ad34.json",
+					"name" : "testLog",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testLogConfig::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testLogConfig-Debug-6ca76b7bc46f7323ad0c.json",
+					"name" : "testLogConfig",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testLogger::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testLogger-Debug-31dffce97b28064594b3.json",
+					"name" : "testLogger",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testMacro::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testMacro-Debug-d7ecf0c117dd84de9c31.json",
+					"name" : "testMacro",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testMutithreadLogger::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testMutithreadLogger-Debug-e373fb013498d13d22b2.json",
+					"name" : "testMutithreadLogger",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testScheduler::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testScheduler-Debug-9b9b45ef02ec853329e2.json",
+					"name" : "testScheduler",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testSingleTon::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testSingleTon-Debug-b73a6453dcd78b168419.json",
+					"name" : "testSingleTon",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testThread::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testThread-Debug-dead5328004a06505d42.json",
+					"name" : "testThread",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testYaml::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testYaml-Debug-b31b4d2c04d3f8b8237d.json",
+					"name" : "testYaml",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "testYamlConfig::@36f028580bb02cc8272a",
+					"jsonFile" : "target-testYamlConfig-Debug-43f94078b1a9d1c0324e.json",
+					"name" : "testYamlConfig",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/book/Siempre/cmake-build-debug",
+		"source" : "/home/book/Siempre"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

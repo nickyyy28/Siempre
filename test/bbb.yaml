@@ -1,6 +1,9 @@
 system:
   port: 8081
   value: 20
+  dvec: 
+    - [1, 2, 3]
+    - [55, 66, 77]
   int_vec:
     - 10
     - 20

@@ -3,14 +3,14 @@
 using namespace siem;
 using namespace std;
 
-ConfigVar<Logger::ptr>::ptr syslog = Config::lookup<Logger::ptr>("system.log", GET_LOG_BY_NAME(system));
+ConfigVar<Logger::ptr>::ptr syslog = Config::lookup<Logger::ptr>("system.log", GET_LOG_BY_NAME(testFromYaml));
 ConfigVar<LogAppenderWrapper>::ptr wrap = Config::lookup<LogAppenderWrapper>("system.wrap", LogAppenderWrapper());
 
-int main(void)
+int main()
 {
     siem::Config::loadFromYaml("/home/book/Siempre/test/bbb.yaml");
 
-    cout << Config::lookup<Logger::ptr>("system.log")->toString() << endl;
+    cout << syslog->toString() << endl;
 
     cout << "-------------" << endl;
 

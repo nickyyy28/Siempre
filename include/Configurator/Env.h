@@ -8,6 +8,9 @@
 #include <map>
 #include <list>
 
+#define GET_GLOBAL_ENV() \
+    (Global_Env)
+
 /**
  * @brief 获取命令行参数解析对象指针
  * 
@@ -105,6 +108,8 @@ private:
 
     std::string processName;
 };
+
+extern Env::ptr Global_Env;
 
 }
 

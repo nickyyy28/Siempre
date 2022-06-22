@@ -67,5 +67,10 @@
         "forward_list": "cpp",
         "unordered_set": "cpp",
         "siem": "cpp"
-    }
+    },
+    "C_Cpp.intelliSenseEngine": "Default",
+    "clangd.fallbackFlags": [
+        "-I/home/book/Siempre/include",
+        "-I/home/book/Siempre/3rd-party/include"
+    ]
 }
