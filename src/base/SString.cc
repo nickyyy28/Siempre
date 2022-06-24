@@ -1,6 +1,8 @@
 #include "base/SString.h"
 #include <cstddef>
+#include <cstdint>
 #include <cstring>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -11,6 +13,24 @@ std::ostream& operator<<(std::ostream& os, const SString& str)
 {
     os << str.m_data;
     return os;
+}
+
+std::istream& operator>>(std::istream& is, SString& str)
+{
+    std::stringstream ss;
+
+    char ch;
+    while (is.get(ch)) {
+        if (ch != '\n' && ch != '\0' && ch != EOF) {
+            ss.put(ch);
+        } else {
+            break;
+        }
+    }
+
+    str.append(ss.str());
+
+    return is;
 }
 
 size_t SString::calculateCapacity(size_t size)
@@ -190,13 +210,25 @@ void SString::resize(size_t newSize)
 
 SString& SString::append(const SString& newStr)
 {
-    return this->operator+=(newStr);
+    return append(newStr.c_str(), newStr.size());
 }
 
 SString& SString::append(const std::string& newStr)
 {
-    SString tempStr(newStr);
-    return append(tempStr);
+    return append(newStr.data(), newStr.size());
+}
+
+SString& SString::append(const char* data, size_t length)
+{
+    if (m_size + length > m_cap) {
+        resize(calculateCapacity(m_size + length));
+    }
+
+    std::memcpy(m_data + m_size, data, length);
+
+    m_size += length;
+
+    return *this;
 }
 
 SString SString::substr(size_t pos, size_t size)
@@ -233,6 +265,72 @@ SString::SString(char* data, size_t cap, size_t size)
     m_data = data;
     m_cap = cap;
     m_size = size;
+}
+
+SString& SString::replace(size_t pos, const SString& str)
+{
+
+}
+
+SString& SString::replace(size_t pos, const std::string& str)
+{
+
+}
+
+SString& SString::replace(size_t pos, const char* str, size_t length)
+{
+
+}
+
+SString& SString::insert(size_t pos, const SString& str)
+{
+
+}
+
+SString& SString::insert(size_t pos, const std::string& str)
+{
+
+}
+
+SString& SString::insert(size_t pos, const char* str, size_t length)
+{
+
+}
+
+SStringList SString::split(const SString& str)
+{
+    SStringList sl;
+
+    return sl;
+}
+
+SStringList SString::split(const std::string& str)
+{
+    SStringList sl;
+
+    return sl;
+}
+
+bool SString::contains(const SString& str)
+{
+
+    return false;
+}
+
+bool SString::contains(const std::string& str)
+{
+
+    return false;
+}
+
+SStringList::SStringList()
+{
+
+}
+
+SStringList::~SStringList()
+{
+    
 }
 
 }

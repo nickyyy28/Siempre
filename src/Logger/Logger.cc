@@ -2,6 +2,7 @@
 #include "Logger/console_color.h"
 
 #include "Configurator/Configurator.h"
+#include <iostream>
 
 #define SYSFMT  "%d%T%c%T%p%T thread: %t%T fiber: %F%T%T%T%m"
 

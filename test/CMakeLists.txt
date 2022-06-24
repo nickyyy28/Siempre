@@ -15,13 +15,15 @@ set(
     -pthread
 )
 
-add_definitions("-Wall -g")
+add_definitions("-Wall -g -O0")
 
 link_directories(${PROJECT_SOURCE_DIR}/3rd-party/lib)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)
 
+add_executable(testWeakPtr testWeakPtr.cpp)
+add_executable(testSharedPtr testSharedPtr.cpp)
 add_executable(testScheduler testScheduler.cpp)
 add_executable(testEnv testEnv.cpp)
 add_executable(testLogger testLogger.cpp)
@@ -43,7 +45,11 @@ add_executable(testAssert testAssert.cpp)
 add_executable(testFiber testFiber.cpp)
 add_executable(testThreadPool testThreadPool.cpp)
 add_executable(testSString ./testSString.cpp)
+add_executable(testCrossRef testCrossRef.cpp)
 
+target_link_libraries(testCrossRef ${SIEM_LIBRAARIES})
+target_link_libraries(testWeakPtr ${SIEM_LIBRAARIES})
+target_link_libraries(testSharedPtr ${SIEM_LIBRAARIES})
 target_link_libraries(testSString ${SIEM_LIBRAARIES})
 target_link_libraries(testScheduler ${SIEM_LIBRAARIES})
 target_link_libraries(testFiber ${SIEM_LIBRAARIES})

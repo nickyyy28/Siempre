@@ -2,9 +2,11 @@
 #define __SIEM__SString_H
 
 #include <cstddef>
+#include <istream>
 #include <string>
 #include <iostream>
 #include <vector>
+#include <sstream>
 
 #include <cmath>
 #include <cstring>
@@ -16,48 +18,65 @@ namespace siem{
 class SString;
 class SStringList;
 
+/**
+ * @brief è¾“å‡ºæµé‡è½½
+ * 
+ * @param os 
+ * @param str 
+ * @return std::ostream& 
+ */
 std::ostream& operator<<(std::ostream& os, const SString& str);
+
+/**
+ * @brief è¾“å…¥æµé‡è½½
+ * 
+ * @param is 
+ * @param str 
+ * @return std::istream& 
+ */
+std::istream& operator>>(std::istream& is, SString& str);
 
 class SString
 {
     friend std::ostream& operator<<(std::ostream&, const SString&);
+    friend std::istream& operator>>(std::istream&, SString&);
 public:
 
     /**
-     * @brief Ä¬ÈÏ¹¹Ôì
+     * @brief é»˜è®¤æ„é€ 
      * 
      */
     SString();
 
     /**
-     * @brief ¿½±´¹¹Ôì
+     * @brief æ‹·è´æ„é€ 
      * 
      * @param str 
      */
     SString(const SString& str);
 
     /**
-     * @brief ±ê×¼¿âstd::stringµÄ¿½±´¹¹Ôì
+     * @brief æ ‡å‡†åº“std::stringçš„æ‹·è´æ„é€ 
      * 
      * @param str 
      */
     SString(const std::string& str);
 
     /**
-     * @brief ÓÒÖµÒıÓÃ¿½±´¹¹Ôì
+     * @brief å³å€¼å¼•ç”¨æ‹·è´æ„é€ 
      * 
      * @param str 
      */
     SString(SString&& str);
 
     /**
-     * @brief Îö¹¹
+     * @brief ææ„
      * 
      */
     ~SString();
 
     /**
-     * @brief µÈÓÚºÅÖØÔØ
+     * @brief ç­‰äºå·é‡è½½
      * 
      * @param str 
      * @return const SString& 
@@ -65,7 +84,7 @@ public:
     SString& operator =(const SString& str);
 
     /**
-     * @brief ÓÒÖµÒıÓÃµÈÓÚºÅÖØÔØ
+     * @brief å³å€¼å¼•ç”¨ç­‰äºå·é‡è½½
      * 
      * @param str 
      * @return SString& 
@@ -73,7 +92,7 @@ public:
     SString& operator =(SString&& str);
 
     /**
-     * @brief +=ÖØÔØ
+     * @brief +=é‡è½½
      * 
      * @param str 
      * @return const SString& 
@@ -81,7 +100,7 @@ public:
     SString& operator +=(const SString& str);
 
     /**
-     * @brief +ºÅÖØÔØ
+     * @brief +å·é‡è½½
      * 
      * @param str 
      * @return SString 
@@ -89,35 +108,35 @@ public:
     SString operator +(const SString& str);
 
     /**
-     * @brief []ÖØÔØ
+     * @brief []é‡è½½
      * 
      * @return char 
      */
     char operator [](int);
 
     /**
-     * @brief ·µ»ØÀàcµÄ×Ö·û´®
+     * @brief è¿”å›ç±»cçš„å­—ç¬¦ä¸²
      * 
      * @return const char* 
      */
     const char* c_str() const;
 
     /**
-     * @brief »ñÈ¡×Ö·û´®´óĞ¡
+     * @brief è·å–å­—ç¬¦ä¸²å¤§å°
      * 
      * @return size_t 
      */
     size_t size() const;
 
     /**
-     * @brief »ñÈ¡ÈİÁ¿
+     * @brief è·å–å®¹é‡
      * 
      * @return size_t 
      */
     size_t capacity() const;
 
     /**
-     * @brief ÅĞ¶Ï×Ö·û´®ÊÇ·ñÎª¿Õ
+     * @brief åˆ¤æ–­å­—ç¬¦ä¸²æ˜¯å¦ä¸ºç©º
      * 
      * @return true 
      * @return false 
@@ -125,29 +144,30 @@ public:
     bool empty() const;
 
     /**
-     * @brief Çå³ıËùÓĞ×Ö·û´®
+     * @brief æ¸…é™¤æ‰€æœ‰å­—ç¬¦ä¸²
      * 
      */
     void clear();
 
     /**
-     * @brief ÖØĞÂ·ÖÅä¿Õ¼ä
+     * @brief é‡æ–°åˆ†é…ç©ºé—´
      * 
      * @param newSize 
      */
     void resize(size_t newSize);
 
     /**
-     * @brief ×Ö·û´®Î²×·¼Ó
+     * @brief å­—ç¬¦ä¸²å°¾è¿½åŠ 
      * 
      * @param newStr 
      * @return SString& 
      */
     SString& append(const SString& newStr);
     SString& append(const std::string& newStr);
+    SString& append(const char* data, size_t length = 1);
 
     /**
-     * @brief ´ÓÖ¸¶¨Î»ÖÃ²Ã¼ôÒ»¶Î×Ö·û´®
+     * @brief ä»æŒ‡å®šä½ç½®è£å‰ªä¸€æ®µå­—ç¬¦ä¸²
      * 
      * @param pos 
      * @param size 
@@ -156,7 +176,7 @@ public:
     SString substr(size_t pos, size_t size);
 
     /**
-     * @brief 
+     * @brief ä»æŒ‡å®šä½ç½®æ›¿æ¢
      * 
      * @param pos 
      * @param str 
@@ -164,15 +184,25 @@ public:
      */
     SString& replace(size_t pos, const SString& str);
     SString& replace(size_t pos, const std::string& str);
+    SString& replace(size_t pos, const char* str, size_t length);
 
+    /**
+     * @brief ä»æŒ‡å®šä½ç½®æ’å…¥
+     * 
+     * @param pos 
+     * @param str 
+     * @return SString& 
+     */
     SString& insert(size_t pos, const SString& str);
     SString& insert(size_t pos, const std::string& str);
+    SString& insert(size_t pos, const char* str, size_t length);
 
     SStringList split(const SString& str);
     SStringList split(const std::string& str);
 
     bool contains(const SString& str);
     bool contains(const std::string& str);
+    bool contains(const char* str, size_t length);
 
     int find(const SString& str);
     int find(const std::string& str);
@@ -203,7 +233,7 @@ public:
 private:
 
     /**
-     * @brief ¸ù¾İĞÂ´óĞ¡¼ÆËãĞÂÈİÁ¿
+     * @brief æ ¹æ®æ–°å¤§å°è®¡ç®—æ–°å®¹é‡
      * 
      * @param size 
      * @return size_t 
@@ -224,6 +254,7 @@ public:
 
     SString operator[](int);
 
+    size_t size();
 
 private:
     std::vector<SString> m_strs;

@@ -1,5 +1,7 @@
+#include <cstring>
 #include <iostream>
 #include <ostream>
+#include <string>
 #include "base/SString.h"
 #include "siem"
 
@@ -33,12 +35,21 @@ int main()
     std::cout << "str8 SString size: " << str8.size() << " cap: " << str8.capacity() << " value: " << str8 << std::endl;
     std::cout << "str9 SString size: " << str9.size() << " cap: " << str9.capacity() << " value: " << str9 << std::endl;
 */
+    std::string stdstr("std::str    aaaaaaaaaaaaaaaaaaaaaaafffffffffffffffffffffffffffffffffffffffffffffffffffing");
+    const char* data = "char* stringas4444444444445555555555a5sd5777777777777777777777777777777777777777777777777777777777777777777";
 
     siem::SString str1("abcdefg");
 
     siem::SString str2 = str1.substr(1, 4);
     siem::SString str3;
-    str3 = str1.substr(1, 4);
+    str3 = str1 + str2;
+    siem::SString str4("start");
+
+    std::cin >> str4;
+
+    siem::SString str5("str5 ");
+
+    str5.append(stdstr).append(data, std::strlen(data)).append(str1);
 
 #define XX(__index__)   \
     std::cout << "str"#__index__" SString size: " << str##__index__.size() << " cap: " << str##__index__.capacity() << " value: " << str##__index__ << std::endl
@@ -48,6 +59,8 @@ int main()
     XX(1);
     XX(2);
     XX(3);
+    XX(4);
+    XX(5);
 
     std::cout << "-------------------------" << std::endl;
 
