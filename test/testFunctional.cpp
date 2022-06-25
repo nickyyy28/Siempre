@@ -47,7 +47,7 @@ int main(int argc, const char** argv)
     siem::function<int(int, int)> func2 = add;
 
     func1();
-    std::reinterpret_pointer_cast()
+    // std::reinterpret_pointer_cast()
 
     std::cout << func2(10, 20) << std::endl;
 

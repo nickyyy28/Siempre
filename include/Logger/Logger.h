@@ -1,5 +1,7 @@
-#ifndef __LOGGER_H
-#define __LOGGER_H
+// #ifndef __LOGGER_H
+// #define __LOGGER_H
+
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -994,4 +996,4 @@ namespace siem {
 
 }
 
-#endif
+// #endif

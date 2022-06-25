@@ -9,8 +9,10 @@
  * 
  */
 
-#ifndef __SIEM_CONFIGURATOR_H
-#define __SIEM_CONFIGURATOR_H
+// #ifndef __SIEM_CONFIGURATOR_H
+// #define __SIEM_CONFIGURATOR_H
+
+#pragma once
 
 #include <memory>
 #include <map>
@@ -878,4 +880,4 @@ public:
 
 }
 
-#endif //__SIEM_CONFIGURATOR_H
+// #endif //__SIEM_CONFIGURATOR_H
