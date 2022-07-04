@@ -3,6 +3,10 @@ add_definitions(-std=c++17)
 
 project(Siempre)
 
-
 add_subdirectory(src)
-add_subdirectory(test)
+
+if (EXISTS ${PROJECT_SOURCE_DIR}/test)
+    add_subdirectory(test)
+endif()
+
+

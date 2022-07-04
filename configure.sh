@@ -1,6 +1,11 @@
 #!/bin/bash
 PRJ_ROOT=$(pwd)
 git submodule update --init --recursive
+
+if [ ! -d $PRJ_ROOT/3rd-party ]; then
+    mkdir $PRJ_ROOT/3rd-party
+fi
+
 if [ -d $PRJ_ROOT/github/yaml-cpp/build  ]; then
     rm -rf $PRJ_ROOT/github/yaml-cpp/build
 fi
