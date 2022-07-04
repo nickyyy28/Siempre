@@ -2,6 +2,7 @@
 /bin/*
 ./cmake-build-debug/*
 ./cache/*
-./.vscode/
-./.idea/
-./test/
+./.vscode/*
+./.idea/*
+./test/*
+./lib/*
