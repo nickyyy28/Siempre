@@ -5,6 +5,7 @@
 #include <istream>
 #include <string>
 #include <iostream>
+#include <type_traits>
 #include <vector>
 #include <sstream>
 
@@ -12,6 +13,13 @@
 #include <cstring>
 #include <cstdint>
 #include <cstdlib>
+
+#include "utils/utils.h"
+
+#define DEBUG_STR(__str__) \
+    siem::debug_show_str(__str__)
+
+
 
 namespace siem{
 
@@ -103,7 +111,7 @@ public:
      * @brief +号重载
      * 
      * @param str 
-     * @return SString 
+     * @return SString
      */
     SString operator +(const SString& str);
 
@@ -197,31 +205,98 @@ public:
     SString& insert(size_t pos, const std::string& str);
     SString& insert(size_t pos, const char* str, size_t length);
 
+    /**
+     * @brief 分割字符串
+     * 
+     * @param str 
+     * @return SStringList 
+     */
     SStringList split(const SString& str);
     SStringList split(const std::string& str);
+    SStringList split(const char* str, size_t length);
+    SStringList split(char ch);
 
+    /**
+     * @brief 查找是否存在字符串
+     * 
+     * @param str 
+     * @return true 
+     * @return false 
+     */
     bool contains(const SString& str);
     bool contains(const std::string& str);
     bool contains(const char* str, size_t length);
 
+    /**
+     * @brief 查找字符串并返回位置
+     * 
+     * @param str 
+     * @return int 
+     */
     int find(const SString& str);
     int find(const std::string& str);
 
+    /**
+     * @brief 是否以某字符串开头
+     * 
+     * @param str 
+     * @return true 
+     * @return false 
+     */
     bool startWith(const SString& str);
     bool startWith(const std::string& str);
 
+    /**
+     * @brief 是否以某字符串结尾
+     * 
+     * @param str 
+     * @return true 
+     * @return false 
+     */
     bool endWith(const SString& str);
     bool endWith(const std::string& str);
 
-    SString toLowerCase();
-    SString toUpperCase();
+    /**
+     * @brief 转换为小写字符
+     * 
+     * @return SString 
+     */
+    SString& toLowerCase();
 
-    static SString toString(int val);
-    static SString toString(char val);
-    static SString toString(short val);
-    static SString toString(float val);
-    static SString toString(double val);
-    static SString toString(long val);
+    /**
+     * @brief 转换为大写字符
+     * 
+     * @return SString& 
+     */
+    SString& toUpperCase();
+
+    template <class T>
+    SString& operator<<(T var)
+    {
+        // std::cout << "SString& operator<<(" << TypeToName<T>() << " var)" << std::endl;
+        std::stringstream ss;
+        ss << var;
+        append(ss.str());
+        return *this;
+    }
+
+    template<class T>
+    static SString toString(T var)
+    {
+        std::stringstream ss;
+        ss << var;
+        return SString(ss.str());
+    }
+
+    template<class T>
+    static T toVariable(const SString& str)
+    {
+        std::stringstream ss;
+        ss << str.m_data;
+        T var;
+        ss >> var;
+        return var;
+    }
 
     static char toChar(const SString& str);
     static short toShort(const SString& str);
@@ -250,11 +325,26 @@ private:
 class SStringList{
 public:
     SStringList();
+    SStringList(SStringList &&list);
     ~SStringList();
 
     SString operator[](int);
 
-    size_t size();
+    size_t size() const;
+
+    template <class T>
+    void addString(T &&val)
+    {
+        m_strs.push_back(std::forward<T>(val));
+    }
+
+    void addString(const char* val)
+    {
+        m_strs.push_back(std::string(val));
+    }
+
+    std::vector<SString>::iterator begin();
+    std::vector<SString>::iterator end();
 
 private:
     std::vector<SString> m_strs;

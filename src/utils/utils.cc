@@ -75,5 +75,4 @@ uint64_t getFiberID(void)
     return siem::Fiber::getCurFiberID();
 }
 
-
 }

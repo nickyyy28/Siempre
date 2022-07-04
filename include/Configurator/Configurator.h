@@ -467,7 +467,7 @@ public:
      * 
      * @return std::string 
      */
-    std::string getTypeName() const { return TypeToName<T>(); }
+    std::string getTypeName() const override { return TypeToName<T>(); }
 
     /**
      * @brief 添加监听函数

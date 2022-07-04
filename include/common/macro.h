@@ -1,8 +1,6 @@
 #ifndef __SIEM_MACRO_H
 #define __SIEM_MACRO_H
 
-#define NDEBUG
-
 #include <string.h>
 #include <assert.h>
 #include "Logger/Logger.h"

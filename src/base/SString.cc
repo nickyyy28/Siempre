@@ -2,10 +2,16 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <queue>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include <vector>
+
+#include "Logger/Logger.h"
+#include "Thread/Thread.h"
+#include "utils/utils.h"
 
 namespace siem {
 
@@ -47,6 +53,7 @@ SString::SString()
 
 SString::SString(const SString& str)
 {
+    // std::cout << "SString::SString(const SString& str)" << std::endl;
     m_cap = str.m_cap;
     m_size = str.m_size;
     m_data = new char[m_cap];
@@ -56,6 +63,7 @@ SString::SString(const SString& str)
 
 SString::SString(const std::string& str)
 {
+    // std::cout << "SString::SString(const std::string& str)" << std::endl;
     size_t size = str.size();
     size_t newSize = calculateCapacity(size);
     if (newSize <= 128) newSize = 128;
@@ -70,6 +78,7 @@ SString::SString(const std::string& str)
 
 SString::SString(SString&& str)
 {
+    // std::cout << "SString::SString(SString&& str)" <<std::endl;
     m_cap = str.m_cap;
     m_size = str.m_size;
     m_data = str.m_data;
@@ -87,6 +96,7 @@ SString::~SString()
 
 SString& SString::operator=(const SString& str)
 {
+    // std::cout << "SString& SString::operator=(const SString& str)" << std::endl;
     if (this->m_data != nullptr && str.m_data != nullptr && this->m_data == str.m_data) {
         return *this;
     }
@@ -112,6 +122,7 @@ SString& SString::operator=(const SString& str)
 
 SString& SString::operator=(SString&& str)
 {
+    // std::cout << "SString& SString::operator=(SString&& str)" << std::endl;
     delete [] m_data;
     m_data = str.m_data;
     str.m_data = nullptr;
@@ -250,14 +261,6 @@ SString SString::substr(size_t pos, size_t size)
     std::memcpy(tempStr.m_data, m_data + pos, size);
 
     return tempStr;
-
-    // char* tempData = new char[tempCap];
-
-    // std::memcpy(tempData, m_data + pos, size);
-    // // SString&& rval = SString(tempData, tempCap, size);
-    // // return rval;
-
-    // return std::forward<SString>(SString(tempData, tempCap, size));
 }
 
 SString::SString(char* data, size_t cap, size_t size)
@@ -269,32 +272,65 @@ SString::SString(char* data, size_t cap, size_t size)
 
 SString& SString::replace(size_t pos, const SString& str)
 {
-
+    return replace(pos, str.m_data, str.size());
 }
 
 SString& SString::replace(size_t pos, const std::string& str)
 {
-
+    return replace(pos, str.c_str(), str.size());
 }
 
 SString& SString::replace(size_t pos, const char* str, size_t length)
 {
+    if(pos + length > m_size) {
+        throw std::invalid_argument("the length out of bound");
+    }
 
+    if (pos + length > m_cap) {
+        resize(calculateCapacity(pos + length));
+    }
+
+    std::memcpy(m_data + pos, str, length);
+
+    return *this;
 }
 
 SString& SString::insert(size_t pos, const SString& str)
 {
-
+    return insert(pos, str.c_str(), str.size());
 }
 
 SString& SString::insert(size_t pos, const std::string& str)
 {
-
+    return insert(pos, str.c_str(), str.size());
 }
 
 SString& SString::insert(size_t pos, const char* str, size_t length)
 {
+    if(pos > m_size) {
+        throw std::invalid_argument("the pos out of bound");
+    }
 
+    int newSize = size() + length;
+
+    int newCap = calculateCapacity(newSize);
+    if (newCap > capacity()) {
+        resize(newCap);
+    }
+
+    size_t needMoveSize = size() - pos; //需要移动几个
+    int offset = length;                //向右移动几个字节
+    char * base = m_data + pos;         //数据基地址
+
+    for (int i = 1 ; i <= needMoveSize ; ++i) {
+        *(base + offset + (needMoveSize - i)) = *(base + (needMoveSize - i));
+    }
+
+    std::memcpy(m_data + pos, str, length);
+
+    m_size = newSize;
+
+    return *this;
 }
 
 SStringList SString::split(const SString& str)
@@ -311,15 +347,55 @@ SStringList SString::split(const std::string& str)
     return sl;
 }
 
-bool SString::contains(const SString& str)
+SStringList SString::split(const char* str, size_t length)
 {
 
+    SStringList sl;
+
+    return sl;
+}
+
+SStringList SString::split(char ch)
+{
+
+    SStringList sl;
+    std::deque<size_t> indexs;
+    std::vector<std::pair<size_t, size_t>> strs;
+
+    size_t index = 0;
+    size_t last_index = 0;
+
+    for (; index < size() ; ++index) {
+        if (*(m_data + index) == ch) {
+            // indexs.push_back(index);
+            indexs.push_back(index);
+        }
+    }
+
+    if (indexs.size() == 0) {
+        sl.addString(*this);
+    }
+
+    while (indexs.size() != 0) {
+        index = indexs.front();
+
+        if (index == last_index) {
+ 
+            continue; 
+        }
+    }
+
+
+    return sl;
+}
+
+bool SString::contains(const SString& str)
+{
     return false;
 }
 
 bool SString::contains(const std::string& str)
 {
-
     return false;
 }
 
@@ -328,9 +404,36 @@ SStringList::SStringList()
 
 }
 
+SStringList::SStringList(SStringList &&list)
+{
+    for (auto it = list.begin() ; it != list.end() ; ++it) {
+        m_strs.push_back(std::move(*it));
+    }
+}
+
 SStringList::~SStringList()
 {
-    
+
+}
+
+SString SStringList::operator[](int index)
+{
+    return m_strs[index];
+}
+
+size_t SStringList::size() const
+{
+    return m_strs.size();
+}
+
+std::vector<SString>::iterator SStringList::begin()
+{
+    return m_strs.begin();
+}
+
+std::vector<SString>::iterator SStringList::end()
+{
+    return m_strs.end();
 }
 
 }

@@ -72,5 +72,8 @@
     "clangd.fallbackFlags": [
         "-I/home/book/Siempre/include",
         "-I/home/book/Siempre/3rd-party/include"
+    ],
+    "clangd.arguments": [
+        "--query-driver=/usr/bin/g++-10"
     ]
 }

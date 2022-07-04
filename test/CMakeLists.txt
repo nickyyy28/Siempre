@@ -15,7 +15,8 @@ set(
     -pthread
 )
 
-add_definitions("-Wall -g -O0")
+#add_definitions("-Wall -g -O0")
+add_definitions("-g -O3")
 
 link_directories(${PROJECT_SOURCE_DIR}/3rd-party/lib)
 
@@ -48,7 +49,11 @@ add_executable(testSString ./testSString.cpp)
 add_executable(testCrossRef testCrossRef.cpp)
 add_executable(testBind testBind.cpp)
 add_executable(testFunctional testFunctional.cpp)
+add_executable(testSStringList testSStringList.cpp)
+add_executable(testReplaceAndInsert testReplaceAndInsert.cpp)
 
+target_link_libraries(testReplaceAndInsert ${SIEM_LIBRAARIES})
+target_link_libraries(testSStringList ${SIEM_LIBRAARIES})
 target_link_libraries(testFunctional ${SIEM_LIBRAARIES})
 target_link_libraries(testCrossRef ${SIEM_LIBRAARIES})
 target_link_libraries(testWeakPtr ${SIEM_LIBRAARIES})
