@@ -9,9 +9,6 @@
  * 
  */
 
-// #ifndef __SIEM_CONFIGURATOR_H
-// #define __SIEM_CONFIGURATOR_H
-
 #pragma once
 
 #include <memory>
@@ -30,10 +27,10 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "common/singleton.h"
-#include "Logger/Logger.h"
-#include "Fiber/Fiber.h"
-#include "utils/utils.h"
+#include "../common/singleton.h"
+#include "../Logger/Logger.h"
+#include "../Fiber/Fiber.h"
+#include "../utils/utils.h"
 
 #include "city/city.h"
 #include "yaml-cpp/yaml.h"
@@ -515,7 +512,6 @@ private:
 class Config{
 public:
     typedef std::map<std::string, ConfigVarBase::ptr> ConfigVarMap;
-    //using ConfigVarMap = std::map<std::string, ConfigVarBase::ptr>;
 
     /**
      * @brief 查找一个配置项, 假如不存在则创建一个
@@ -595,6 +591,13 @@ public:
      * @param path yaml文件路径
      */
     static void loadFromYaml(const std::string& path);
+
+    /**
+     * @brief 将配置文件写回
+     * 
+     * @param path 
+     */
+    static void saveAsYaml(const std::string& path);
 
 private:
     static ConfigVarMap m_datas;
@@ -879,5 +882,3 @@ public:
 };
 
 }
-
-// #endif //__SIEM_CONFIGURATOR_H

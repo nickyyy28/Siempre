@@ -16,7 +16,7 @@ Scheduler::Scheduler(size_t threads, bool use_caller, const std::string& name)
         Fiber::getThis();
         --threads;
 
-        SIEM_ASSERT_STR(getThis() == nullptr, Scheduler Exist);
+        SIEM_ASSERT_STR(getThis() == nullptr, "Scheduler Exist");
         t_scheduler = this;
         m_rootFiber.reset(new Fiber(std::bind(&Scheduler::run, this), 0, true));
         Thread::setThisName(m_name);

@@ -1,4 +1,5 @@
 #include "Thread/Thread.h"
+#include <pthread.h>
 
 namespace siem{
 
@@ -20,6 +21,12 @@ void Thread::setThisName(const std::string& name)
     if (local_thread) {
         local_name = name;
     }
+}
+
+bool Thread::joinable()
+{
+    // return pthread_c;
+    return true;
 }
 
 void* Thread::run(void* arg)
@@ -45,10 +52,6 @@ void* Thread::run(void* arg)
 Thread::Thread(callBack cb, const std::string& name)
     : m_cb(cb)
     , m_name(name) {
-
-    if (m_name.empty()) {
-        m_name = "UNKOWN";
-    }
 
     int ret = pthread_create(&m_thread, nullptr, &Thread::run, this);
 
@@ -94,6 +97,20 @@ void Thread::detach()
     }
 
     m_thread = 0;
+}
+
+bool Thread::destroy()
+{
+    if (Thread::getThis() == this) {
+        exit();
+        return true;
+    }
+    return !pthread_cancel(m_thread);
+}
+
+void Thread::exit()
+{
+    pthread_exit(nullptr);
 }
 
 }

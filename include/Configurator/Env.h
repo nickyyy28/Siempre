@@ -1,9 +1,8 @@
-#ifndef __SIEM_ENV_H
-#define __SIEM_ENV_H
+#pragma once
 
-#include "Logger/Logger.h"
-#include "Thread/Thread.h"
-#include "common/singleton.h"
+#include "../Logger/Logger.h"
+#include "../Thread/Thread.h"
+#include "../common/singleton.h"
 
 #include <map>
 #include <list>
@@ -112,5 +111,3 @@ private:
 extern Env::ptr Global_Env;
 
 }
-
-#endif //__SIEM_ENV_H

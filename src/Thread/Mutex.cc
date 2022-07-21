@@ -1,5 +1,6 @@
 #include "Thread/Mutex.h"
 #include <cerrno>
+#include <pthread.h>
 
 namespace siem{
 
@@ -81,5 +82,34 @@ void RWMutex::unlock(void)
 {
     pthread_rwlock_unlock(&m_lock);
 }
+
+Condition::Condition()
+{
+    pthread_cond_init(&m_cond, nullptr);
+}
+
+void Condition::wait(Mutex::Lock &lock)
+{
+    pthread_cond_wait(&m_cond, &lock.m_mutex.m_mutex);
+}
+
+void Condition::wait(Mutex::Lock& lock, CondIf condIf)
+{
+    while (condIf()) {
+        wait(lock);
+    }
+}
+
+void Condition::notify_all()
+{
+    pthread_cond_broadcast(&m_cond);
+}
+
+void Condition::notify_one()
+{
+    pthread_cond_signal(&m_cond);
+}
+
+
 
 }

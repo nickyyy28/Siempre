@@ -1,12 +1,11 @@
-#ifndef __SIEM_FIBER_H
-#define __SIEM_FIBER_H
+#pragma once
 
-#include "Logger/Logger.h"
-#include "Thread/Thread.h"
-#include "common/macro.h"
-#include "common/nocopyable.h"
-#include "Configurator/Configurator.h"
-#include "common/singleton.h"
+#include "../Logger/Logger.h"
+#include "../Thread/Thread.h"
+#include "../common/macro.h"
+#include "../common/nocopyable.h"
+#include "../Configurator/Configurator.h"
+#include "../common/singleton.h"
 
 #include <memory>
 #include <functional>
@@ -193,6 +192,3 @@ public:
 };
 
 } // namespace siem
-
-
-#endif //__SIEM_FIBER_H

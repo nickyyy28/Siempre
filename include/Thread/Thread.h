@@ -1,15 +1,14 @@
-#ifndef __THREAD_H
-#define __THREAD_H
+#pragma once
 
 #include <memory>
 #include <pthread.h>
 #include <functional>
 #include <list>
 
-#include "Logger/Logger.h"
-#include "common/nocopyable.h"
-#include "common/singleton.h"
-#include "Mutex.h"
+#include "../Logger/Logger.h"
+#include "../common/nocopyable.h"
+#include "../common/singleton.h"
+#include "./Mutex.h"
 
 namespace siem{
 
@@ -46,10 +45,30 @@ public:
     void join(void);
 
     /**
+     * @brief 是否可以开启线程
+     * 
+     * @return true 
+     * @return false 
+     */
+    bool joinable(void);
+
+    /**
      * @brief 非阻塞开始线程
      * 
      */
     void detach(void);
+
+    /**
+     * @brief 销毁线程
+     * 
+     */
+    bool destroy(void);
+
+    /**
+     * @brief 线程退出
+     * 
+     */
+    void exit(void);
 
     /**
      * @brief 获取当前运行线程指针
@@ -89,5 +108,3 @@ private:
 };
 
 }
-
-#endif //__THREAD_H

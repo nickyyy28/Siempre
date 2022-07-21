@@ -1,14 +1,13 @@
 #include "Configurator/Configurator.h"
 
+#include <fstream>
+#include <sstream>
+
 namespace siem
 {
 
 using MemberList = std::list<std::pair<std::string, const YAML::Node>>;
 Config::ConfigVarMap Config::m_datas;
-
-static ConfigVar<std::string>::ptr tomcat_port = Config::lookup<std::string>("tomcat_port", "8080", "the tomcat server default port");
-
-static ConfigVar<std::vector<int>>::ptr vec = Config::lookup<std::vector<int>>("vector", std::vector<int>{1, 2, 3}, "this a vector config");
 
 static void listAllMember(const std::string& prefix, const YAML::Node& node, MemberList& output);
 
@@ -59,6 +58,32 @@ static void listAllMember(const std::string& prefix, const YAML::Node& node, Mem
         for (auto it = node.begin() ; it != node.end() ; ++it) {
             listAllMember((prefix.empty() ? it->first.Scalar() : (prefix + "." + it->first.Scalar())), it->second, output);
         }
+    }
+}
+
+void Config::saveAsYaml(const std::string &path)
+{
+    // std::ofstream ofs;
+    // ofs.open(path.c_str(), std::ios::trunc);
+    // if (!ofs.is_open()) {
+    //     return;
+    // }
+
+    
+
+    // ofs.close();
+
+    std::stringstream ss;
+
+    for(auto& v : m_datas) {
+        auto key = v.first;
+        auto value = v.second;
+
+        if (key.compare("system.stackSize") == 0) {
+            continue;
+        }
+
+        ss << value->toString() << std::endl;
     }
 }
 

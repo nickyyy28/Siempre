@@ -1,5 +1,4 @@
-#ifndef __NOCOPYABLE_H
-#define __NOCOPYABLE_H
+#pragma once
 
 namespace siem {
 
@@ -21,5 +20,3 @@ namespace siem {
     };
 
 }
-
-#endif //__NOCOPYABLE_H

@@ -1,5 +1,4 @@
-#ifndef __UTILS_H
-#define __UTILS_H
+#pragma once
 
 #include <vector>
 #include <cxxabi.h>
@@ -62,5 +61,3 @@ std::string BackTraceToString(size_t size, int skip);
 uint64_t getFiberID(void);
 
 }
-
-#endif

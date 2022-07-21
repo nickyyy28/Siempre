@@ -3,7 +3,7 @@
 
 int main(void)
 {
-    SIEM_ASSERT_STR(0, hello world);
+    SIEM_ASSERT_STR(0, "hello world");
 
     while (true)
     {

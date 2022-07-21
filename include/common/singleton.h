@@ -1,7 +1,6 @@
-#ifndef __SINGLETON_H
-#define __SINGLETON_H
+#pragma once
 
-#include "nocopyable.h"
+#include "./nocopyable.h"
 
 #include <memory>
 #include <mutex>
@@ -50,6 +49,3 @@ public:
 
 
 } // namespace siem
-
-
-#endif //__SINGLETON_H

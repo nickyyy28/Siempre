@@ -1,9 +1,8 @@
-#ifndef __SIEM_SCHEDULER_H
-#define __SIEM_SCHEDULER_H
+#pragma once
 
-#include "Fiber.h"
-#include "Thread/Thread.h"
-#include "common/nocopyable.h"
+#include "./Fiber.h"
+#include "../Thread/Thread.h"
+#include "../common/nocopyable.h"
 
 #include <vector>
 #include <memory>
@@ -217,5 +216,3 @@ protected:
 };
 
 }
-
-#endif //__SIEM_SCHEDULER_H

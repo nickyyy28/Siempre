@@ -1,3 +1,4 @@
+#include "Thread/ThreadPool.h"
 #include <siem>
 #include <unistd.h>
 
@@ -7,9 +8,9 @@ int main(void)
 {
     siem::LoggerMgr::getInstance()->setRootFormat("[%d:%r]%N%t %p%f%l%n%m");
 
-    siem::Thread::setThisName("main");
+    // siem::Thread::setThisName("main");
 
-    siem::RWMutex rw;
+    // siem::RWMutex rw;
 
     /*siem::Thread thread1([&](){
         int i = 1000000;
@@ -31,16 +32,18 @@ int main(void)
         
     }, "write thread2");*/
 
-    std::list<siem::Thread::ptr> list;
+    siem::_mutex mtx;
+
+    std::list<siem::_threadPtr> list;
     for (int i = 0 ; i < 5 ; i ++) {
-        list.push_back(std::make_shared<siem::Thread>([&](){
+        list.push_back(std::make_shared<siem::_thread>([&](){
             int i = 1000000;
             while (i--)
             {
-                siem::RWMutex::WriteLock lock(rw);
+                // siem::_scopeLock lock(mtx);
                 count++;
             }
-        }, "therad: " + std::to_string(i)));
+        }));
     }
 
     for (auto& th : list) {

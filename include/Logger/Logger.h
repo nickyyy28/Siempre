@@ -1,6 +1,3 @@
-// #ifndef __LOGGER_H
-// #define __LOGGER_H
-
 #pragma once
 
 #include <iostream>
@@ -22,10 +19,10 @@
 #include <cstdarg>
 #include <cstdlib>
 
-#include "common/singleton.h"
-#include "utils/utils.h"
-#include "Thread/Thread.h"
-#include "Thread/Mutex.h"
+#include "../common/singleton.h"
+#include "../utils/utils.h"
+#include "../Thread/Thread.h"
+#include "../Thread/Mutex.h"
 
 /**
  * @brief 使用流式方式将日志级别level的日志写入到logger
@@ -722,6 +719,12 @@ namespace siem {
          */
         Mutex m_mutex;
 
+        /**
+         * @brief 格式化格式
+         * 
+         */
+        std::string m_fmt;
+
     public:
 
         /**
@@ -789,6 +792,13 @@ namespace siem {
          * @return const std::list<LogAppender::ptr>&
          */
         const std::list<LogAppender::ptr> &getAppenders() const { return m_appenders; }
+
+        /**
+         * @brief 获取格式化格式
+         * 
+         * @return std::string 
+         */
+        std::string getFormatter() const { return m_fmt; }
 
         /**
          * @brief 设置appenders的format格式
@@ -995,5 +1005,3 @@ namespace siem {
     using LoggerMgr = SingleTon<LoggerManager>;
 
 }
-
-// #endif

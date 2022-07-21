@@ -31,7 +31,7 @@ Fiber::Fiber(void)
     setThis(this);
 
     if (getcontext(&m_context)) {
-        SIEM_ASSERT_STR(false, get context fail);
+        SIEM_ASSERT_STR(false, "get context fail");
     }
 
     ++s_fiber_numbers;
@@ -45,7 +45,7 @@ Fiber::Fiber(callBack cb, size_t stack_size, bool is_usecaller)
     m_stack = StackAllocator::Alloc(m_stackSize);
 
     if (getcontext(&m_context)) {
-        SIEM_ASSERT_STR(false, get context fail);
+        SIEM_ASSERT_STR(false, "get context fail");
     }
 
     m_context.uc_link = nullptr;
@@ -183,7 +183,7 @@ void Fiber::reset(callBack cb)
     m_cb = cb;
 
     if (getcontext(&m_context)) {
-        SIEM_ASSERT_STR(false, get context fail);
+        SIEM_ASSERT_STR(false, "get context fail");
     }
 
     m_context.uc_link = nullptr;
@@ -203,7 +203,7 @@ void Fiber::swapIn(void)
     m_state = EXEC;
 
     if (swapcontext(&Scheduler::getMainFiber()->m_context, &m_context)) {
-        SIEM_ASSERT_STR(false,swap context);
+        SIEM_ASSERT_STR(false,"swap context");
     }
 }
 
@@ -212,7 +212,7 @@ void Fiber::swapOut(void)
     setThis(Scheduler::getMainFiber());
 
     if (swapcontext(&m_context, &Scheduler::getMainFiber()->m_context)) {
-        SIEM_ASSERT_STR(false,swap context);
+        SIEM_ASSERT_STR(false,"swap context");
     }
 }
 

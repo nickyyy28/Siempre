@@ -1,12 +1,16 @@
-#ifndef __MUTEX_H
-#define __MUTEX_H
+#pragma once
 
+#include <cstdint>
+#include <functional>
 #include <semaphore.h>
+#include <pthread.h>
 
-#include "common/nocopyable.h"
-#include "common/singleton.h"
+#include "../common/nocopyable.h"
+#include "../common/singleton.h"
 
 namespace siem{
+
+class Condition;
 
 /**
  * @brief 信号量
@@ -42,6 +46,7 @@ private:
 template<class T>
 struct ScopeLockImpl
 {
+    friend class Condition;
 public:
     ScopeLockImpl(T& mutex)
     : m_mutex(mutex) {
@@ -164,6 +169,7 @@ private:
  * 
  */
 class Mutex : public NoCopyAble{
+    friend class Condition;
 public:
     typedef ScopeLockImpl<Mutex> Lock;
 
@@ -191,6 +197,52 @@ private:
     pthread_rwlock_t m_lock;
 };
 
-}
+class Condition{
+public:
+    typedef std::function<bool()> CondIf;
+    Condition();
+    ~Condition() = default;
 
-#endif //__MUTEX_H
+    /**
+     * @brief 等待条件满足
+     * 
+     * @param lock 
+     */
+    void wait(Mutex::Lock& lock);
+
+    /**
+     * @brief 当条件成立时才等待条件满足
+     * 
+     * @param lock 
+     * @param condIf 
+     */
+    void wait(Mutex::Lock& lock, CondIf condIf);
+
+    /**
+     * @brief 当条件成立时开始等待, 超过一定时间退出等待
+     * 
+     * @param lock 
+     * @param condIf 
+     * @param timeout 
+     * @return true 
+     * @return false 
+     */
+    bool wait_for(Mutex::Lock& lock, CondIf condIf, uint32_t timeout);
+
+    /**
+     * @brief 唤醒所有陷入等待的线程
+     * 
+     */
+    void notify_all();
+
+    /**
+     * @brief 随机唤醒一个等待的线程
+     * 
+     */
+    void notify_one();
+
+private:
+    pthread_cond_t m_cond;
+};
+
+}

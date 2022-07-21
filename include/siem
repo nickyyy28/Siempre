@@ -1,5 +1,4 @@
-#ifndef __SIEM_CORE
-#define __SIEM_CORE
+#pragma once
 
 #include "Logger/Logger.h"
 #include "Thread/Thread.h"
@@ -11,5 +10,3 @@
 #include "fs/fs.h"
 #include "Thread/ThreadPool.h"
 #include "base/SString.h"
-
-#endif

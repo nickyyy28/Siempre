@@ -1,10 +1,9 @@
-#ifndef __SIEM_IO_MANAGER_H
-#define __SIEM_IO_MANAGER_H
+#pragma once
 
 #include <sys/epoll.h>
 
-#include "Logger/Logger.h"
-#include "Fiber/Scheduler.h"
+#include "../Logger/Logger.h"
+#include "../Fiber/Scheduler.h"
 
 namespace siem{
 
@@ -106,5 +105,3 @@ private:
 };
 
 }
-
-#endif //__SIEM_IO_MANAGER_H

@@ -16,7 +16,7 @@ set(
 )
 
 #add_definitions("-Wall -g -O0")
-add_definitions("-g -O3")
+add_definitions("-g -O0")
 
 link_directories(${PROJECT_SOURCE_DIR}/3rd-party/lib)
 
@@ -51,7 +51,11 @@ add_executable(testBind testBind.cpp)
 add_executable(testFunctional testFunctional.cpp)
 add_executable(testSStringList testSStringList.cpp)
 add_executable(testReplaceAndInsert testReplaceAndInsert.cpp)
+add_executable(testSemaphore testSemaphore.cpp)
+add_executable(testTimer testTimer.cpp)
 
+target_link_libraries(testSemaphore ${SIEM_LIBRAARIES})
+target_link_libraries(testTimer ${SIEM_LIBRAARIES})
 target_link_libraries(testReplaceAndInsert ${SIEM_LIBRAARIES})
 target_link_libraries(testSStringList ${SIEM_LIBRAARIES})
 target_link_libraries(testFunctional ${SIEM_LIBRAARIES})

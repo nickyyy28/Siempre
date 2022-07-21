@@ -1,5 +1,4 @@
-#ifndef __SIEM__SString_H
-#define __SIEM__SString_H
+#pragma once
 
 #include <cstddef>
 #include <istream>
@@ -14,7 +13,7 @@
 #include <cstdint>
 #include <cstdlib>
 
-#include "utils/utils.h"
+#include "../utils/utils.h"
 
 #define DEBUG_STR(__str__) \
     siem::debug_show_str(__str__)
@@ -351,6 +350,3 @@ private:
 };
 
 }
-
-#endif
-
