@@ -57,6 +57,7 @@ public:
         ACTIVE = 0x01,  //工作线程
         IDLE = 0x02     //空闲线程
     };
+    
 
     class ThreadWrap{
     public:

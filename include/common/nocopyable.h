@@ -6,16 +6,12 @@ namespace siem {
      * @brief a base class of apply to make
      */
     class NoCopyAble {
-    public:
+    protected:
         NoCopyAble() = default;
-
         ~NoCopyAble() = default;
-
     private:
         NoCopyAble(const NoCopyAble &) = delete;
-
-        NoCopyAble(const NoCopyAble &&) = delete;
-
+        NoCopyAble(NoCopyAble &&) = delete;
         NoCopyAble &operator=(const NoCopyAble &) = delete;
     };
 

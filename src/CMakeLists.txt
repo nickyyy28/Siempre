@@ -15,6 +15,10 @@ set(
     ./Thread/ThreadPool.cc
     ./Thread/Timer.cc
     ./base/SString.cc
+    ./base/TimeStamp.cc
+    ./net/TCPClient.cc
+    ./net/TCPConn.cc
+    ./net/TCPServer.cc
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)

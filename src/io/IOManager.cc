@@ -24,7 +24,7 @@ IOManager::FdContext::EventContext& IOManager::FdContext::getContext(IOManager::
     case WRITE:
         return write;
     default:
-        SIEM_ASSERT_STR(false, get context);
+        SIEM_ASSERT_STR(false, "get context");
     }
 
     throw std::invalid_argument("getContext");
@@ -283,7 +283,7 @@ bool IOManager::stopping(void)
 
 bool IOManager::stopping(uint64_t timeout)
 {
-
+    return false;
 }
 
 void IOManager::tickle(void)

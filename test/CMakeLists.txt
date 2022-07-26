@@ -12,7 +12,7 @@ set(
     SIEM_LIBRAARIES
     ${LIB_SIEM}
     ${3RD_PARTY}
-    -pthread
+    pthread
 )
 
 #add_definitions("-Wall -g -O0")
@@ -53,9 +53,11 @@ add_executable(testSStringList testSStringList.cpp)
 add_executable(testReplaceAndInsert testReplaceAndInsert.cpp)
 add_executable(testSemaphore testSemaphore.cpp)
 add_executable(testTimer testTimer.cpp)
+add_executable(testTimeStamp testTimeStamp.cpp)
 
 target_link_libraries(testSemaphore ${SIEM_LIBRAARIES})
 target_link_libraries(testTimer ${SIEM_LIBRAARIES})
+target_link_libraries(testTimeStamp ${SIEM_LIBRAARIES})
 target_link_libraries(testReplaceAndInsert ${SIEM_LIBRAARIES})
 target_link_libraries(testSStringList ${SIEM_LIBRAARIES})
 target_link_libraries(testFunctional ${SIEM_LIBRAARIES})

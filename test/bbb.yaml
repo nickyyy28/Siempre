@@ -48,3 +48,6 @@ system:
     appender:
       level: INFO
       formatter: "%d%T%m"
+
+system:
+  test_var: 20
