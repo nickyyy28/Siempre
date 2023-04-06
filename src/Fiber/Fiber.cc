@@ -2,13 +2,20 @@
 #include "Logger/Logger.h"
 #include "Fiber/Scheduler.h"
 #include "common/macro.h"
+#include <ucontext.h>
 
 namespace siem{
 
-static std::atomic<uint64_t> s_fiber_id {0};
-static std::atomic<uint64_t> s_fiber_numbers {0};
+//全局静态变量，用于生成协程id
+static std::atomic<uint64_t> s_fiber_id = 0;
 
+//全局静态变量，用于统计当前的协程数
+static std::atomic<uint64_t> s_fiber_numbers = 0;
+
+//线程局部变量，当前线程正在运行的协程
 static thread_local Fiber* t_fiber = nullptr;
+
+//线程的主协程
 static thread_local Fiber::ptr t_thread_fiber = nullptr;
 
 static ConfigVar<uint32_t>::ptr s_stackSize = Config::lookup<uint32_t>("system.stackSize", 1024 * 1024, "Fiber Stack Size");
@@ -27,8 +34,9 @@ void FiberStackAllocator::Dealloc(void* vp, size_t size)
 
 Fiber::Fiber(void)
 {
-    m_state = EXEC;
+    m_state = State::EXEC;
     setThis(this);
+    m_is_runinscheduler = false;
 
     if (getcontext(&m_context)) {
         SIEM_ASSERT_STR(false, "get context fail");
@@ -37,10 +45,11 @@ Fiber::Fiber(void)
     ++s_fiber_numbers;
 }
 
-Fiber::Fiber(callBack cb, size_t stack_size, bool is_usecaller)
+Fiber::Fiber(callBack cb, size_t stack_size, bool is_runinscheduler)
     : m_cb(cb)
     , m_stackSize(stack_size ? stack_size : s_stackSize->getValue())
-    , m_id(++s_fiber_id) {
+    , m_id(++s_fiber_id) 
+    , m_is_runinscheduler(is_runinscheduler) {
 
     m_stack = StackAllocator::Alloc(m_stackSize);
 
@@ -52,11 +61,13 @@ Fiber::Fiber(callBack cb, size_t stack_size, bool is_usecaller)
     m_context.uc_stack.ss_sp = m_stack;
     m_context.uc_stack.ss_size = m_stackSize;
 
-    if(!is_usecaller) {
+    /*if(!is_usecaller) {
         makecontext(&m_context, &Fiber::MainFunc, 0);
     } else {
         makecontext(&m_context, &Fiber::CallerMainFunc, 0);
-    }
+    }*/
+
+    makecontext(&m_context, &Fiber::MainFunc, 0);
 
 }
 
@@ -64,11 +75,11 @@ Fiber::~Fiber()
 {
     --s_fiber_numbers;
     if (m_stack) {
-        SIEM_ASSERT(m_state == TERM || m_state == INIT || m_state == EXCEPTION);
+        SIEM_ASSERT(m_state == State::TERM || m_state == State::READY);
         StackAllocator::Dealloc(m_stack, m_stackSize);
     } else {
         SIEM_ASSERT(!m_cb);
-        SIEM_ASSERT(m_state == EXEC);
+        SIEM_ASSERT(m_state == State::EXEC);
 
         Fiber* cur = t_fiber;
         if (cur == this) {
@@ -98,15 +109,15 @@ Fiber::ptr Fiber::getThis(void)
 void Fiber::yieldToReady(void)
 {
     Fiber::ptr cur = getThis();
-    SIEM_ASSERT(cur->m_state == EXEC);
-    cur->m_state = READY;
+    SIEM_ASSERT(cur->m_state == State::EXEC);
+    cur->m_state = State::READY;
     cur->swapOut();
 }
 
 void Fiber::yieldToHold(void)
 {
     Fiber::ptr cur = getThis();
-    SIEM_ASSERT(cur->m_state == EXEC);
+    SIEM_ASSERT(cur->m_state == State::EXEC);
     // cur->m_state = HOLD;
     cur->swapOut();
 }
@@ -123,19 +134,48 @@ void Fiber::MainFunc(void)
     try {
         cur->m_cb();
         cur->m_cb = nullptr;
-        cur->m_state = TERM;
+        cur->m_state = State::TERM;
     } catch (std::exception& e) {
-        cur->m_state = EXCEPTION;
+        cur->m_state = State::TERM;
         ERROR() << "Fiber Exception" << e.what();
     } catch (...) {
-        cur->m_state = EXCEPTION;
+        cur->m_state = State::TERM;
         ERROR() << "Fiber Exception";
     }
 
     Fiber* raw_ptr = cur.get();
     cur.reset();
-    raw_ptr->swapOut();
+    // raw_ptr->swapOut();
+    raw_ptr->yield();
 
+    SIEM_ASSERT_STR(false, "never reach fiber_id=" + std::to_string(raw_ptr->getID()));
+}
+
+void Fiber::CallerMainFunc()
+{
+    Fiber::ptr cur = getThis();
+    SIEM_ASSERT(cur);
+    try {
+        cur->m_cb();
+        cur->m_cb = nullptr;
+        cur->m_state = State::TERM;
+    } catch (std::exception& ex) {
+        cur->m_state = State::TERM;
+        LOG_ERROR(GET_LOG_BY_NAME(system)) << "Fiber Except: " << ex.what()
+            << " fiber_id=" << cur->getID()
+            << std::endl
+            << siem::BackTraceToString(100, 2);
+    } catch (...) {
+        cur->m_state = State::TERM;
+        LOG_ERROR(GET_LOG_BY_NAME(system)) << "Fiber Except"
+            << " fiber_id=" << cur->getID()
+            << std::endl
+            << siem::BackTraceToString(100, 2);
+    }
+
+    auto raw_ptr = cur.get();
+    cur.reset();
+    raw_ptr->swapOut();
     SIEM_ASSERT_STR(false, "never reach fiber_id=" + std::to_string(raw_ptr->getID()));
 }
 
@@ -160,9 +200,26 @@ void Fiber::setState(State state)
 
 void Fiber::call() {
     setThis(this);
-    m_state = EXEC;
+    m_state = State::EXEC;
     if(swapcontext(&t_thread_fiber->m_context, &m_context)) {
         SIEM_ASSERT_STR(false, "swapcontext");
+    }
+}
+
+void Fiber::resume()
+{
+    SIEM_ASSERT(m_state != State::TERM || m_state != State::EXEC);
+    setThis(this);
+    m_state = State::EXEC;
+
+    if (m_is_runinscheduler) {
+        if(swapcontext(&Scheduler::getMainFiber()->m_context, &m_context)) {
+            SIEM_ASSERT_STR(false, "swapcontext");
+        }
+    } else {
+        if(swapcontext(&t_thread_fiber->m_context, &m_context)) {
+            SIEM_ASSERT_STR(false, "swapcontext");
+        }
     }
 }
 
@@ -173,12 +230,31 @@ void Fiber::back() {
     }
 }
 
+void Fiber::yield()
+{
+    SIEM_ASSERT(m_state == State::EXEC || m_state == State::TERM);
+    setThis(t_thread_fiber.get());
+    if (m_state != State::READY) {
+        m_state = State::READY;
+    }
+
+    if (m_is_runinscheduler) {
+        if(swapcontext(&m_context, &Scheduler::getMainFiber()->m_context)) {
+            SIEM_ASSERT_STR(false, "swapcontext");
+        }
+    } else {
+        if(swapcontext(&m_context, &t_thread_fiber->m_context)) {
+            SIEM_ASSERT_STR(false, "swapcontext");
+        }
+    }
+    
+}
+
 void Fiber::reset(callBack cb)
 {
     SIEM_ASSERT(m_stack);
-    SIEM_ASSERT(m_state == TERM
-        || m_state == INIT
-        || m_state == EXCEPTION);
+    SIEM_ASSERT(m_state == State::TERM
+        || m_state == State::READY);
 
     m_cb = cb;
 
@@ -192,15 +268,15 @@ void Fiber::reset(callBack cb)
 
     makecontext(&m_context, &Fiber::MainFunc, 0);
 
-    m_state = INIT;
+    m_state = State::READY;
 }
 
 void Fiber::swapIn(void)
 {
     setThis(this);
-    SIEM_ASSERT(m_state != EXEC);
+    SIEM_ASSERT(m_state != State::EXEC);
 
-    m_state = EXEC;
+    m_state = State::EXEC;
 
     if (swapcontext(&Scheduler::getMainFiber()->m_context, &m_context)) {
         SIEM_ASSERT_STR(false,"swap context");
@@ -219,34 +295,6 @@ void Fiber::swapOut(void)
 uint64_t Fiber::getID(void) const
 {
     return m_id;
-}
-
-void Fiber::CallerMainFunc()
-{
-    Fiber::ptr cur = getThis();
-    SIEM_ASSERT(cur);
-    try {
-        cur->m_cb();
-        cur->m_cb = nullptr;
-        cur->m_state = TERM;
-    } catch (std::exception& ex) {
-        cur->m_state = EXCEPTION;
-        LOG_ERROR(GET_LOG_BY_NAME(system)) << "Fiber Except: " << ex.what()
-            << " fiber_id=" << cur->getID()
-            << std::endl
-            << siem::BackTraceToString(100, 2);
-    } catch (...) {
-        cur->m_state = EXCEPTION;
-        LOG_ERROR(GET_LOG_BY_NAME(system)) << "Fiber Except"
-            << " fiber_id=" << cur->getID()
-            << std::endl
-            << siem::BackTraceToString(100, 2);
-    }
-
-    auto raw_ptr = cur.get();
-    cur.reset();
-    raw_ptr->back();
-    SIEM_ASSERT_STR(false, "never reach fiber_id=" + std::to_string(raw_ptr->getID()));
 }
 
 }

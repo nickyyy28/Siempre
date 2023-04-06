@@ -13,7 +13,7 @@ namespace siem {
  * @tparam T 需要单例的类
  */
 template<class T>
-class SingleTon : public NoCopyAble {
+class SingleTon : NoCopyAble {
 public:
 
     /**

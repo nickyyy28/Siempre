@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 namespace siem
 {
@@ -74,6 +75,7 @@ void Config::saveAsYaml(const std::string &path)
     // ofs.close();
 
     std::stringstream ss;
+    std::map<std::string, std::vector<std::string>> newConfigMap;
 
     for(auto& v : m_datas) {
         auto key = v.first;

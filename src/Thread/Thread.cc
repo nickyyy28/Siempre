@@ -1,4 +1,5 @@
 #include "Thread/Thread.h"
+#include "utils/utils.h"
 #include <pthread.h>
 
 namespace siem{
@@ -10,6 +11,7 @@ Thread* Thread::getThis(void)
 {
     return local_thread;
 }
+
 
 const std::string& Thread::getThisName(void)
 {
@@ -66,6 +68,7 @@ Thread::~Thread()
 {
     if (m_thread) {
         pthread_detach(m_thread);
+        std::cout << siem::Thread::getID() << siem::getThreadID();
     }
 }
 

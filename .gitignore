@@ -1,9 +1,9 @@
 /build/*
 /bin/*
-./cmake-build-debug/*
-./cache/*
-./.vscode/*
-./.idea/*
-./test/*
-./lib/*
-./3rd-party/*
+/cmake-build-debug/*
+/cache/*
+/.vscode/*
+/.idea/*
+/test/*
+/lib/*
+/3rd-party/*

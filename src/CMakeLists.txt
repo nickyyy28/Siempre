@@ -10,6 +10,7 @@ set(
     ./Thread/Mutex.cc
     ./Fiber/Fiber.cc
     ./Fiber/Scheduler.cc
+    ./Fiber/SimpleScheduler.cc
     ./io/IOManager.cc
     ./fs/fs.cc
     ./Thread/ThreadPool.cc
@@ -19,6 +20,7 @@ set(
     ./net/TCPClient.cc
     ./net/TCPConn.cc
     ./net/TCPServer.cc
+    ./base/Console.cc
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)

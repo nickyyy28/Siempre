@@ -33,7 +33,7 @@ public:
     typedef std::function<void(void)> callBack;
     typedef std::shared_ptr<Fiber> ptr;
 
-    Fiber(callBack cb, size_t stack_size = 0, bool is_usecaller = false);
+    Fiber(callBack cb, size_t stack_size = 0, bool is_runinscheduler = false);
     ~Fiber();
 
     /**
@@ -62,13 +62,10 @@ public:
      */
     uint64_t getID(void) const;
 
-    enum State{
-        EXCEPTION = 0,  /* 异常 */
-        INIT,           /* 初始 */
-        HOLD,           /* 持有 */
+    enum class State{
+        READY,          /* 准备 */
         EXEC,           /* 运行 */
         TERM,           /* 结束 */
-        READY           /* 准备 */
     };
 
     /**
@@ -86,17 +83,29 @@ public:
     void setState(State state);
 
     /**
-     * @brief 将当前线程切换到执行状态
+     * @brief 将当前线程切换到执行状态 resume
      * @pre 执行的为当前线程的主协程
      */
     void call();
 
     /**
-     * @brief 将当前线程切换到后台
+     * @brief 将当前线程切换到后台 yield
      * @pre 执行的为该协程
      * @post 返回到线程的主协程
      */
     void back();
+
+    /**
+     * @brief 将当前线程调度到后台挂起, 返回主协程
+     * 
+     */
+    void yield();
+
+    /**
+     * @brief 主协程将该协程调度到前台运行
+     * 
+     */
+    void resume();
 
 private:
 
@@ -122,7 +131,7 @@ private:
      * @brief 协程状态
      * 
      */
-    State m_state = INIT;
+    State m_state = State::READY;
 
     /**
      * @brief 协程栈
@@ -136,6 +145,12 @@ private:
      */
     callBack m_cb;
 
+    /**
+     * @brief 该协程是否由调度器调度
+     * 
+     */
+    bool m_is_runinscheduler;
+
 public:
 
     /**
@@ -146,7 +161,7 @@ public:
     static void setThis(Fiber* f);
 
     /**
-     * @brief 返回当前协程
+     * @brief 返回当前运行的协程, 如果未创建主协程则创建主协程并返回
      * 
      * @return Fiber::ptr 
      */

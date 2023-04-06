@@ -10,7 +10,6 @@ ConfigVar<int>::ptr var = Config::lookup<int>("system.test_var", 0);
 
 int main()
 {
-    siem::Config::saveAsYaml("");
 
     siem::Config::loadFromYaml("/home/book/Siempre/test/bbb.yaml");
 
@@ -20,7 +19,6 @@ int main()
 
     cout << "-------------" << endl;
 
-    // cout << wrap->toString() << endl;
 
     siem::Config::saveAsYaml("");
 

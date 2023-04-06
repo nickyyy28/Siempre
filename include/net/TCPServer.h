@@ -2,10 +2,12 @@
 
 #include "Thread/ThreadPool.h"
 #include "base/SString.h"
+#include "base/TimeStamp.h"
 #include "common/nocopyable.h"
 #include "net/TCPConn.h"
 #include <functional>
 #include <unordered_map>
+
 namespace siem {
 
 namespace net {
@@ -14,8 +16,9 @@ typedef siem::SString Buffer;
 
 class TCPServer : NoCopyAble{
 public:
-    typedef std::function<void(const TCPConnPtr&)> onConnectCallback;
-    typedef std::function<void(const TCPConnPtr&, const Buffer* buffer)> onMessageCallback;
+    typedef std::function<void(const TCPConnPtr&, TimeStamp)> onConnectCallback;
+    typedef std::function<void(const TCPConnPtr&, const Buffer*, TimeStamp)> onMessageCallback;
+    typedef std::unordered_map<int, TCPConnPtr> ConnectionMap;
 
     TCPServer(const std::string& ip, int port);
     ~TCPServer();
@@ -50,7 +53,7 @@ private:
 
     void operator=(const TCPServer&) = delete;
 
-    std::unordered_map<int, TCPConnPtr> m_conns;
+    ConnectionMap m_conns;
     onConnectCallback m_connectionCallback;
     onMessageCallback m_messageCallback;
     ThreadPool *m_pool;

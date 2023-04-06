@@ -60,11 +60,15 @@
 */
 #define LOG_FATAL(logger) LOG_LEVEL(logger, siem::LogLevel::FATAL)
 
+#ifndef DEBUG
 #define DEBUG() \
     LOG_DEBUG(siem::LoggerMgr::getInstance()->getRoot())
+#endif // !DEBUG
 
+#ifndef INFO
 #define INFO() \
     LOG_INFO(siem::LoggerMgr::getInstance()->getRoot())
+#endif // !INFO
 
 #define WARN() \
     LOG_WARN(siem::LoggerMgr::getInstance()->getRoot())

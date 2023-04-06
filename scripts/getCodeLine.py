@@ -18,7 +18,7 @@ def isFile(path):
     return os.path.isfile(path)
 
 def getNumberOfCodeLine(path, suffixs):
-    cnt = 0;
+    cnt = 0
     if isDirectory(path):
         for fileName in os.listdir(path):
             filePath = os.path.join(path, fileName)

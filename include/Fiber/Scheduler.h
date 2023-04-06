@@ -17,6 +17,14 @@ class Scheduler : public NoCopyAble{
 public:
     typedef std::shared_ptr<Scheduler> ptr;
 
+    /**
+     * @brief 创建一个调度器
+     * 
+     * @details 通过isCaller来确定是否启用创建该调度器的线程作为工作线程之一
+     * @param thread 
+     * @param use_caller 
+     * @param name 
+     */
     Scheduler(size_t thread = 1, bool use_caller = true, const std::string& name = "");
     virtual ~Scheduler() = default;
 
@@ -41,7 +49,7 @@ public:
     void setThis(void);
 
     /**
-     * @brief 
+     * @brief 取出任务运行的入口函数
      * 
      */
     void run(void);
@@ -62,6 +70,13 @@ public:
      * @brief 是否有空闲线程
      */
     bool hasIdleThreads() { return m_idleThreadCount > 0; }
+
+    /**
+     * @brief 获取调度器名字
+     * 
+     * @return std::string 
+     */
+    std::string getName() const;
 
     /**
      * @brief 批量添加调度
@@ -89,12 +104,12 @@ public:
     /**
      * @brief 添加调度
      * 
-     * @tparam FIberOrCB    协程或函数指针类
+     * @tparam Task    协程或函数指针类
      * @param fb  协程或函数
      * @param thr 线程ID
      */
-    template<class FIberOrCB>
-    void schedule(FIberOrCB fb, uint64_t thr = -1)
+    template<class Task>
+    void schedule(Task fb, uint64_t thr = -1)
     {
         bool need_tickle = false;
         {
@@ -116,19 +131,19 @@ private:
     /**
      * @brief 无锁添加调度
      * 
-     * @tparam FIberOrCB 协程或函数指针类
+     * @tparam Task 协程或函数指针类
      * @param fb    协程或函数指针
      * @param thr   线程ID
      * @return true 
      * @return false 
      */
-    template<class FIberOrCB>
-    bool scheduleNoLock(FIberOrCB fb, uint64_t thr = -1)
+    template<class Task>
+    bool scheduleNoLock(Task fb, uint64_t thr = -1)
     {
         bool need_tickle = m_fibers.empty();
-        ThreadAndFiber tf(fb, thr);
-        if (tf.m_cb || tf.m_fiber) {
-            m_fibers.push_back(tf);
+        SchedulerTask task(fb, thr);
+        if (task.m_cb || task.m_fiber) {
+            m_fibers.push_back(task);
         }
 
         return need_tickle;
@@ -140,32 +155,32 @@ private:
      * @brief 协程或函数指针包装类
      * 
      */
-    struct ThreadAndFiber{
+    struct SchedulerTask{
         Fiber::ptr m_fiber = nullptr;
         typename Fiber::callBack m_cb = nullptr;
         uint64_t thread_id = 0;
 
-        ThreadAndFiber(Fiber::ptr fiber, uint64_t thr)
+        SchedulerTask(Fiber::ptr fiber, uint64_t thr)
             : m_fiber(fiber)
             , thread_id(thr) {
         }
 
-        ThreadAndFiber(Fiber::ptr* fiber, uint64_t thr)
+        SchedulerTask(Fiber::ptr* fiber, uint64_t thr)
             : thread_id(thr) {
             m_fiber.swap(*fiber);
         }
 
-        ThreadAndFiber(Fiber::callBack cb, uint64_t thr)
+        SchedulerTask(Fiber::callBack cb, uint64_t thr)
             : thread_id(thr)
             , m_cb(cb) {
         }
 
-        ThreadAndFiber(Fiber::callBack* cb, uint64_t thr)
+        SchedulerTask(Fiber::callBack* cb, uint64_t thr)
             : thread_id(thr) {
             m_cb.swap(*cb);
         }
 
-        ThreadAndFiber()
+        SchedulerTask()
             : thread_id(-1) {
         }
 
@@ -193,9 +208,12 @@ private:
     //// 线程池
     std::vector<siem::Thread::ptr> m_threads;
     //// 协程池
-    std::list<ThreadAndFiber> m_fibers;
+    std::list<SchedulerTask> m_fibers;
     //// use_caller为true时有效, 调度协程
     Fiber::ptr m_rootFiber;
+
+    //是否使用当前线程作为调度线程
+    bool m_isusecaller;
 
 protected:
     /// 协程下的线程id数组
@@ -211,7 +229,7 @@ protected:
     /// 是否自动停止
     bool m_autoStop = false;
     /// 主线程id(use_caller)
-    int m_rootThread = 0;
+    int m_rootThreadID = 0;
 
 };
 

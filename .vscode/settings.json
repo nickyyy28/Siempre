@@ -68,7 +68,7 @@
         "unordered_set": "cpp",
         "siem": "cpp"
     },
-    "C_Cpp.intelliSenseEngine": "Default",
+    "C_Cpp.intelliSenseEngine": "disabled",
     "clangd.fallbackFlags": [
         "-I/home/book/Siempre/include",
         "-I/home/book/Siempre/3rd-party/include"

@@ -7,7 +7,7 @@ void run_in_fiber();
 
 int main(int argc, char** argv)
 {
-    siem::Scheduler::getThis();
+    // siem::Scheduler::getThis();
     siem::Fiber::getThis();
 
     siem::Fiber::ptr fib(new siem::Fiber(run_in_fiber));
