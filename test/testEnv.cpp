@@ -1,6 +1,5 @@
-#include "Configurator/Env.h"
-#include "common/singleton.h"
-#include <siem>
+
+#include <siem/siem>
 
 using namespace siem;
 

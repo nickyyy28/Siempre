@@ -1,4 +1,4 @@
-#include <siem>
+#include <siem/siem>
 
 void func1();
 void func2();

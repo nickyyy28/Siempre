@@ -1,8 +1,4 @@
-#include "Configurator/Env.h"
-#include "Logger/Logger.h"
-#include "Thread/Mutex.h"
-#include "Thread/Thread.h"
-#include <siem>
+#include <siem/siem>
 #include <unistd.h>
 
 int main(int argc, const char** argv)

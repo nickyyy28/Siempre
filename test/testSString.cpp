@@ -2,8 +2,7 @@
 #include <iostream>
 #include <ostream>
 #include <string>
-#include "base/SString.h"
-#include "siem"
+#include <siem/siem>
 
 int main()
 {

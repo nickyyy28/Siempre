@@ -1,5 +1,4 @@
-#include "Logger/Logger.h"
-#include "base/SString.h"
+#include <siem/siem>
 
 int main()
 {

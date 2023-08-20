@@ -1,4 +1,4 @@
-#include <Configurator/Configurator.h>
+#include <siem/Configurator/Configurator.h>
 
 siem::ConfigVar<int>::ptr var = siem::Config::lookup<int>("int", 20);
 

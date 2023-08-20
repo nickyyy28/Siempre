@@ -1,5 +1,5 @@
-#include <siem>
-#include "common/macro.h"
+#include <siem/siem>
+#include <siem/common/macro.h>
 
 int main(void)
 {

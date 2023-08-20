@@ -1,5 +1,4 @@
-#include <common/macro.h>
-#include <siem>
+#include <siem/siem>
 
 int main(void)
 {

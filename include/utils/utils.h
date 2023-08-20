@@ -60,4 +60,18 @@ std::string BackTraceToString(size_t size, int skip);
  */
 uint64_t getFiberID(void);
 
+/**
+ * @brief 获取当前毫秒时间
+ * 
+ * @return uint64_t 
+ */
+uint64_t GetCurrentMS();
+
+/**
+ * @brief 获取当前微秒时间
+ * 
+ * @return uint64_t 
+ */
+uint64_t GetCurrentUS();
+
 }

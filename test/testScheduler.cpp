@@ -1,7 +1,4 @@
-#include "Logger/Logger.h"
-#include "Thread/Thread.h"
-#include "utils/utils.h"
-#include <siem>
+#include <siem/siem>
 
 siem::Logger::ptr fiber_log = GET_LOG_BY_NAME(fiber);
 

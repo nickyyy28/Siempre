@@ -1,18 +1,24 @@
-#include "Logger/Logger.h"
-#include "Thread/Timer.h"
-#include <siem>
+#include <siem/siem>
+#include <siem/base/TimeStamp.h>
+#include <siem/Thread/Timer.h>
 #include <unistd.h>
+
+class AAA : public siem::TimerManager{
+public:
+    AAA() = default;
+    ~AAA() = default;
+    void onTimerInsertedAtFront() override
+    {
+
+    }
+};
 
 int main(int argc, const char** argv)
 {
-    siem::SocketTimer timer(1000, [&]{
-        DEBUG() << "in timer...";
+    AAA mgr;
+    siem::Timer::ptr t1 = mgr.addTimer(1000, [&](){
+
     });
 
-    timer.start();
-
-    while(true) {
-        sleep(1);
-    }
     return 0;
 }

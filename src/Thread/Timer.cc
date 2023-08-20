@@ -13,176 +13,200 @@
 
 namespace siem {
 
-int SocketTimer::timer_cnt = 0;
-
-BaseTimer::BaseTimer(int timeout, TimerCallBack cb)
-{
-    this->m_timeout = timeout;
-    this->m_callback = cb;
+bool Timer::Comparator::operator()(const Timer::ptr& lhs
+                        ,const Timer::ptr& rhs) const {
+    if(!lhs && !rhs) {
+        return false;
+    }
+    if(!lhs) {
+        return true;
+    }
+    if(!rhs) {
+        return false;
+    }
+    if(lhs->m_next < rhs->m_next) {
+        return true;
+    }
+    if(rhs->m_next < lhs->m_next) {
+        return false;
+    }
+    return lhs.get() < rhs.get();
 }
 
-void BaseTimer::setCallBack(TimerCallBack cb)
-{
-    this->m_callback = cb;
+
+Timer::Timer(uint64_t ms, std::function<void()> cb,
+             bool recurring, TimerManager* manager)
+    :m_recurring(recurring)
+    ,m_ms(ms)
+    ,m_cb(cb)
+    ,m_manager(manager) {
+    m_next = siem::GetCurrentMS() + m_ms;
 }
 
-void BaseTimer::setTimeout(int timeout)
-{
-    this->m_timeout = timeout;
+Timer::Timer(uint64_t next)
+    :m_next(next) {
 }
 
-SocketTimerListener::SocketTimerListener()
-{
-    m_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (m_fd == -1) {
-        SIEM_ASSERT_STR(false, "Create Socket fd fail...");
+bool Timer::cancel() {
+    TimerManager::RWMutexType::WriteLock lock(m_manager->m_mutex);
+    if(m_cb) {
+        m_cb = nullptr;
+        auto it = m_manager->m_timers.find(shared_from_this());
+        m_manager->m_timers.erase(it);
+        return true;
+    }
+    return false;
+}
+
+bool Timer::refresh() {
+    TimerManager::RWMutexType::WriteLock lock(m_manager->m_mutex);
+    if(!m_cb) {
+        return false;
+    }
+    auto it = m_manager->m_timers.find(shared_from_this());
+    if(it == m_manager->m_timers.end()) {
+        return false;
+    }
+    m_manager->m_timers.erase(it);
+    m_next = siem::GetCurrentMS() + m_ms;
+    m_manager->m_timers.insert(shared_from_this());
+    return true;
+}
+
+bool Timer::reset(uint64_t ms, bool from_now) {
+    if(ms == m_ms && !from_now) {
+        return true;
+    }
+    TimerManager::RWMutexType::WriteLock lock(m_manager->m_mutex);
+    if(!m_cb) {
+        return false;
+    }
+    auto it = m_manager->m_timers.find(shared_from_this());
+    if(it == m_manager->m_timers.end()) {
+        return false;
+    }
+    m_manager->m_timers.erase(it);
+    uint64_t start = 0;
+    if(from_now) {
+        start = siem::GetCurrentMS();
+    } else {
+        start = m_next - m_ms;
+    }
+    m_ms = ms;
+    m_next = start + m_ms;
+    m_manager->addTimer(shared_from_this(), lock);
+    return true;
+
+}
+
+TimerManager::TimerManager() {
+    m_previouseTime = siem::GetCurrentMS();
+}
+
+TimerManager::~TimerManager() {
+}
+
+Timer::ptr TimerManager::addTimer(uint64_t ms, std::function<void()> cb
+                                  ,bool recurring) {
+    Timer::ptr timer(new Timer(ms, cb, recurring, this));
+    RWMutexType::WriteLock lock(m_mutex);
+    addTimer(timer, lock);
+    return timer;
+}
+
+static void OnTimer(std::weak_ptr<void> weak_cond, std::function<void()> cb) {
+    std::shared_ptr<void> tmp = weak_cond.lock();
+    if(tmp) {
+        cb();
+    }
+}
+
+Timer::ptr TimerManager::addConditionTimer(uint64_t ms, std::function<void()> cb
+                                    ,std::weak_ptr<void> weak_cond
+                                    ,bool recurring) {
+    return addTimer(ms, std::bind(&OnTimer, weak_cond, cb), recurring);
+}
+
+uint64_t TimerManager::getNextTimer() {
+    RWMutexType::ReadLock lock(m_mutex);
+    m_tickled = false;
+    if(m_timers.empty()) {
+        return ~0ull;
     }
 
-    memset(&m_addr, 0, sizeof(m_addr));
-    m_addr.sin_family = AF_INET;
-    m_addr.sin_port = htons(DEFAULT_TIMER_LISTEN_PORT);
-    m_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-
-    int opt = 1;
-    setsockopt(m_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-
-    int ret = bind(m_fd, (struct sockaddr*)&m_addr, (socklen_t)sizeof(m_addr));
-    if (ret == -1) {
-        SIEM_ASSERT_STR(false, "bind fail...");
+    const Timer::ptr& next = *m_timers.begin();
+    uint64_t now_ms = siem::GetCurrentMS();
+    if(now_ms >= next->m_next) {
+        return 0;
+    } else {
+        return next->m_next - now_ms;
     }
+}
 
-    ret = listen(m_fd, 64);
-    if (ret == -1) {
-        SIEM_ASSERT_STR(false, "listen fail...");
-    }
-
-    m_epfd = epoll_create(1024);
-    if (m_epfd == -1) {
-        SIEM_ASSERT_STR(false, "epoll create fail...");
-    }
-
-    m_ev.data.fd = m_fd;
-    m_ev.events = EPOLLIN;
-    ret = epoll_ctl(m_epfd, EPOLL_CTL_ADD, m_fd, &m_ev);
-    if (ret == -1) {
-        SIEM_ASSERT_STR(false, "epoll ctl error...");
-    }
-
-    m_listener.reset(new Thread([this](){
-        struct epoll_event evs[1024];
-        int size = sizeof(evs) / sizeof(struct epoll_event);
-        int ret;
-
-        while (true) {
-            // 调用一次, 检测一次
-            int num = epoll_wait(this->m_epfd, evs, size, -1);
-            for(int i = 0 ; i < num ; ++i) {
-                // 取出当前的文件描述符
-                int curfd = evs[i].data.fd;
-                // 判断这个文件描述符是不是用于监听的
-                if (curfd == this->m_fd) {
-                    // 建立新的连接
-                    int cfd = accept(curfd, NULL, NULL);
-                    // 新得到的文件描述符添加到epoll模型中, 下一轮循环的时候就可以被检测了
-                    this->m_ev.events = EPOLLIN;    // 读缓冲区是否有数据
-                    this->m_ev.data.fd = cfd;
-                    ret = epoll_ctl(this->m_epfd, EPOLL_CTL_ADD, cfd, &this->m_ev);
-                    if (ret == -1) {
-                        SIEM_ASSERT_STR(false, "epoll ctl accept error");
-                    }
-                }
-                else
-                {
-                    // 处理通信的文件描述符
-                    // 接收数据
-                    char buf[1024];
-                    memset(buf, 0, sizeof(buf));
-                    int len = recv(curfd, buf, sizeof(buf), 0);
-                    if(len == 0)
-                    {
-                        // 将这个文件描述符从epoll模型中删除
-                        epoll_ctl(this->m_epfd, EPOLL_CTL_DEL, curfd, NULL);
-                        close(curfd);
-                    }
-                    else if(len > 0)
-                    {
-                        printf("客户端say: %s\n", buf);
-                        send(curfd, buf, len, 0);
-                    }
-                    else
-                    {
-                        perror("recv");
-                        exit(0);
-                    } 
-                }
-            }
+void TimerManager::listExpiredCb(std::vector<std::function<void()> >& cbs) {
+    uint64_t now_ms = siem::GetCurrentMS();
+    std::vector<Timer::ptr> expired; 
+    {
+        RWMutexType::ReadLock lock(m_mutex);
+        if(m_timers.empty()) {
+            return;
         }
-    }, "timer_listener_thread"));
-}
+    }
+    RWMutexType::WriteLock lock(m_mutex);
+    if(m_timers.empty()) {
+        return;
+    }
+    bool rollover = detectClockRollover(now_ms);
+    if(!rollover && ((*m_timers.begin())->m_next > now_ms)) {
+        return;
+    }
 
-SocketTimerListener::~SocketTimerListener()
-{
+    Timer::ptr now_timer(new Timer(now_ms));
+    auto it = rollover ? m_timers.end() : m_timers.lower_bound(now_timer);
+    while(it != m_timers.end() && (*it)->m_next == now_ms) {
+        ++it;
+    }
+    expired.insert(expired.begin(), m_timers.begin(), it);
+    m_timers.erase(m_timers.begin(), it);
+    cbs.reserve(expired.size());
 
-}
-
-SocketTimerListener::ptr SocketTimerListener::getInstance()
-{
-    static SocketTimerListener::ptr var(new SocketTimerListener());
-
-    return var;
-}
-
-SocketTimer::SocketTimer(int timeout, TimerCallBack cb) : BaseTimer(timeout, cb)
-{
-    int ret;
-    struct sockaddr_in address;
-    bzero (&address, sizeof (address) );
-    address.sin_family = AF_INET;
-    address.sin_port = htons (DEFAULT_TIMER_LISTEN_PORT);
-
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0);  // 非阻塞模式
-
-    struct timeval timer;
-    timer.tv_sec = 0;
-    timer.tv_usec = timeout;
-    socklen_t len = sizeof(timer);
-    // 这里设置超时机制
-    ret = setsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO, &timer, len);
-    assert(ret != -1);
-
-    m_thread.reset(new Thread([&](){
-        while(true) {
-            INFO() << "running...";
-            int ret = connect(sockfd, (struct sockaddr*)&address, sizeof(address));
-            if (ret < 0) {
-                // 超时对应的错误码
-                if (errno == EINPROGRESS) {
-                    this->m_callback();
-                }
-            }
-            if (this->isSingle) {
-                break;
-            }
+    for(auto& timer : expired) {
+        cbs.push_back(timer->m_cb);
+        if(timer->m_recurring) {
+            timer->m_next = now_ms + timer->m_ms;
+            m_timers.insert(timer);
+        } else {
+            timer->m_cb = nullptr;
         }
-    }, "timer_" + std::to_string(timer_cnt)));
-
+    }
 }
 
-SocketTimer::~SocketTimer()
-{
+void TimerManager::addTimer(Timer::ptr val, RWMutexType::WriteLock& lock) {
+    auto it = m_timers.insert(val).first;
+    bool at_front = (it == m_timers.begin()) && !m_tickled;
+    if(at_front) {
+        m_tickled = true;
+    }
+    lock.unlock();
 
+    if(at_front) {
+        onTimerInsertedAtFront();
+    }
 }
 
-void SocketTimer::start()
-{
-    isSingle = false;
-    m_thread->detach();
+bool TimerManager::detectClockRollover(uint64_t now_ms) {
+    bool rollover = false;
+    if(now_ms < m_previouseTime &&
+            now_ms < (m_previouseTime - 60 * 60 * 1000)) {
+        rollover = true;
+    }
+    m_previouseTime = now_ms;
+    return rollover;
 }
 
-void SocketTimer::startOnce()
-{
-    isSingle = true;
-    m_thread->detach();
+bool TimerManager::hasTimer() {
+    RWMutexType::ReadLock lock(m_mutex);
+    return !m_timers.empty();
 }
 
 }

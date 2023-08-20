@@ -1,4 +1,4 @@
-#include <Configurator/Configurator.h>
+#include <siem/siem>
 #include <iostream>
 
 using namespace siem;

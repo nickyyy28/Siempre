@@ -1,6 +1,7 @@
-#include <iostream>
+#include <siem/common/singleton.h>
 #include <string>
-#include "common/singleton.h"
+#include <iostream>
+#include <memory>
 
 int main()
 {

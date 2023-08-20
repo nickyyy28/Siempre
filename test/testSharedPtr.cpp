@@ -1,8 +1,8 @@
-#include "Logger/Logger.h"
 #include <iostream>
-#include <siem>
+#include <siem/siem>
 #include <memory>
-#include "template/shared_ptr.hpp"
+#include <siem/template/shared_ptr.hpp>
+
 
 class Test{
 public:

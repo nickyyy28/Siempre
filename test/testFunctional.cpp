@@ -1,11 +1,11 @@
 #include <iostream>
 #include <functional>
 #include <memory>
-#include <siem>
+#include <siem/siem>
 #include <string>
 
-#include "base/SString.h"
-#include "template/functional.hpp"
+#include "siem/base/SString.h"
+#include "siem/template/functional.hpp"
 
 void hello(void)
 {
