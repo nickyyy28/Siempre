@@ -4,7 +4,6 @@
 #include "./Thread.h"
 #include "./Mutex.h"
 #include "../common/macro.h"
-#include "city/city.h"
 #include "../build_config.h"
 
 #include <cstdint>

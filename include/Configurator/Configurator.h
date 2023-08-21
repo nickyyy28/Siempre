@@ -32,7 +32,6 @@
 #include "../Fiber/Fiber.h"
 #include "../utils/utils.h"
 
-#include "city/city.h"
 #include "yaml-cpp/yaml.h"
 
 namespace siem{

@@ -59,5 +59,7 @@ install(EXPORT siem-targets
     FILE libsiem-config.cmake
     DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/libsiem)
 
+add_dependencies(siem_shared siem_static build_yamlcpp)
+
 set (EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set (LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
