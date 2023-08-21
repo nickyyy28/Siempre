@@ -1,6 +1,3 @@
 [submodule "github/yaml-cpp"]
 	path = github/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp.git
-[submodule "github/cityhash"]
-	path = github/cityhash
-	url = https://github.com/google/cityhash.git
