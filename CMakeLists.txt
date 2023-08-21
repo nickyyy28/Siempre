@@ -7,7 +7,9 @@ set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/install)
 
 add_subdirectory(src)
 
-if (EXISTS ${PROJECT_SOURCE_DIR}/test)
+if (${ENABLE_TEST})
     add_subdirectory(test)
+else()
 endif()
+
 
