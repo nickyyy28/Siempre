@@ -9,9 +9,9 @@ int main(void)
     std::stringstream ss;
     ss << var->toString();
 
-    uint64_t hash = CityHash64(ss.str().c_str(), std::strlen(ss.str().c_str()));
+    // uint64_t hash = CityHash64(ss.str().c_str(), std::strlen(ss.str().c_str()));
 
-    std::cout << "hash = " << hash << std::endl;
+    // std::cout << "hash = " << hash << std::endl;
 
     // var->addListener()
 

@@ -17,6 +17,7 @@ set(
     ./Thread/Timer.cc
     ./base/SString.cc
     ./base/TimeStamp.cc
+    ./net/InetAddress.cc
     ./net/TCPClient.cc
     ./net/TCPConn.cc
     ./net/TCPServer.cc

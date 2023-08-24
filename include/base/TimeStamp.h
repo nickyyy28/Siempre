@@ -6,6 +6,7 @@ namespace siem {
 
 class TimeStamp{
 public:
+    TimeStamp();
     explicit TimeStamp(int microSecondsSinceEpoch);
     ~TimeStamp();
 

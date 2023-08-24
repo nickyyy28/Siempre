@@ -17,7 +17,6 @@ endif(libsiem_FOUND)
 set(
     3RD_PARTY
     yaml-cpp
-    cityhash
 )
 
 # set(
@@ -42,6 +41,7 @@ link_directories(${PROJECT_SOURCE_DIR}/3rd-party/lib)
 # include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/3rd-party/include)
 
+add_executable(testInetAddress testInetAddress.cpp)
 add_executable(testSimpleScheduler testSimpleScheduler.cpp)
 add_executable(testColorConsole testColorConsole.cpp)
 add_executable(testWeakPtr testWeakPtr.cpp)
@@ -115,6 +115,7 @@ target_link_libraries(testLog ${SIEM_LIBRARIES})
 target_link_libraries(testLogger ${SIEM_LIBRARIES})
 target_link_libraries(testThreadPool ${SIEM_LIBRARIES})
 target_link_libraries(testLog ${SIEM_LIBRARIES})
+target_link_libraries(testInetAddress ${SIEM_LIBRARIES})
 
 
 set (EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)

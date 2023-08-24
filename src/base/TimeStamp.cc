@@ -10,6 +10,11 @@ TimeStamp::TimeStamp(int microSecondsSinceEpoch) : m_microSecondsSinceEpoch(micr
 
 }
 
+TimeStamp::TimeStamp() : TimeStamp(0)
+{
+    
+}
+
 TimeStamp::~TimeStamp()
 {
 }
