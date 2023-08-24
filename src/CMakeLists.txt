@@ -18,6 +18,9 @@ set(
     ./base/SString.cc
     ./base/TimeStamp.cc
     ./net/InetAddress.cc
+    ./net/Channel.cc
+    ./net/Poller.cc
+    ./net/EventLoop.cc
     ./net/TCPClient.cc
     ./net/TCPConn.cc
     ./net/TCPServer.cc

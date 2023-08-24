@@ -15,7 +15,7 @@ namespace siem{
  */
 class Scheduler : public NoCopyAble{
 public:
-    typedef std::shared_ptr<Scheduler> ptr;
+    using ptr = std::shared_ptr<Scheduler>;
 
     /**
      * @brief 创建一个调度器

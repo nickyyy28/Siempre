@@ -42,7 +42,7 @@ namespace siem{
  */
 class ConfigVarBase{
 public:
-    typedef std::shared_ptr<ConfigVarBase> ptr;
+    using ptr = std::shared_ptr<ConfigVarBase>;
 
     /**
      * @brief 基础配置类的构造
@@ -398,8 +398,8 @@ public:
 template<class T, class FromStr = TypeCast<std::string, T>, class ToStr = TypeCast<T, std::string>>
 class ConfigVar : public ConfigVarBase, public std::enable_shared_from_this<ConfigVar<T>> {
 public:
-    typedef std::shared_ptr<ConfigVar<T>> ptr;
-    typedef std::function<void(const T& old_val, const T& new_val)> onChangeCallback;
+    using ptr = std::shared_ptr<ConfigVar<T>>;
+    using onChangeCallback = std::function<void(const T& old_val, const T& new_val)> ;
 
     ConfigVar(const std::string& name, const T& value, const std::string& description = "")
     : ConfigVarBase(name, description) {
@@ -510,7 +510,7 @@ private:
 
 class Config{
 public:
-    typedef std::map<std::string, ConfigVarBase::ptr> ConfigVarMap;
+    using ConfigVarMap = std::map<std::string, ConfigVarBase::ptr>;
 
     /**
      * @brief 查找一个配置项, 假如不存在则创建一个

@@ -18,8 +18,8 @@ namespace siem{
  */
 class Thread : public NoCopyAble , public std::enable_shared_from_this<Thread>{
 public:
-    typedef std::shared_ptr<Thread> ptr;
-    typedef std::function<void()> callBack;
+    using ptr = std::shared_ptr<Thread>;
+    using callBack = std::function<void()>;
 
     explicit Thread(callBack cb, const std::string& name = "UNKNOW");
     ~Thread();

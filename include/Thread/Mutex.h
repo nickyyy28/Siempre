@@ -171,7 +171,7 @@ private:
 class Mutex : public NoCopyAble{
     friend class Condition;
 public:
-    typedef ScopeLockImpl<Mutex> Lock;
+    using Lock = ScopeLockImpl<Mutex>;
 
     Mutex();
     ~Mutex();
@@ -184,8 +184,8 @@ private:
 
 class RWMutex : public NoCopyAble{
 public:
-    typedef ReadScopeLockImpl<RWMutex> ReadLock;
-    typedef WriteScopeLockImpl<RWMutex> WriteLock;
+    using ReadLock = ReadScopeLockImpl<RWMutex>;
+    using WriteLock = WriteScopeLockImpl<RWMutex>;
 
     RWMutex();
     ~RWMutex();
@@ -199,7 +199,7 @@ private:
 
 class Condition{
 public:
-    typedef std::function<bool()> CondIf;
+    using CondIf = std::function<bool()>;
     Condition();
     ~Condition() = default;
 

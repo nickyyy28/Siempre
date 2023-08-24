@@ -25,9 +25,9 @@ namespace siem{
  */
 class Env : public NoCopyAble{
 public:
-    typedef std::shared_ptr<Env> ptr;
-    typedef std::map<std::string, std::string> ArgMap;
-    typedef std::vector<std::pair<std::string, std::string>> ArgHelp;
+    using ptr = std::shared_ptr<Env>;
+    using ArgMap = std::map<std::string, std::string>;
+    using ArgHelp = std::vector<std::pair<std::string, std::string>>;
 
     Env();
     ~Env();

@@ -18,7 +18,7 @@ class TimerManager;
 class Timer : public std::enable_shared_from_this<Timer>{
     friend class TimerManager;
 public:
-    typedef std::shared_ptr<Timer> ptr;
+    using ptr = std::shared_ptr<Timer>;
 
     /**
      * @brief 取消定时器
@@ -85,7 +85,7 @@ class TimerManager {
 friend class Timer;
 public:
     /// 读写锁类型
-    typedef RWMutex RWMutexType;
+    using RWMutexType = RWMutex;
  
     /**
      * @brief 构造函数

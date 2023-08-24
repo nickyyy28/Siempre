@@ -25,7 +25,7 @@ enum class ThreadPool_Mode{
 };
 
 // struct Task{
-//     typedef std::function<void(void*)> Func;
+//     using Func = std::function<void(void*)>;
 //     Func task;
 //     void* args;
 // };
@@ -33,23 +33,23 @@ enum class ThreadPool_Mode{
 #undef USE_STD_CONDITION
 
 #ifdef USE_STD_CONDITION
-    typedef std::condition_variable _condition;
-    typedef std::unique_lock<std::mutex> _scopeLock;
-    typedef std::mutex _mutex;
-    typedef std::thread _thread;
-    typedef std::shared_ptr<std::thread> _threadPtr;
+    using _condition = std::condition_variable;
+    using _scopeLock = std::unique_lock<std::mutex>;
+    using _mutex = std::mutex;
+    using _thread = std::thread;
+    using _threadPtr = std::shared_ptr<std::thread>;
 #else
-    typedef siem::Condition _condition;
-    typedef siem::Mutex::Lock _scopeLock;
-    typedef siem::Mutex _mutex;
-    typedef siem::Thread _thread;
-    typedef siem::Thread::ptr _threadPtr;
+    using _condition = siem::Condition;
+    using _scopeLock = siem::Mutex::Lock;
+    using _mutex = siem::Mutex;
+    using _thread = siem::Thread;
+    using _threadPtr = siem::Thread::ptr;
 #endif
 
 
 class ThreadPool : public NoCopyAble{
 public:
-    typedef std::function<void()> Task;
+    using Task = std::function<void()>;
 
     enum ThreadState {
         DEAD = 0x00,    //未启动线程

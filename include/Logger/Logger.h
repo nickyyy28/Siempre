@@ -171,7 +171,7 @@ namespace siem {
  */
     class LogEvent {
     public:
-        typedef std::shared_ptr<LogEvent> ptr;
+        using ptr = std::shared_ptr<LogEvent>;
     private:
         std::string m_name;                 //日志名
         const char *m_filename = nullptr;   //文件名
@@ -324,7 +324,7 @@ namespace siem {
  */
     class LogFormatter {
     public:
-        typedef std::shared_ptr<LogFormatter> ptr;
+        using ptr = std::shared_ptr<LogFormatter>;
 
     public:
         class FormatItem {
@@ -342,7 +342,7 @@ namespace siem {
             // %m : 日志内容           MessageFormatItem
             // %n : 换行符[\r\n]       NewLineFormatItem
 
-            typedef std::shared_ptr<FormatItem> ptr;
+            using ptr = std::shared_ptr<FormatItem>;
 
             FormatItem() = default;
 
@@ -626,7 +626,7 @@ namespace siem {
  */
     class LogAppender {
     public:
-        typedef std::shared_ptr<LogAppender> ptr;
+        using ptr = std::shared_ptr<LogAppender>;
 
     protected:
         LogLevel::Level m_level = LogLevel::DEBUG;
@@ -696,7 +696,7 @@ namespace siem {
     public:
         friend class LoggerManager;
 
-        typedef std::shared_ptr<Logger> ptr;
+        using ptr = std::shared_ptr<Logger>;
 
     private:
         /**
@@ -850,7 +850,7 @@ namespace siem {
 //输出到控制台
     class StdoutLogAppender : public LogAppender {
     public:
-        typedef std::shared_ptr<StdoutLogAppender> ptr;
+        using ptr = std::shared_ptr<StdoutLogAppender>;
 
         StdoutLogAppender();
 
@@ -866,7 +866,7 @@ namespace siem {
 //输出到文件
     class FileLogAppender : public LogAppender {
     public:
-        typedef std::shared_ptr<FileLogAppender> ptr;
+        using ptr = std::shared_ptr<FileLogAppender>;
 
         FileLogAppender(const std::string &filename);
 
@@ -891,7 +891,7 @@ namespace siem {
  */
     class LoggerManager {
     public:
-        typedef std::shared_ptr<LoggerManager> ptr;
+        using ptr = std::shared_ptr<LoggerManager>;
 
         LoggerManager();
 

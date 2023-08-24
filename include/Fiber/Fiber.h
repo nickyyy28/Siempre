@@ -30,8 +30,8 @@ private:
     Fiber(void);
 
 public:
-    typedef std::function<void(void)> callBack;
-    typedef std::shared_ptr<Fiber> ptr;
+    using callBack = std::function<void(void)>;
+    using ptr = std::shared_ptr<Fiber>;
 
     Fiber(callBack cb, size_t stack_size = 0, bool is_runinscheduler = false);
     ~Fiber();

@@ -7,8 +7,8 @@ private:
     Fiber();
 
 public:
-    typedef std::function<void(void)> callBack;
-    typedef std::shared_ptr<Fiber> ptr;
+    using callBack = std::function<void(void)>;
+    using ptr = std::shared_ptr<Fiber>;
 
     enum class FiberState{
         READY,

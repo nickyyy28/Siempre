@@ -9,8 +9,8 @@ namespace siem{
 
 class IOManager : public Scheduler{
 public:
-    typedef std::shared_ptr<IOManager> ptr;
-    typedef RWMutex RWMutexType;
+    using ptr = std::shared_ptr<IOManager>;
+    using RWMutexType = RWMutex;
 
     enum Event {
         None = 0x0,     //无事件
@@ -92,7 +92,7 @@ protected:
     void contextResize(size_t size);
 private:
     struct FdContext{
-        typedef Mutex MutexType;
+        using MutexType = Mutex;
         struct EventContext{
             Scheduler* sc = nullptr;    // 事件执行的调度器
             Fiber::ptr fiber;           // 事件执行的协程

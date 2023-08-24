@@ -6,7 +6,7 @@ namespace siem {
 namespace net {
 
 class TCPConn;
-typedef std::shared_ptr<TCPConn> TCPConnPtr;
+using TCPConnPtr = std::shared_ptr<TCPConn> ;
 
 class TCPConn{
 public:
