@@ -12,15 +12,25 @@ namespace net {
 
 class EventLoop;
 
+/**
+ * @brief the Channel class encapsulates the socket fd and its interested event, like EPOLLIN,EPOLLOUT
+          and bind the specific event by poller returned
+ * 
+ */
 class Channel : public NoCopyAble{
 public:
     using EventCallback = std::function<void()>;
-    using ReadEventCallback = std::function<void()>;
+    using ReadEventCallback = std::function<void(TimeStamp recvTime)>;
     using WriteEventCallback = std::function<void()>;
 
     explicit Channel(EventLoop* eventLoop, int fd);
     ~Channel();
 
+    /**
+     * @brief when the fd get poller's events, to handle events
+     * 
+     * @param recvTime 
+     */
     void handleEvent(TimeStamp recvTime);
 
     void setReadEventCallback(const ReadEventCallback& callback);
@@ -33,16 +43,39 @@ public:
      * 
      * @param tie_ 
      */
-    void tie(const std::shared_ptr<void> tie_);
+    void tie(const std::shared_ptr<void>& tie_);
 
     int fd() const { return m_fd; }
     int events() const { return m_events; }
-    int set_rtevents(int rtevents) { m_rtevents = rtevents; }
-    bool isNoneEvent(int event) { return event == kNoneEvent; }
+    void set_rtevents(int rtevents) { m_rtevents = rtevents; }
+    bool isNoneEvent() { return m_events == kNoneEvent; }
+    bool isReadingEvent() { return m_events &= kReadEvent; }
+    bool isWriteEvent() { return m_events &= kWriteEvent; }
 
     void enableReading();
     void disableReading();
+    void enableWriting();
+    void disableWriting();
+    void disableAll();
+
+    /**
+     * @brief remove this channel in owner eventloop
+     * 
+     */
+    void remove();
+
+    int index() const { return m_index; }
+    void setIndex(int index) { m_index = index; }
+
+    EventLoop* ownerLoop() const { return m_loop; }
+
+private:
+    /**
+     * @brief when change events ,update the fd's events in poller
+     * 
+     */
     void update();
+    void handleEventWithGuard(TimeStamp recvTime);
 
 private:
     static const int kNoneEvent;
@@ -65,7 +98,6 @@ private:
     EventCallback m_error_cb;
 
 };
-
 
 
 }

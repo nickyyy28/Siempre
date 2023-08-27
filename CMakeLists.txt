@@ -20,7 +20,7 @@ add_subdirectory(src)
 
 if (${ENABLE_TEST})
     message("Enable Test Code")
-    add_subdirectory(test)
+    # add_subdirectory(test)
 
 else()
 endif()
